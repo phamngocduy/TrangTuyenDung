@@ -1,0 +1,298 @@
+﻿@model TrangTuyenDung.Models.Company_Info
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Thông tin công ty";
+    ViewBag.active = "update-company";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+
+@section Styles {
+    <!-- select2 with bootstrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" integrity="sha256-FdatTf20PQr/rWg+cAKfl6j4/IY3oohFAJ7gVC3M34E=" crossorigin="anonymous" />
+    <link href="~/Content/Vendor/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+}
+
+<style>
+    .avatar-wrapper {
+        height: 150px;
+        width: 100%;
+    }
+
+        .avatar-wrapper img {
+            height: 100%;
+            display: flex;
+            display: flex;
+            vertical-align: middle;
+        }
+</style>
+
+<!-- Page Header -->
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Tổng Quan</span>
+        <h3 class="page-title">Cập nhật thông tin</h3>
+    </div>
+</div>
+<!-- End Page Header -->
+
+<div class="row">
+    @if (ViewBag.update == "UpdateSuccess") {
+        <div class="col-12 col-lg-8 col-md-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa fa-check mx-2"></i>Thông tin Công ty đã cập nhật thành công.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    else if (ViewBag.update == "ChangePasswordSuccess") {
+        <div class="col-12 col-lg-8 col-md-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa fa-check mx-2"></i>Mật khẩu đã được thay đổi thành công.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    else if (ViewBag.update == "ChangePasswordFail") {
+        <div class="col-12 col-lg-8 col-md-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Lỗi: <br />
+                @ViewBag.errorlist
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    else if (ViewBag.update == "UserUpdateSuccess") {
+        <div class="col-12 col-lg-8 col-md-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa fa-check mx-2"></i>Thông tin Cá nhân đã được cập nhật.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+    <div class="col-12">
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Thông tin công ty</h6>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Update", "Account", new { area = "Company", @id = Model.Id }, FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @id = "updateInfoForm" })) {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <!-- Info panel -->
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-row">
+                                        <!-- name -->
+                                        <div class="form-group col-md-6 col-12">
+                                            <label class="font-weight-medium" for="Name_Company">Tên công ty</label>
+                                            @Html.EditorFor(m => m.Name_Company, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                        </div>
+
+                                        <!-- MS -->
+                                        <div class="form-group col-md-6 col-12">
+                                            <label class="font-weight-medium" for="feLastName">Mã số doanh nghiệp</label>
+                                            <input type="text" class="form-control form-control-lg" id="feLastName" placeholder="" value="@Model.Code" readonly>
+                                        </div>
+
+                                        <!-- intro -->
+                                        <div class="form-group col-12">
+                                            <label class="font-weight-medium" for="Introduce_Company">Giới thiệu công ty</label>
+                                            @Html.TextAreaFor(model => model.Introduce_Company, new { @class = "form-control form-control-lg", @row = 4 })
+                                            @Html.ValidationMessageFor(model => model.Introduce_Company, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!-- address -->
+                                        <div class="form-group col-12">
+                                            <label class="font-weight-medium" for="Address_Company">Địa chỉ</label>
+                                            @Html.EditorFor(model => model.Address_Company, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                            @Html.ValidationMessageFor(model => model.Introduce_Company, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!-- province/district -->
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="Province_ID">Thành Phố/ Tỉnh</label>
+                                            @Html.DropDownList("Province_ID", ViewBag.province as List<SelectListItem>, new {
+                                           @class = ""
+                                            })
+                                            @Html.ValidationMessageFor(m => m.Province_ID, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="District_ID">Quận/ Huyện</label>
+                                            @Html.DropDownList("District_ID", ViewBag.district as List<SelectListItem>, new {
+                                                @class = ""
+                                            })
+                                            @Html.ValidationMessageFor(m => m.Province, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!-- faculty/other -->
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="FacRec">Lĩnh vực chính</label>
+                                            @Html.DropDownListFor(m => m.FacRec, (MultiSelectList)ViewBag.comFaculties, new { @class = "form-control form-control-lg", @title = "Faculty", @name = "FacRec", @multiple = "true" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="Faculties_Other">Lĩnh vực khác</label>
+                                            @Html.EditorFor(model => model.Faculties_Other, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = "(nếu có)" } })
+                                            @Html.ValidationMessageFor(model => model.Faculties_Other, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!-- representative -->
+                                        <div class="form-group col-12">
+                                            <label class="font-weight-medium" for="Representative">Người đại diện</label>
+                                            @Html.EditorFor(model => model.Representative, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                            @Html.ValidationMessageFor(model => model.Representative, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <!-- faculty/other -->
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="">Email</label>
+                                            @Html.EditorFor(model => model.Contact_Email, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                            @Html.ValidationMessageFor(model => model.Contact_Email, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="font-weight-medium" for="Contact_Phone">Điện thoại liên hệ</label>
+                                            @Html.EditorFor(model => model.Contact_Phone, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                            @Html.ValidationMessageFor(model => model.Contact_Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <label class="font-weight-medium" for="website_Company">Website</label>
+                                            @Html.EditorFor(model => model.website_Company, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                                            @Html.ValidationMessageFor(model => model.website_Company, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <input type="hidden" id="Scale_Range" name="Scale_Range" value="0,4500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- LOGO panel -->
+                        <div class="col-lg-4">
+                            <div class="avatar-wrapper" data-tippy-placement="bottom" title="Thay đổi Logo">
+                                <img class="profile-pic" src="@Url.Content("~/App_Data/Company/Logos/" + Model.Id + "?UpdateKey=" + ViewBag.Random)" alt="LOGO" />
+                                <div class="upload-button"></div>
+                                <input class="file-upload" id="Com_Logo" name="Com_Logo" type="file" accept="image/*" />
+                            </div>
+                            <span class="text-danger" id="sizeError" style="display:none;"><i class="icon-feather-alert-octagon"></i> Cảnh báo: File quá lớn! (>2MB)</span>
+                        </div>
+
+                        <div class="col-12">
+                            <input class="btn btn-accent" type="submit" name="submit" value="Lưu Lại" />
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <!-- -->
+    <div class="col-12 col-lg-8">
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Thông tin nhân sự</h6>
+            </div>
+
+            <div class="card-body">
+                @using (Html.BeginForm("UpdateUser", "Account", new { area = "Company" }, FormMethod.Post, new { enctype = "multipart/form-data", role = "form" })) {
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <label class="font-weight-medium" for="FullName">Họ và Tên</label>
+                            @Html.Editor("FullName", new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#changePassword">
+                        Đổi mật khẩu
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Cập nhật
+                    </button>
+                }
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="changePassword" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header p-3">
+                            <h6 class="modal-title font-weight-medium" id="changePassword">Modal title</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        @Html.Partial("~/Views/Manage/_ChangePassword.cshtml", new TrangTuyenDung.Models.ChangePasswordViewModel { })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <!-- select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js" integrity="sha256-wfVTTtJ2oeqlexBsfa3MmUoB77wDNRPqT1Q1WA2MMn4=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const infoForm = $("#updateInfoForm");
+            const inputImg = $('#Com_Logo');
+            const inputImgMsg = $('#sizeError');
+
+            const facultySelect = $('#FacRec');
+            const provinceSelect = $("#Province_ID");
+            const districtSelect = $("#District_ID");
+
+            const inputSlider = $('#slider-example-3');
+
+            searchSelect2(provinceSelect, "--Chọn Tỉnh/TP--");
+            searchSelect2(districtSelect, "--Chọn Quận/Huyện--");
+            searchSelect2(facultySelect, "--Chọn Lĩnh vực chính--");
+
+
+            provinceSelect.change(function () {
+                districtSelect.empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDistrictsByProvinceID", "Account", new { area="Company" })',
+                    dataType: 'json',
+                    data: { id: provinceSelect.val() },
+                    success: function (districts) {
+                        $.each(districts, function (_, district) {
+                            districtSelect.append('<option value="' + district.Value + '">' +
+                                district.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Không thể xuất ra Quận/Huyện tương ứng' + ex);
+                    }
+                });
+                return false;
+            });
+
+            inputImg.bind('change', function () {
+                if (this.files[0].size > 2097152) {
+                    inputImgMsg.css('display', "inline");
+                }
+                else {
+                    inputImgMsg.css('display', "none");
+                }
+            });
+        });
+    </script>
+}

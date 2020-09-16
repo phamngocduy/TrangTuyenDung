@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Company_Info>
+
+<div class="col-lg-12">
+    <div class="job_noibat_infor">
+        <h2>ĐỐI TÁC CHIẾN LƯỢC </h2>
+        <p>
+            Cơ hội của nhân viên là một công ty tốt, hãy thực hiện điều đó bằng một nút chạm <br /> <strong style="color:#191919">MỘT NÚT CHẠM, SÁNG TƯƠNG LAI</strong>
+        </p>
+    </div>
+    <div class="job_noibat_detail">
+        <div class="row">
+            @foreach (var item in Model.Take(3)) {
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <div class="job_grid">
+
+                        <div class="job_logoCompany">
+                            <img src="@Url.Content("~/App_Data/Company/Logos/" + item.Id)" alt="Reddot" />
+                        </div>
+                        <div class="job_detailCompany">
+                            <a href="#">
+                                <h3 style="text-align:center;color:#00b6c3;font-weight:400;font-size:20px">@item.Name_Company</h3>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+            <div class="col-lg-12">
+                <div class="job_xemtatca">
+                    <a href="@Url.Action("ListCompany","Home")"><button class="btn btn-lg">Xem tất cả </button> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Danh sách đối tác chiến lược";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<!--Style CSS -->
+<link href="~/Content/CSS_Company/InformationsCompany/blue.css" rel="stylesheet" />
+<link href="~/Content/CSS_Company/InformationsCompany/style.css" rel="stylesheet" />
+<link href="~/Content/viewdetailtintuyendung.css" rel="stylesheet" />
+<link href="~/Content/csscuatrangindex.css" rel="stylesheet" />
+<!-- Hover CSS-->
+<link href="~/Content/CSS_Company/InformationsCompany/hover-min.css" rel="stylesheet" />
+<link href="~/Content/CSS_Company/InformationsCompany/hover.css" rel="stylesheet" />
+<!-- Font awesome-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+      crossorigin="anonymous">
+<!-- Link bootstrap -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous">
+
+
+
+@if (Request.IsAuthenticated) {
+    if (User.IsInRole("Student")) {
+        <div>@Html.Action("ShowListMajorCompany", "Home", new { area = "" })</div>
+    }
+}
+else {
+    <div>@Html.Action("ShowListAllCompany", "Home", new { area = "" })</div>
+}
+
+@section scripts
+    {
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/Scripts/Js_Company/bootstrap.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/jquery-migrate-3.0.0.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/mmenu.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/tippy.all.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/simplebar.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/bootstrap-select.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/bootstrap-slider.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/snackbar.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/clipboard.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/counterup.min.js"></script>
+    <script src="js/clipboard.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/magnific-popup.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/slick.min.js"></script>
+    <script src="~/Scripts/Js_Company/InformationsCompany/custom.js"></script>
+    <script>
+        $('.responsive').slick({
+            dots: false,
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: false
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+
+            ]
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.single-page-section p').css('text-align', 'left');
+        });
+    </script>
+
+}

@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Thống Kê";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "statistic";
+}
+
+@section Styles {
+    <!-- bootstrap datepicker3 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha256-FAOaXTpl90/K8cXmSdsskbQN3nKYulhCpPbcFzGTWKI=" crossorigin="anonymous" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Thống kê</div>
+
+<!-- collapse -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Khoảng thời gian xuất thống kê, xuất excel</h6>
+    </div>
+
+    <div class="card-body">
+        <small class="d-block mb-1">Định dạng (mm/dd/yyyy)</small>
+        <div class="d-flex mb-3 flex-wrap">
+            <div class="col-md-8 col-12 px-0 input-daterange input-group">
+                <input type="text" class="form-control text-left" id="staStart" name="staStart" autocomplete="off" />
+                <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                <input type="text" class="form-control text-left" id="staEnd" name="staEnd" autocomplete="off" />
+            </div>
+        </div>
+        <div id="errMsg" class="text-danger mb-1"></div>
+
+        @* overview *@
+        <button class="btn btn-outline-primary btn-sm px-3 mr-1" id="btnStatistic" data-url="@Url.Action("Statistic", "Home", new { area = "Staff" })">Tổng quan hệ thống</button>
+
+        @* excel list company *@
+        @using (Html.BeginForm("Export_Company", "Account", FormMethod.Post, new { id = "exCompanyForm", area = "Staff", @class = "d-inline" })) {
+            <input value="" name="startDay" id="subStartDateExCom" hidden />
+            <input value="" name="endDay" id="subEndDateExCom" hidden />
+            <button class="btn btn-outline-primary btn-sm px-3 mr-1" type="submit" id="btnExCom">Danh sách công ty</button>
+        }
+
+        @* excel list recruiment *@
+        @using (Html.BeginForm("Export_Recuitments", "Account", FormMethod.Post, new { id = "exRecruitmentForm", area = "Staff", @class = "d-inline" })) {
+            <input value="" name="startDay" id="subStartDateExRecruit" hidden />
+            <input value="" name="endDay" id="subEndDateExRecruit" hidden />
+            <button class="btn btn-outline-primary btn-sm px-3 mr-1" type="submit" id="btnExRecruit">Tin tuyển dụng</button>
+        }
+        @*@using (Html.BeginForm("Export_Sumary", "Account", FormMethod.Post, new {  area = "Staff", @class = "d-inline" })) {
+            <button class="btn btn-outline-primary btn-sm px-3 mr-1" type="submit" id="btnExRecruit">Thống Kê</button>
+        }*@
+
+    </div>
+</div>
+
+<div class="card mb-3" id="resultTable" style="display:none">
+    <div class="card-header px-3">
+        Kết quả
+    </div>
+    <div class="card-body px-3"></div>
+</div>
+
+@section Scripts{
+    <!-- bootstrap datepicker3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js" integrity="sha256-TnMvef6AxT9fg6mNrTsZCgPDkU4g5EyB+tu66oLAI4U=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const exCompanyForm = $("#exCompanyForm");
+            const exRecruitmentForm = $("#exRecruitmentForm");
+            const statisticResult = $('#resultTable');
+            const btnStatistic = $('#btnStatistic');
+            const btnExCom = $("#btnExCom");
+            const btnExRecruit = $("#btnExRecruit");
+            const startDate = $('#staStart');
+            const endDate = $('#staEnd');
+            const errMsg = $('#errMsg');
+
+            initDatepickup($(".input-daterange"));
+
+            function preventBtn(btn, txt = 'Xuất thống kê') {
+                btn.attr('disabled', true);
+                const countDown = new Date().getTime() + 5000; // 5s
+                let x = setInterval(function () {
+                    const now = new Date().getTime();
+                    const distance = countDown - now;
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    btn.text("Xin chờ " + seconds + "s");
+                    if (distance < 0) {
+                        clearInterval(x);
+                        btn.attr('disabled', false);
+                        btn.text(txt);
+                    }
+                }, 0);
+            }
+
+            exCompanyForm.submit(() => {
+                const startDay = startDate.val();
+                const endDay = endDate.val();
+                const startDaySubmit = $("#subStartDateExCom");
+                const endDaySubmit = $("#subEndDateExCom");
+
+                if (startDay == "" || endDay == "") {
+                    errMsg.text("Chọn ngày bắt đầu và kết thúc để xuất danh sách Công Ty");
+                    return false;
+                }
+                errMsg.text("");
+                startDaySubmit.val(startDay);
+                endDaySubmit.val(endDay);
+                preventBtn(btnExCom, 'Danh sách công ty');
+            });
+
+            exRecruitmentForm.submit(() => {
+                const startDay = startDate.val();
+                const endDay = endDate.val();
+                const startDaySubmit = $("#subStartDateExRecruit");
+                const endDaySubmit = $("#subEndDateExRecruit");
+
+                if (startDay == "" || endDay == "") {
+                    errMsg.text("Chọn ngày bắt đầu và kết thúc để xuất danh sách Tin tuyển dụng");
+                    return false;
+                }
+                errMsg.text("");
+                startDaySubmit.val(startDay);
+                endDaySubmit.val(endDay);
+                preventBtn(btnExRecruit, 'Tin tuyển dụng');
+            });
+
+            btnStatistic.click(function () {
+                const startDay = startDate.val();
+                const endDay = endDate.val();
+
+                if (startDay == "" || endDay == "") {
+                    errMsg.text("Vui lòng chọn Ngày bắt đầu và ngày kết thúc!");
+                }
+                else {
+                    preventBtn(btnStatistic, 'Thống kê tổng quan');
+                    $.ajax({
+                        url: $(this).data('url'),
+                        type: 'POST',
+                        dataType: 'html',
+                        data: {
+                            startDay,
+                            endDay
+                        },
+                        beforeSend: function () {
+                            statisticResult.attr('style', "display:none");
+                            errMsg.text("");
+                        },
+                        complete: function () {
+                            statisticResult.attr('style', "");
+                        },
+                        success: function (data) {
+                            $('#resultTable .card-body').html(data);
+                        },
+                        error: function () {
+                            errMsg.text("Đã có lỗi xảy ra, bạn vui lòng thử lại vào lúc khác. Xin cảm ơn")
+                        },
+                    });
+                }
+            });
+         
+        });
+ </script>
+}

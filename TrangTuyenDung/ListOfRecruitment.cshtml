@@ -1,0 +1,277 @@
+﻿@model PagedList.IPagedList<TrangTuyenDung.Models.Recruitment>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Tin tuyển dụng hiện có";
+    Layout = "~/Views/Shared/_LayoutIndex.cshtml";
+}
+
+@section Styles {
+    <!-- select2 -->
+    <link href="~/Content/Vendor/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/Vendor/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+
+    <!-- Header/Search-background -->
+    <link rel="stylesheet" href="~/Content/Home/index.css" />
+
+    <!-- List recruit page CSS -->
+    <link href="~/Content/list-recruitment.css" rel="stylesheet" />
+}
+
+<!-- header Searching -->
+<section class="mini_heading">
+    @Html.Action("partialJobFilter", "Home", new { area = "" })
+</section>
+
+<!-- all jobs available -->
+@if (Model.Count() > 0) {
+    <div class="container py-4">
+        <div class="mb-1 d-block clearfix">
+            <span class="font-weight-medium text-secondary small">Danh sách công việc hiện có</span>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                @foreach (var result in Model.OrderByDescending(x => x.Nums_view)) {
+                    <div class="media recruit_post px-3 pt-3 pb-2 pb-md-3 mb-2">
+                        <!-- logo -->
+                        <div class="company_logo overflow-hidden border mr-3 d-lg-block d-none">
+                            @if (result.Company_id != null) {
+                                <img src="@Url.Content("~/App_Data/Company/Logos/" + result.Company_id)" alt="EJob @result.Company_Info.Name_Company" />
+                            }
+                            else {
+                                <img src="@Url.Content("~/Assets/img/vlu-logo-foot.png")" alt="EJob @result.Company_Info.Name_Company" />
+                            }
+                        </div>
+
+                        <div class="media-body">
+                            <!-- title/location -->
+                            <div class="mb-2 col pl-0">
+                                <h5 class="my-0 text-capitalize text-truncate">@result.title</h5>
+                                <div class="text-truncate font-weight-medium">@result.Company_Info.Name_Company</div>
+                                <div><i class="fas fa-map-marker-alt"></i> @result.District.Province.Name</div>
+                            </div>
+
+                            <!-- description -->
+                            @if (!String.IsNullOrWhiteSpace(result.Job_Description)) {
+                                <div>
+                                    <a class="recruit_description small font-weight-medium" data-toggle="collapse" href="@("#recruitDescription" + result.Id)" role="button" aria-expanded="false" aria-controls="@("recruitDescription" + result.Id)">
+                                        Mô tả công việc
+                                    </a>
+                                    <div class="collapse" id="@("recruitDescription" + result.Id)">
+                                        @Html.Raw(result.Job_Description)
+                                        <hr />
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- location - job types - salary -->
+                            <div class="row mt-1 mt-md-0">
+                                <div class="col-md-3">
+                                    <ul class="list-inline mb-0">
+                                        <li class="small text-secondary font-weight-medium">Địa điểm</li>
+                                        <li class="font-weight-medium">
+                                            @if (!String.IsNullOrEmpty(result.District.District_Name)) {
+                                                <span>Quận @result.District.District_Name,&nbsp</span>
+                                            }
+                                            @result.District.Province.Name
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                @if (result.Is_Full_Time != false
+                        || result.Is_Part_Time != false
+                        || result.Is_Intership != false) {
+                                    <div class="col-md-3">
+                                        <ul class="list-inline mb-0">
+                                            <li class="small text-secondary font-weight-medium">Loại công việc</li>
+                                            @if (result.Is_Full_Time == true) {
+                                                <li class="font-weight-medium text-white badge badge-info">Full-time</li>
+                                            }
+                                            @if (result.Is_Part_Time == true) {
+                                                <li class="font-weight-medium text-white badge badge-dark">Part-time</li>
+                                            }
+                                            @if (result.Is_Intership == true) {
+                                                <li class="font-weight-medium text-white badge badge-success">Thực tập</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                                <div class="col-md-3">
+                                    <ul class="list-inline mb-0">
+                                        <li class="small text-secondary font-weight-medium">Lương (VNĐ)</li>
+                                        @if (result.Salary_from == null && result.Salary_to == null) {
+                                            <li class="font-weight-medium">Lương Thỏa Thuận</li>
+                                        }
+                                        else {
+                                            var localCurrency = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                                            <li class="font-weight-medium">
+                                                @String.Format(localCurrency, "{0:N0}", result.Salary_from)  - @String.Format(localCurrency, "{0:N0}", result.Salary_to)
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="col d-flex align-items-center justify-content-between mt-2 mt-md-0">
+                                    <span class="text-secondary">
+                                        <i class="far fa-eye"></i>
+                                        <span class="view_counter" data-views="@result.Nums_view"></span>
+                                    </span>
+                                    <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = result.Id })" class="btn btn-sm btn-outline-primary" role="button">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @Html.PagedListPager(Model, page =>
+            Url.Action("ListOfRecruitment", new { page = page }),
+            new PagedListRenderOptions {
+                UlElementClasses = new string[] { "pagination justify-content-end mt-2" },
+                LiElementClasses = new string[] { "page-item" }
+            })
+    </div>
+}
+else {
+    <div class="container intro my-4">
+        <div class="d-block text-center lead font-weight-medium">
+            Hiện tại chưa có tin tuyển dụng nào.
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <!-- select2 -->
+    <script src="~/Scripts/Vendor/select2/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            kFormatter();
+            function kFormatter() {
+                const countEl = $('.view_counter');
+                countEl.each(function () {
+                    const views = $(this).data('views');
+                    $(this).text(Math.abs(views) > 999
+                        ? Math.sign(views) * ((Math.abs(views) / 1000).toFixed(1)) + 'k'
+                        : Math.sign(views) * Math.abs(views));
+                });
+            }
+
+            $(".pagination").find("a").addClass("page-link");
+            searchSelect2($("#city"), "--Chọn Tỉnh/TP--");
+            searchSelect2($("#fac"), "--Chọn ngành--");
+
+            function searchSelect2(el, placeholder = "--Chọn--", options) {
+                return el.select2({
+                    theme: 'bootstrap4',
+                    dropdownAutoWidth: true,
+                    width: '100%',
+                    placeholder: placeholder,
+                    sorter: data => sortSelect(data),
+                    options
+                });
+            };
+            function sortSelect(data) {
+                return data.sort((a, b) => (a.text).localeCompare((b.text), 'vi', { sensitivity: 'base' }));
+            }
+        });
+    </script>
+}
+
+@*<div id="wrapper">
+        <div class="margin-top-45"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4">
+                    <div class="sidebar-container" style="position:sticky;top:0">
+                        Location
+                        <div class="sidebar-widget" style="width: 100%">
+                            <h3>Công việc hàng đầu</h3>
+                            <div class="hotView" style="border:1px solid #ececec;padding:10px;background-color:#ffffff;border-radius: 5px;box-shadow:5px 5px 5px 5px #ececec;line-height:4.5rem">
+                                <div class="row">
+                                    @foreach (var item in Model.OrderByDescending(x => x.Nums_view).Take(10)) {
+                                        <div class="col-md-8">
+                                            <a href="@Url.Action("Detail","Recruitment",new { area="", id=item.Id})"><h5 style="padding:10px;line-height:20px;font-weight:bold">@item.title</h5></a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fas fa-eye"> @item.Nums_view</i>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8 content-left-offset">
+                    <h3>Danh sách các công việc hiện có</h3>
+                    <div class="listings-container margin-top-20">
+                        @foreach (var item in Model) {
+                            <a href="@Url.Action("Detail","Recruitment",new { area="", id=item.Id })" class="job-listing">
+                                <div class="job-listing-details">
+                                    <div class="job-listing-company-logo">
+                                        @if (item.Company_id != null) {
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/" + item.Company_id)" alt="Red dot" />
+                                        }
+                                        else {
+
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/vlu-logo.png")" alt="Red dot" />
+                                        }
+                                    </div>
+                                    Details
+                                    <div class="job-listing-description">
+                                        @if (item.Company_id != null) {
+                                            <h4 class="job-listing-company">@item.Company_Info.Name_Company</h4>
+                                        }
+                                        else {
+                                            <h4 class="job-listing-company">VLU-Company</h4>
+                                        }
+                                        <h3 class="job-listing-title">@item.title</h3>
+                                        <div class="job-listing-text more" data-url="@Url.Action("Detail","Recruitment",new { area="", id=item.Id})">
+                                            <span>@Html.Raw(item.Job_Description)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="job-listing-footer">
+                                    <ul>
+                                        <li><i class="fas fa-map-marker-alt"></i> @item.District.Province.Name, @item.District.Type @item.District.District_Name</li>
+                                        @if (item.Is_Full_Time == true) {
+                                            <li><i class="fas fa-business-time"></i> Full Time</li>
+                                        }
+                                        @if (item.Is_Part_Time == true) {
+                                            <li><i class="fas fa-business-time"></i> Part Time</li>
+                                        }
+                                        @if (item.Is_Intership == true) {
+                                            <li><i class="fas fa-business-time"></i> Internship</li>
+                                        }
+
+                                        @if (item.Salary_from == null && item.Salary_to == null) {
+                                            <li><i class="fas fa-wallet"></i> Lương thỏa thuận</li>
+                                        }
+                                        else {
+                                            <li><i class="fas fa-wallet"></i>@Html.DisplayFor(model => item.Salary_from) ~ @Html.DisplayFor(model => item.Salary_to) VND</li>
+
+                                        }
+                                        <li> <i class="fas fa-history"></i><span data-utcdate=" @item.Updated_date.Value.ToString("s") "></span></li>
+                                    </ul>
+                                </div>
+                            </a>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-utcdate]').each(function () {
+                var d = moment($(this).attr('data-utcdate'));
+                $(this).html(d.fromNow());
+            });
+        });
+    </script>*@

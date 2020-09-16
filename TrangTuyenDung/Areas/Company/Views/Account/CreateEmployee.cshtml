@@ -1,0 +1,172 @@
+﻿@model TrangTuyenDung.Areas.Company.Models.EmployeeRegisterViewModel
+@{
+    ViewBag.Title = "Tạo Nhân Viên";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+
+
+<script src="~/Scripts/Js_Company/jquery-2.1.4.min.js" type="text/javascript"></script>
+
+@*<link href="~/Content/CSS_Company/style.css" rel="stylesheet" type="text/css" />*@
+
+<div class="dashboard-content-container" data-simplebar>
+
+    <div class="dashboard-content-inner">
+        <!--Create Account Form-->
+        <div class="row">
+            <!--Box-->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-account-circle"></i> Tạo tài khoản Nhân Viên</h3>
+                    </div>
+                    <!--Check Permission-->
+                    @if (ViewBag.Permission == true) {
+                        <div class="content with-padding padding-bottom-0">
+                            @using (Html.BeginForm("CreateEmployee", "Account", new { area = "Company" }, FormMethod.Post)) {
+                                <!--Input Content-->
+                                <div class="row">
+                                    <div class="col-xl-6 col-md-6 col-lg-6">
+                                        <div class="section-headline margin-top-25 margin-bottom-12">
+                                            <h5>Thông tin Nhân Viên:</h5>
+                                        </div>
+                                        <div class="input-with-icon-left">
+                                            <i class="icon-material-outline-person-pin"></i>
+                                            <input type="text" name="FullName" class="input-text with-border" placeholder="Họ và tên..." required>
+                                            @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-md-6 col-lg-6">
+                                        <!-- List Actions Container -->
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xl-12 col-md-12">
+                                                    <div class="section-headline margin-top-25 margin-bottom-12">
+                                                        <h5>Chọn quyền hạn:</h5>
+                                                    </div>
+                                                </div>
+                                                <!--Generate list of actions to set for account-->
+                                                @foreach (var item in ViewBag.Actions) {
+                                                    <div class="col-xl-4 col-md-4">
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" id="act_@item.Id" name="act_@item.Id" value="@item.Id" style="display:none">
+                                                            <label for="act_@item.Id"><span class="checkbox-icon"></span> @item.Name</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <!-- List Actions Container / End -->
+                                    </div>
+                                    <div class="col-xl-12 col-md-12 col-lg-12">
+                                        <div class="row">
+
+                                            <div class="col-xl-6 col-md-6 col-lg-6">
+                                                <div class="section-headline margin-top-25 margin-bottom-12">
+                                                    <h5>Tài khoản:</h5>
+                                                </div>
+                                                <div class="input-with-icon-left">
+                                                    <i class="icon-material-outline-account-circle"></i>
+                                                    <input type="email" id="Email" name="Email" class="input-text with-border" placeholder="Email..." required>
+                                                    <div class="form__requirements">
+                                                        Email không đúng định dạng!
+                                                    </div>
+                                                    <div id="email-exist" style="font-size:.95rem;"></div>
+                                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="input-with-icon-left">
+                                                    <i class="icon-material-outline-lock"></i>
+                                                    <input type="password" id="Password" name="Password" class="input-text with-border" placeholder="Mật khẩu..." pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,16}" required>
+                                                    <div class="form__requirements">
+                                                        Mật khẩu phải từ 6 đến 16 kí tự và có chứa cả chữ HOA, chữ thường và số!
+                                                    </div>
+                                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="input-with-icon-left">
+                                                    <i class="icon-material-outline-lock"></i>
+                                                    <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="input-text with-border" placeholder="Nhập lại mật khẩu..." required>
+                                                    <div class="form__requirements">
+                                                        Mật khẩu không khớp, vui lòng kiểm tra lại!
+                                                    </div>
+                                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-md-12 col-lg-12" style="text-align:center;margin:2%;">
+                                        <button type="submit" name="submit" class="button ripple-effect button-sliding-icon">Tạo Mới <i class="icon-feather-check"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else {
+                        <div class="content with-padding padding-bottom-0">
+                            <div class="container" style="padding:2%">
+                                <label style="color:brown"><i class="icon-line-awesome-hand-stop-o"></i> Xin lỗi! Bạn không có quyền tạo Nhân Viên mới!</label>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-----ALL SCRIPT HERE--->
+<!-----Đây là script Thông báo thành công sweetaleart-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
+    if ('@ViewBag.Message' == "CreateSuccess") {
+        swal("Thành Công!", "Nhân viên đã được tạo!", "success");
+    } if ('@ViewBag.Message' == "CreateFail") {
+        swal("Lỗi!", "Tạo không thành công, vui lòng kiểm tra lại các thông tin!", "error");
+    }
+
+</script>
+<!------Jquery for Confirm Password----->
+<script>
+    var password = document.getElementById("Password")
+        , confirm_password = document.getElementById("ConfirmPassword");
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Mật khẩu không khớp");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+
+</script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<!--JS check exists email-->
+<script type="text/javascript">
+    $('#Email').on('input', function () {
+        var email = $(this).val();
+        $.ajax({
+            url: "@Url.Action("checkEmailAlreadyExist","Account",new { area = "Company"})",
+            type: 'post',
+            data: { email: email },
+            success: function (data) {
+                if (data == "true") {
+                    $('#email-exist').css('color', '#68C23B');
+                    $('#email-exist').text("Bạn có thể sử dụng email này!");
+
+                } else if (data == "false") {
+                    $('#email-exist').css('color', '#FF5D73');
+                    $('#email-exist').text("Email đã được sử dụng, vui lòng chọn Email khác!");
+                }
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.field-validation-error').attr("style", "color:#FF5D73");
+    });
+</script>

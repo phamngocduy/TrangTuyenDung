@@ -1,0 +1,158 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Internship>
+@{
+    ViewBag.Title = "Danh sách yêu cầu cấp giấy giới thiệu";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "intern";
+}
+
+@section Styles {
+    <!-- datatable boostrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Danh sách yêu cầu cấp Giấy giới thiệu</div>
+
+@if (ViewBag.Message == "Success") {
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div>Giấy xác nhận Mã: <b>@ViewBag.id</b> đã được cập nhật. <a class="font-weight-medium" href="@Url.Action("Preview", "Internship", new { id = ViewBag.id, area= "Staff" })">In ngay</a></div>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tổng (@Model.Count()) yêu cầu hiện có</h6>
+    </div>
+    <h3> Xuất thống kê</h3>
+    @using (Html.BeginForm("Export", "Internship", FormMethod.Post)) {
+        <input type="datetime" name="startDay" />
+        <input type="datetime" name="endDay" />
+        <input type="submit" value="Export" />
+    }
+
+
+    <div class="card-body">
+        @if (Model.Count() <= 0) {
+            <div>Hiện tại không có yêu cầu nào.</div>
+        }
+        else {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>MSSV</th>
+                            <th>Họ tên</th>
+                            <th>Chuyên ngành</th>
+                            <th>Ngày tạo</th>
+                            <th>Tên công ty</th>
+                            <th>T/gian thực tập</th>
+                            <th>HK thực tập</th>
+                            <th>Hình thức</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count() > 10) {
+                        <tfoot>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>MSSV</th>
+                                <th>Họ tên</th>
+                                <th>Chuyên ngành</th>
+                                <th>Ngày tạo</th>
+                                <th>Tên công ty</th>
+                                <th>T/gian thực tập</th>
+                                <th>HK thực tập</th>
+                                <th>Hình thức</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </tfoot>
+                    }
+
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.MSSV</td>
+                                <td>@item.Student_Name</td>
+                                <td>@item.Faculties_Majors.Name</td>
+                                <td>@item.create_day</td>
+                                <td>@item.Company_Name</td>
+                                <td title="dd/mm/yyyy">
+                                    @item.Inter_from.ToString("dd/MM/yyyy")
+                                    <br />
+                                    @item.Inter_to.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @if (item.Semester_Inter == 0) {
+                                        <span>HK I</span>
+                                    }
+                                    else if (item.Semester_Inter == 1) {
+                                        <span>HK II</span>
+                                    }
+                                    else {
+                                        <span>HK Hè</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Type_Inter == 0) {
+                                        <span>Thực tập Tốt nghiệp</span>
+                                    }
+                                    else if (item.Type_Inter == 1) {
+                                        <span>Thực tập Nghề nghiệp</span>
+                                    }
+                                    else {
+                                        <span>@item.internTypeOther</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.status == 0) {
+                                        <span class="badge badge-dark">SV Chưa nhận</span>
+                                    }
+                                    else {
+                                        <span class="badge badge-success">SV Đã nhận</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn btn-link p-0 text-primary" title="Sửa giấy giới thiệu" role="button" href="@Url.Action("Edit", "Internship", new { id = item.Id, area= "Staff" })">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-link p-0 text-dark" title="In Giấy" role="button" href="@Url.Action("Preview", "Internship", new { id = item.Id, area= "Staff" })">
+                                        <i class="fas fa-print"></i>
+                                    </a>
+
+                                    @if (item.status == 0) {
+                                        <a class="btn btn-link p-0 text-success" title="Xác nhận SV đã nhận giấy" role="button" href="@Url.Action("Confirm", "Internship", new { id = item.Id, area= "Staff" })">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <!-- dataTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initDatatable($('#table'));
+        });
+    </script>
+}

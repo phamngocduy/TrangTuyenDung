@@ -1,0 +1,75 @@
+﻿@*<section class="content">*@
+
+<link href="~/Content/CSS_Company/Layout/datatables.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><span class="icon-material-outline-description"></span> Kết quả thống kê</h3>
+                <h5 class="box-subtitle">Bạn có thể xuất danh sách thành file CSV, Excel, PDF hoặc In ra</h5>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table id="example" class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
+                        <thead>
+                            <tr>
+                                <th scope="col">Công Ty</th>
+                                <th>Thời gian</th>
+                                <th scope="col">Tin đã nhập</th>
+                                <th scope="col">Tin đã đăng</th>
+                                <th scope="col">Tin hết hạn</th>
+                                <th scope="col">Toàn thời gian</th>
+                                <th scope="col">Bán thời gian</th>
+                                <th scope="col">Thực tập</th>
+                                <th scope="col">Lượt xem</th>
+                                <th scope="col">Tổng hồ sơ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th data-label="Công Ty:">
+                                    @ViewBag.name_Com
+                                </th>
+                                <td>
+                                    @Html.Raw(ViewBag.Time)
+                                </td>
+                                <td data-label="Tin đã nhập:">
+                                    @ViewBag.num_PostedRecs
+                                </td>
+                                <td data-label="Tin đã đăng:">
+                                    @ViewBag.num_ActivatedRecs
+                                </td>
+                                <td data-label="Tin hết hạn:">
+                                    @ViewBag.num_ExpiredRecs
+                                </td>
+                                <td data-label="Toàn thời gian:">
+                                    @ViewBag.num_FullTime
+                                </td>
+                                <td data-label="Bán thời gian:">
+                                    @ViewBag.num_PartTime
+                                </td>
+                                <td data-label="Thực tập sinh:">
+                                    @ViewBag.num_Intern
+                                </td>
+                                <td data-label="Lượt xem:">
+                                    @ViewBag.num_View
+                                </td>
+                                <td data-label="Nộp đơn:">
+                                    @ViewBag.num_Applied
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+<script src="~/Scripts/Js_Company/Layout/data-table.js"></script>
+<script src="~/Scripts/Js_Company/Layout/datatables.min.js"></script>

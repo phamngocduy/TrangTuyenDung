@@ -1,0 +1,76 @@
+﻿.profile_cover {
+    min-height: 250px;
+    position: relative;
+}
+
+.cover_background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+    .cover_background:after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        background: linear-gradient(180deg,rgba(0,0,0,.38) 0,rgba(0,0,0,.38) 3.5%,rgba(0,0,0,.379) 7%,rgba(0,0,0,.377) 10.35%,rgba(0,0,0,.375) 13.85%,rgba(0,0,0,.372) 17.35%,rgba(0,0,0,.369) 20.85%,rgba(0,0,0,.366) 24.35%,rgba(0,0,0,.364) 27.85%,rgba(0,0,0,.361) 31.35%,rgba(0,0,0,.358) 34.85%,rgba(0,0,0,.355) 38.35%,rgba(0,0,0,.353) 41.85%,rgba(0,0,0,.351) 45.35%,rgba(0,0,0,.35) 48.85%,rgba(0,0,0,.353) 52.35%,rgba(0,0,0,.36) 55.85%,rgba(0,0,0,.371) 59.35%,rgba(0,0,0,.385) 62.85%,rgba(0,0,0,.402) 66.35%,rgba(0,0,0,.42) 69.85%,rgba(0,0,0,.44) 73.35%,rgba(0,0,0,.46) 76.85%,rgba(0,0,0,.48) 80.35%,rgba(0,0,0,.498) 83.85%,rgba(0,0,0,.515) 87.35%,rgba(0,0,0,.529) 90.85%,rgba(0,0,0,.54) 94.35%,rgba(0,0,0,.547) 97.85%,rgba(0,0,0,.55));
+    }
+
+.profile_cover .profile_content {
+    position: relative;
+    z-index: 3;
+}
+
+.user_avatar {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    border: 2px solid;
+}
+
+    .user_avatar img {
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background: center;
+        object-fit: cover !important;
+    }
+
+section.student_info:not(:hover) a.btn {
+    opacity: 0;
+}
+
+.card__info:hover {
+    background: #fff;
+    border-color: #fff;
+    -webkit-box-shadow: 0 1.25rem 6.25rem 0 rgba(0,0,0,.1);
+    box-shadow: 0 1.25rem 6.25rem 0 rgba(0,0,0,.1);
+}
+
+/* --  detail dashboard site, min-height header profile_cover -- */
+.dashboard_detail {
+    min-height: calc(100vh - 673px);
+}
+
+@media (max-width: 500px) {
+    .user_avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .student_info a.btn {
+        opacity: 1 !important;
+    }
+}

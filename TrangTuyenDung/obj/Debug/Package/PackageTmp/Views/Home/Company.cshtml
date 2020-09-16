@@ -1,0 +1,122 @@
+﻿@model TrangTuyenDung.Models.Company_Info
+
+@{
+    ViewBag.Title = "Công ty " + Model.Name_Company;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var day = DateTime.Now;
+}
+
+@section Styles {
+    <link href="~/Content/company.css" rel="stylesheet" />
+}
+
+<div class="company_head d-flex">
+    <div class="container position-relative d-flex align-items-center">
+        <div class="company_image mr-md-4">
+            <img class="img-fluid" src="@Url.Content("~/App_Data/Company/Logos/" + Model.Id)" alt="EJob @Model.Name_Company" />
+            @*<img src="https://ejob.vanlanguni.edu.vn/App_Data/Company/Logos/@Model.Id" alt="EJob @Model.Name_Company" />*@
+        </div>
+
+        <div class="company_detail mt-2 mt-md-0">
+            <h5>@Model.Name_Company</h5>
+            <ul class="list-inline">
+                @if (!String.IsNullOrWhiteSpace(@Model.Province.Type) || !String.IsNullOrWhiteSpace(@Model.Province.Name)) {
+                    <li><i class="fas fa-map-marker-alt"></i> @Model.District.Type @Model.District.District_Name, @Model.Province.Type @Model.Province.Name</li>
+                }
+                @if (!String.IsNullOrWhiteSpace(@Model.Contact_Phone)) {
+                    <li><i class="fas fa-phone-alt"></i> @Model.Contact_Phone</li>
+                }
+                @if (!String.IsNullOrWhiteSpace(@Model.Contact_Email)) {
+                    <li><a class="text-dark" href="mailto: @Model.Contact_Email"><i class="fas fa-at"></i> @Model.Contact_Email</a></li>
+                }
+                @if (!String.IsNullOrWhiteSpace(@Model.website_Company)) {
+                    <li><i class="fas fa-globe-asia"></i> <a class="text-dark" href="https://@Model.website_Company" target="_blank" rel="noreferrer noopener">@Model.website_Company</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="intro_bg position-absolute" style="background-image: url(@Url.Content("~/Assets/img_Company/InformationsCompany/annie-spratt-608001-unsplash.jpg"));"></div>
+</div>
+
+<div class="container my-4">
+    <div class="row">
+        <!-- hiring lists -->
+        <div class="col-lg-8 order-2 order-lg-1">
+            <div class="card">
+                <div class="card-header font-weight-medium">
+                    <i class="fas fa-briefcase"></i> Vị trí đang tuyển
+                </div>
+                @if (Model.Recruitments != null) {
+                    var jobAvailable = Model.Recruitments.Where(x => x.Status_id == 2 && x.Is_Show == true && x.Expire_date >= day);
+                    if (jobAvailable.Count() != 0) {
+                        foreach (var item in jobAvailable) {
+                            <div class="card-body border-top position-relative">
+                                <div class="card-title font-weight-medium text-truncate">@item.title</div>
+                                <div class="small font-weight-medium">
+                                    @if (item.Salary_from == null && item.Salary_to == null) {
+                                        <i class="fas fa-hand-holding-usd"></i><span>&nbsp;Lương thỏa thuận&nbsp;</span>
+                                    }
+                                    else {
+                                        <span><i class="fas fa-hand-holding-usd"></i> @Html.DisplayFor(model => item.Salary_from) - @Html.DisplayFor(model => item.Salary_to) (đ)&nbsp</span>
+                                    }
+                                    <i class="fas fa-history"></i>&nbsp;Còn&nbsp;@(item.Expire_date.Subtract(DateTime.Now).Days)&nbsp;ngày&nbsp;
+                                    <i class="fas fa-map-marker-alt"></i> @item.District.Type @item.District.District_Name,@item.District.Province.Type @item.District.Province.Name &nbsp
+                                </div>
+                                <a class="stretched-link small text-primary" href="@Url.Action("Detail","Recruitment",new { area ="", id=item.Id })">Chi tiết tin</a>
+                            </div>
+                        }
+                    }
+                    else {
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Hiện tại không có công việc nào được tuyển.</h6>
+                            <p>Cảm ơn bạn đã quan tâm.</p>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- company info/falcuty -->
+        <div class="col-lg-4 order-1 order-lg-2 mb-3 mb-lg-0">
+            <div class="accordion" id="companyAccordion">
+                <div class="card">
+                    <div class="card-header py-2" id="introHeading">
+                        <button class="btn py-1 px-0" type="button" data-toggle="collapse" data-target="#companyIntro" aria-expanded="true" aria-controls="companyIntro">
+                            <i class="fas fa-info"></i>
+                            <span class="font-weight-medium">Thông tin công ty</span>
+                        </button>
+                    </div>
+
+                    <div id="companyIntro" class="collapse show" aria-labelledby="introHeading" data-parent="#companyAccordion">
+                        <div class="card-body">
+                            @Model.Introduce_Company
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header py-2" id="facultyHeading">
+                        <button class="btn py-1 px-0 collapsed" type="button" data-toggle="collapse" data-target="#companyFalcuty" aria-expanded="false" aria-controls="companyFalcuty">
+                            <span class="font-weight-medium">Lĩnh vực chính</span>
+                        </button>
+                    </div>
+                    <div id="companyFalcuty" class="collapse" aria-labelledby="facultyHeading" data-parent="#companyAccordion">
+                        <div class="card-body">
+                            @if (Model.Faculties_In_Companies != null) {
+                                if (Model.Faculties_In_Companies.Count() != 0) {
+                                    foreach (var item in Model.Faculties_In_Companies) {
+                                        <li><a href="#" title="@item.Faculty.Name" data-tippy-placement="top">@item.Faculty.Name</a></li>
+                                    }
+                                }
+                                if (Model.Faculties_Other != null) {
+                                    <li><a href="#" title="@Model.Faculties_Other" data-tippy-placement="top">@Model.Faculties_Other</a></li>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {}

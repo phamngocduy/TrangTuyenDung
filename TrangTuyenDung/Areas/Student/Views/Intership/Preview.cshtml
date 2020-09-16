@@ -1,0 +1,139 @@
+﻿@model TrangTuyenDung.Models.InternshipCreate
+
+@{
+    ViewBag.Title = "Bản xem trước";
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+
+    DateTime todaysDate = DateTime.Now.Date;
+}
+
+@section Styles {
+    <style type="text/css">
+        @@media print {
+            body {
+                -webkit-print-color-adjust: unset;
+            }
+        }
+    </style>
+}
+
+<div class="container my-4 d-print-none">
+    @using (Html.BeginForm("PreviewCreate", "Intership", new { area = "Student" }, FormMethod.Post)) {
+        <a title="Hủy" href="@Url.Action("Create", "Intership", new { area = "Student" })" class="btn btn-outline-secondary btn-sm px-3">Quay lại</a>
+        <button value="Save" class="btn btn-success btn-sm px-3" name="submit" type="submit">Hoàn tất</button>
+    }
+    <div class="text-danger mt-2 font-weight-medium">
+        *Sau khi bạn gửi đơn yêu cầu bạn sẽ nhận được "Mã xác nhận", ghi nhớ "Mã xác nhận" để vào HUB lấy đơn.
+        <br />
+        *Kiểm tra chính xác các trường thông tin thực tập.
+    </div>
+</div>
+
+<div class="container border border-secondary my-4 px-5">
+    <div class="row my-2">
+        <div class="col-4 mr-auto text-uppercase">
+            <div class="pl-2">Bộ giáo dục và đào tạo</div>
+            <div class="font-weight-medium">Trường đại học văn lang</div>
+
+            <div class="w-75">
+                <hr class="my-2" />
+            </div>
+            <div class="text-left">
+                Số:
+                <abbr class="font-weight-medium bg-info d-print-none px-1" title="Sau khi gửi bạn sẽ nhận được Mã xác nhận">XX</abbr>
+                <span class="text-uppercase">&nbsp;/TGT-TTPTNL-HUB</span>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div class="text-center">
+                <div class=" text-uppercase font-weight-medium">Cộng hòa xã hội chủ nghĩa việt nam</div>
+                <div>Độc lập - Tự do - Hạnh phúc</div>
+            </div>
+
+            <hr class="my-2 w-50" />
+            <div class="text-center font-italic">
+                Thành phố Hồ Chí Minh, ngày <span class="bg-info px-1">@todaysDate.Day</span> tháng <span class="bg-info px-1">@todaysDate.Month</span> năm <span class="bg-info">@todaysDate.Year</span>,
+            </div>
+        </div>
+
+        <div class="col-12 text-center my-4">
+            <h4 class="text-uppercase mb-0">thư giới thiệu</h4>
+            <span class="font-italic">Sinh viên Trường Đại học Văn Lang liên hệ thực tập</span>
+        </div>
+
+        <div class="col-auto font-weight-medium">Kính gửi:</div>
+        <div class="col font-weight-medium">
+            <div>Ban Giám đốc</div>
+            <div>Bộ phận Nhân sự</div>
+            <div class="bg-warning d-inline-block">@Model.Company_Name</div>
+        </div>
+
+        <div class="col-12 my-2 text-justify">
+            Trường Đại học Văn Lang chân thành cảm ơn Quý Cơ quan thời gian qua đã đồng hành cùng chúng tôi xây dựng và phát triển các chương trình thực tập cho sinh viên. Theo kế hoạch năm học <span class="bg-warning">@Model.School_year</span>, Đại học Văn Lang xin được giới thiệu sinh viên đến liên hệ và tham gia thực tập tại Quý Cơ quan, cụ thể như sau:
+        </div>
+
+        <div class="col-10 offset-1 my-2">
+            <div>
+                <div class="d-inline-block w-50">
+                    Sinh viên: <span class="font-weight-medium bg-warning text-capitalize px-1">@Model.Student_Name</span>
+                </div>
+                MSSV: <span class="font-weight-medium text-uppercase bg-warning px-1">@Model.MSSV</span>
+            </div>
+            <div>
+                <div class="d-inline-block w-50">
+                    Ngành học: <span class="font-weight-medium bg-warning px-1">@ViewBag.Major</span>
+                </div>
+                Bậc: <span class="font-weight-medium bg-warning px-1">@(Model.Level_Id == 0 ? "Đại học" : "Cao đẳng")</span>
+            </div>
+            <div>
+                Hình thức thực tập:
+                <span class="font-weight-medium bg-warning px-1">
+                    @if (Model.Type_Inter == 0) {
+                        <span>Thực tập Tốt nghiệp</span>
+                    }
+                    else if (Model.Semester_Inter == 1) {
+                        <span>Thực tập Nghề nghiệp</span>
+                    }
+                    else {
+                        <span>Khác</span>
+                    }
+                </span>
+            </div>
+            <div>Thời gian thực tập từ ngày: <span class="font-weight-medium bg-warning px-1">@Model.Inter_from.ToString("dd/MM/yyyy")</span>đến<span class="font-weight-medium bg-warning px-1">@Model.Inter_to.ToString("dd/MM/yyyy")</span></div>
+        </div>
+
+        <div class="col-12 my-2 text-justify">
+            Chúng tôi rất mong Quý Cơ quan tiếp nhận và hướng dẫn sinh viên hội nhập môi trường làm việc đồng thời tạo điều kiện cho sinh viên hoàn thành tốt kỳ thực tập này. Trong thời gian thực tập, sinh viên sẽ chấp hành nghiêm túc nội quy và sự phân công của Quý Cơ quan.
+        </div>
+
+        <div class="col-12 my-2 text-justify">
+            Nều cầu thêm thông tin và trao đổi cụ thể về chương trình thực tập của trường, Quý Cơ quan vui lòng liên hệ với Bộ phân Quan hệ Doanh nghiệp, thuộc Trung tâm Phát triển năng lực sinh viên theo thông tin sau:
+        </div>
+
+        <div class="col-12 my-2">
+            <div>- Email: qhdn@vanlanguni.edu.vn</div>
+            <div>- ĐT: (028) 71 099 224</div>
+        </div>
+
+        <p class="col-12 mt-2">
+            Trân trọng cảm ơn sự hỗ trợ và hợp tác của Quý Cơ quan.
+        </p>
+
+
+        <!-- Footer -->
+        <div class="col-6 small d-flex flex-column justify-content-end">
+            <div class="font-italic font-weight-medium">Nơi nhận:</div>
+            <div>- Như trên</div>
+            <div>- Lưu TTPTNLSV</div>
+        </div>
+
+        <div class="col-6 text-center">
+            <h6>Phó hiệu trưởng</h6>
+            <div style="height: 100px"></div>
+            <div>
+                ThS. Võ Văn Tuấn
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,223 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Recruitment>
+@{
+    ViewBag.Title = "Danh sách tin tuyển dụng đang chờ xác nhận";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "recruitment";
+}
+
+@section Styles {
+    <!-- datatable bootstrap4-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Danh Sách Tin Tuyển Dụng</div>
+
+@if (ViewBag.Message == "ApproveSuccess") {
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div>Tin tuyển dụng đã được <b>phê duyệt thành công</b>.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "RejectSuccess") {
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Từ chối</b> tin tuyển dụng thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tin tuyển dụng chờ xác nhận</h6>
+    </div>
+
+    <div class="card-body">
+        @if (Model.Count() <= 0) {
+            <div>Hiện tại không có tin tuyển dụng nào.</div>
+        }
+        else {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Lương</th>
+                            <th>Bắt đầu</th>
+                            <th>Kết thúc</th>
+                            <th>Tên công ty</th>
+                            <th>Xem trước</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    @if (Model.Count() > 10) {
+                        <tfoot>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Lương</th>
+                                <th>Bắt đầu</th>
+                                <th>Kết thúc</th>
+                                <th>Tên công ty</th>
+                                <th>Xem trước</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </tfoot>
+                    }
+
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.title)</td>
+                                <td>
+                                    @if (item.Salary_from != null && item.Salary_to != null) {
+                                        <p>@Html.DisplayFor(model => item.Salary_from) - @Html.DisplayFor(model => item.Salary_to)</p>
+                                    }
+                                    else if (item.Salary_from == null && item.Salary_to == null) {
+                                        <p>Thỏa Thuận</p>
+                                    }
+                                </td>
+                                <td>@item.Recruiting_dates.ToString("dd/MM/yyyy")</td>
+                                <td>@item.Expire_date.ToString("dd/MM/yyyy")</td>
+                                <td>@item.Company_Info.Name_Company</td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" role="button" href="@Url.Action("PreView", "Recruitment", new { area = "Staff", id = item.Id })" target="_blank">
+                                        Chi tiết
+                                    </a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger rejectButton" type="button" data-url="@Url.Action("Rejected", "Recruitment", new { area = "Staff", id = item.Id })" title="Từ chối" data-toggle="modal" data-target="#ReasonDialog">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+
+                                    <a class="btn btn-sm btn-success approveButton" title="Chấp thuận" href="#" data-url="@Url.Action("Approved", "Recruitment", new { id = item.Id })" data-toggle="modal" data-target="#confirmDialog" role="button">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- modal reject -->
+@using (Html.BeginForm("Rejected", "Recruitment", new { area = "Staff" }, FormMethod.Post, new { role = "form", id = "rejectForm" })) {
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="ReasonDialog" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-medium">Vui lòng chọn lý do từ chối</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form">
+                        <div class="form-row align-items-center">
+                            <div class="col-12">
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" id="option1" name="option1" value="2">
+                                    <label class="custom-control-label" for="option1">
+                                        Thông tin sai quy định
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" id="option2" name="option2" value="3">
+                                    <label class="custom-control-label" for="option2">
+                                        Lý do khác
+                                    </label>
+                                </div>
+
+                                <textarea class="form-control mt-1 d-none" id="input_option2" name="other_reason"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" name="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- modal accept -->
+<div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="confirmDialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title font-weight-medium">Xác nhận</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                Bạn có muốn phê duyệt tin tuyển dụng này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Hủy</button>
+                <a id="btnConfirmed" class="btn btn-primary btn-sm" href="#" role="button">Phê duyệt</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- datatable bootstrap4 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            initialDataTable();
+            function initialDataTable() {
+                $('#table').DataTable({
+                    "language": {
+                        "lengthMenu": "Hiển thị _MENU_ records trên mỗi trang",
+                        "zeroRecords": "Không tìm thấy",
+                        "infoEmpty": "Không có thông tin tương ứng",
+                        "infoFiltered": "(được lọc từ _MAX_ records)",
+                        "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+                        "emptyTable": "Không có tin tuyển dụng nào",
+                        "sSearch": "Tìm kiếm",
+                        "paginate": {
+                            "previous": "<i class='fas fa-caret-left'></i>",
+                            "next": "<i class='fas fa-caret-right'></i>"
+                        },
+                    },
+                    "aaSorting": [] // disabled initial sort
+                });
+            }
+
+            $('#option2').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#input_option2').removeClass('d-none');
+                } else {
+                    $('#input_option2').addClass('d-none');
+                }
+            });
+
+            $(document).on("click", ".rejectButton", function () {
+                $('#rejectForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", ".approveButton", function () {
+                $('#btnConfirmed').attr('href', $(this).data('url'));
+            });
+        });
+    </script>
+}

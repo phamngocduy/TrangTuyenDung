@@ -1,0 +1,261 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Company_Registration>
+@{
+    ViewBag.Title = "Danh sách công ty đang chờ xét duyệt!";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "company";
+}
+
+@section Styles {
+    <!-- DataTable -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Công ty chờ xét duyệt</div>
+
+<!-- alert notify -->
+@if (@ViewBag.Message == "ApproveSuccess") {
+    //swal("Thành Công!", "Công ty đã được phê duyệt!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Phê duyệt</b> Công ty thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "RejectSuccess") {
+    //swal("Thành Công!", "Công ty đã bị từ chối!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Từ chối</b> Công ty thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "LogoFail") {
+    //swal("Lỗi!", "Có lỗi xảy ra với Logo, vui lòng thử lại!", "error");
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <div><b>Lỗi: </b>Có lỗi xảy ra với Logo, vui lòng thử lại.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "ApproveFail") {
+    //swal("Lỗi!", "Phê duyệt không thành công, vui lòng làm mới trang và thử lại!", "error");
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <div><b>Lỗi: </b>Phê duyệt không thành công, vui lòng làm mới trang và thử lại. Xin cảm ơn!</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<!-- table content -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách công ty đang chờ được xét duyệt</h6>
+    </div>
+
+    <div class="card-body">
+        @if (Model.Count() <= 0) {
+            <div>Hiện tại không có đơn xét duyệt.</div>
+        }
+        else {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Công Ty</th>
+                            <th>Website</th>
+                            <th>Tỉnh/TP</th>
+                            <th>Ngày Đăng Ký</th>
+                            <th>Tài Khoản</th>
+                            <th>Lĩnh Vực Chính</th>
+                            <th>Liên hệ</th>
+                            <th>Chi Tiết</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count() > 10) {
+                        <tfoot>
+                            <tr>
+                                <th>Công Ty</th>
+                                <th>Website</th>
+                                <th>Tỉnh/TP</th>
+                                <th>Ngày Đăng Ký</th>
+                                <th>Tài Khoản</th>
+                                <th>Lĩnh Vực Chính</th>
+                                <th>Liên hệ</th>
+                                <th>Chi Tiết</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </tfoot>
+                    }
+
+                    <tbody>
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name_Company)</td>
+                                <td>@Html.DisplayFor(modelItem => item.website_Company)</td>
+                                <td>@item.Province.Name</td>
+                                <td>@item.Created_at.ToString("dd/MM/yyyy")</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>
+                                    @{
+                                        var sFac = item.Faculties.Split(',');
+                                        int[] iFac = new int[sFac.Length];
+                                        for (int i = 0; i < sFac.Length; i++) {
+                                            iFac[i] = int.Parse(sFac[i]);
+                                        }
+                                        string sValue = "";
+                                        TrangTuyenDung.Models.EJobEntities db = new TrangTuyenDung.Models.EJobEntities();
+                                        foreach (var f in iFac) {
+                                            var fac = db.Faculties.FirstOrDefault(x => x.Id == f);
+                                            sValue += fac.Name + ", ";
+                                        }
+                                        sValue = sValue.Remove(sValue.Length - 2, 2);
+                                    }
+                                    @sValue
+                                    @if (!item.Faculties_Other.IsEmpty()) {
+                                        <br />
+                                        <span>Khác: @item.Faculties_Other</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div>Tên: @Html.DisplayFor(modelItem => item.FullName)</div>
+                                    <div>SĐT: @Html.DisplayFor(modelItem => item.Contact_Phone) - Email: @Html.DisplayFor(modelItem => item.Email)</div>
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" href="@Url.Action("ViewPendingCompanyDetail", "Account", new { area = "Staff", id = item.Id })">
+                                        Chi tiết
+                                    </a>
+                                </td>
+                                <td>
+                                    <button id="rejectButton" class="btn btn-danger btn-sm" type="button" title="Từ chối" data-url="@Url.Action("Reject", "Account", new { area = "Staff", id = item.Id })" data-toggle="modal" data-target="#ReasonDialog">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+
+                                    <button id="approveButton" class="btn btn-success btn-sm" type="button" title="Duyệt" data-url="@Url.Action("Approved", "Account", new { area = "Staff", id = item.Id })" data-toggle="modal" data-target="#confirmDialog">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+
+                                    @using (Html.BeginForm("Reject", "Account", new { area = "Staff", id = item.Id }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form", id = "rejectForm" })) {
+                                        @Html.AntiForgeryToken()
+                                        <div class="modal fade" id="ReasonDialog" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title">Vui lòng chọn lý do từ chối</h6>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form class="form">
+                                                            <div class="form-row align-items-center">
+                                                                <!-- option1 -->
+                                                                <div class="col-12">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" id="option1" name="option1" value="1">
+                                                                        <label class="custom-control-label" for="option1">
+                                                                            Thông tin chưa đầy đủ
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- option2 -->
+                                                                <div class="col-12">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" id="option2" name="option2" value="2">
+                                                                        <label class="custom-control-label" for="option2">
+                                                                            Thông tin sai quy định
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- option3 -->
+                                                                <div class="col-12">
+                                                                    <div class="custom-control custom-checkbox mr-sm-2">
+                                                                        <input type="checkbox" class="custom-control-input" id="option_other" name="option_other" value="3">
+                                                                        <label class="custom-control-label" for="option_other">
+                                                                            Lý do khác
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <textarea class="form-control mt-1 d-none" id="other_reason" name="other_reason"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Hủy bỏ</button>
+                                                        <button type="submit" name="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- confirm dialog-->
+<div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="confirmDialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận phê duyệt</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div>Bạn có muốn phê duyệt Công ty này không?</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light btn-sm px-3" data-dismiss="modal">Hủy bỏ</button>
+                <a id="btnConfirmed" href="#" class="btn btn-success btn-sm px-3">Phê duyệt</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- datatable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initDatatable($('#table'));
+
+            $('#option_other').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#other_reason').removeClass("d-none");
+                } else {
+                    $('#other_reason').addClass("d-none");
+                }
+            });
+
+            $(document).on("click", "#rejectButton", function () {
+                $('#rejectForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#approveButton", function () {
+                $('#btnConfirmed').attr('href', $(this).data('url'));
+            });
+        });
+    </script>
+}

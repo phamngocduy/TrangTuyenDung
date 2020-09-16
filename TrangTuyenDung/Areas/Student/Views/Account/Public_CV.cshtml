@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Công Khai CV";
+    Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+}
+
+@section Styles {
+    <!-- Profile cover -->
+    <link href="~/Content/Student/dashboard.css" rel="stylesheet" />
+}
+
+@Html.Action("LeftMenu", "Home", new { area = "" })
+
+<div class="container py-4 dashboard_detail">
+    @if (ViewBag.Message == "PublicSuccess" || ViewBag.Message == "PrivateSuccess") {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Hệ thống đã cập nhật trạng thái CV của bạn.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    else if (ViewBag.Message == "PublicFail" || ViewBag.Message == "PrivateFail" || ViewBag.Message == "Wrong") {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Lỗi: </strong> Đã có lỗi xảy ra, bạn vui lòng làm mới và thử lại nhé.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    else if (ViewBag.Message == "UpdateSuccess") {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Hệ thống đã cập nhật thông tin CV của bạn.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header bg-light">
+            <ul class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="cv-stt-tab" data-toggle="tab" href="#cv-stt" role="tab" aria-controls="cv-stt" aria-selected="true">
+                        Trạng thái CV
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="cv-stt" role="tabpanel" aria-labelledby="cv-stt-tab">
+                    @if (ViewBag.chkCV == false) {
+                        <a class="btn btn-info btn-sm px-2" href="@Url.Action("Detail", "Account", new { area = "Student", @message = "NeedCreateCV" })" role="button">Tạo CV</a>
+                        <div class="text-success mt-2">
+                            <span class="font-weight-medium font-italic">*Tips: </span>
+                            <div>
+                                - Bạn hãy tạo CV để có thể nộp đơn ứng tuyển.
+                                <br />
+                                - Tạo thành công CV bạn có thể <b>công khai CV</b> để nhà tuyển dụng có thể dễ dàng tìm đến bạn.
+                            </div>
+                        </div>
+                    }
+                    else {
+                        if (ViewBag.CVStatus == 0) {
+                            <!-- 1st time after create CV -->
+                            <section>
+                                Trạng thái hiện tại:
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-lock"></i> Chỉ mình tôi
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button class="dropdown-item pl-2" type="button"><i class="fas fa-check small"></i>&nbsp;Chỉ mình tôi</button>
+                                        <a class="dropdown-item" href="@Url.Action("Publicing_CV", "Account", new { area = "Student", @status = 2 })" role="button">
+                                            Công khai
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <a class="btn btn-sm btn-success ml-2 px-3" href="@Url.Action("ViewPublicCV", "Account", new { area = "Student" })" target="_blank" role="button">
+                                    Xem nội dung CV&nbsp;<i class="fas fa-external-link-alt small"></i>
+                                </a>
+
+                                <div class="text-success mt-2">
+                                    Chúc mừng bạn đã tạo thành công CV, hãy bật CV ở chế độ công khai để nhà tuyển dụng có thể dễ dàng xem xét thông tin.
+                                </div>
+                            </section>
+                        }
+                        else if (ViewBag.CVStatus == 1) {
+                            <!-- private -->
+                            <section>
+                                Trạng thái hiện tại:
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-lock"></i> Chỉ mình tôi
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button class="dropdown-item pl-2" type="button"><i class="fas fa-check small"></i>&nbsp;Chỉ mình tôi</button>
+                                        <a class="dropdown-item" href="@Url.Action("Publicing_CV", "Account", new { area = "Student", @status = 2 })" role="button">
+                                            Công khai
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <a class="btn btn-sm btn-success ml-2 px-3" href="@Url.Action("ViewPublicCV", "Account", new { area = "Student" })" target="_blank" role="button">
+                                    Xem nội dung CV&nbsp;<i class="fas fa-external-link-alt small"></i>
+                                </a>
+
+                                <div class="text-success mt-2">
+                                    <span class="font-weight-medium font-italic">*Tips: </span>
+                                    Hãy kích hoạt CV để nhà tuyển dụng dễ dàng tìm kiếm, tăng khả năng đậu phỏng vấn.
+                                </div>
+                            </section>
+                        }
+                        else if (ViewBag.CVStatus == 2) {
+                            <!-- public -->
+                            <section>
+                                Trạng thái hiện tại:
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-globe-asia"></i> Công khai
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="@Url.Action("Publicing_CV", "Account", new { area = "Student", @status = 1 })" role="button">
+                                            Chỉ mình tôi
+                                        </a>
+                                        <button class="dropdown-item pl-2" type="button"><i class="fas fa-check small"></i>&nbsp;Công khai</button>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-outline-primary btn-sm ml-2 px-2" data-toggle="modal" data-target="#confirmUpdateModal">
+                                    Cập nhật CV
+                                </button>
+                                <a class="btn btn-sm btn-success ml-2 px-3" href="@Url.Action("ViewPublicCV", "Account", new { area = "Student" })" target="_blank" role="button">
+                                    Xem nội dung CV&nbsp;<i class="fas fa-external-link-alt small"></i>
+                                </a>
+
+                                <div class="text-danger mt-2">
+                                    <div class="font-weight-medium font-italic">*Lưu ý: </div>
+                                    <div>
+                                        - CV khi được công khai sẽ được hệ thống lựu lại hiện trạng ngay tại thời điểm bạn kích hoạt. Mọi thay đổi sau đó hệ thống sẽ không cập nhật lên CV.
+                                        <br />
+                                        - Nếu bạn muốn hệ thống cập nhật hiện trạng mới nhất hãy nhấn "Cập nhật CV".
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- confirm modal -->
+<div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="confirmUpdateModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmUpdateModalTitle">Xác nhận</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn cập nhật thông tin mới nhất lên "CV Công khai" không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Hủy</button>
+                <a class="btn btn-success" href="@Url.Action("UpdatePublicCV", "Account", new { area = "Student" })" role="button">Cập nhật</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+            if ('@ViewBag.Message' == "PublicSuccess") {
+                swal("Thành Công!", "CV của bạn đã được công khai!", "success");
+            }
+            else if ('@ViewBag.Message' == "PublicFail") {
+                swal("Thất Bại!", "Đã có lỗi xảy ra, vui lòng làm mới lại trang và thử lại!", "error");
+            }
+            else if ('@ViewBag.Message' == "PrivateSuccess") {
+                swal("Thành Công!", "CV của bạn đã tắt công khai!", "success");
+            } else if ('@ViewBag.Message' == "PrivateFail") {
+                swal("Thất Bại!", "Đã có lỗi xảy ra, vui lòng làm mới lại trang và thử lại!", "error");
+            } else if ('@ViewBag.Message' == "UpdateSuccess") {
+                swal("Thành Công!", "CV công khai của bạn đã được cập nhật thông tin mới nhất!", "success");
+            } else if ('@ViewBag.Message' == "Wrong") {
+                swal("Lỗi!", "Đã có lỗi xảy ra, vui lòng làm mới lại trang và thử lại!", "error");
+            }
+        </script>
+    }*@

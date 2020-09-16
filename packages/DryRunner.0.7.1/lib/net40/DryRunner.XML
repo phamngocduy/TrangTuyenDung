@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DryRunner</name>
+    </assembly>
+    <members>
+        <member name="T:DryRunner.Exceptions.BuildFailedException">
+            <summary>
+            BuildFailedException is thrown when the MSBuild build process failed.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Exceptions.BuildFailedException.BuildOutput">
+            <summary>
+            Contains all build output.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Exceptions.BuildFailedException.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a BuildFailed exception.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Exceptions.BuildFailedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Deserialization constructor.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Exceptions.OptionCannotBeNullException">
+            <summary>
+            OptionValidationException is thrown when <code>null</code> was supplied for an option value that should not be null.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionCannotBeNullException.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a new OptionCannotBeNullException.
+            </summary>
+            <param name="optionsName">Name of the options element that contained the invalid value.</param>
+            <param name="optionProperty">Name of the option value that was invalid.</param>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionCannotBeNullException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Deserialization constructor.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Exceptions.OptionCannotBeNullOrEmptyException">
+            <summary>
+            OptionValidationException is thrown when <code>null</code> or an empty string was supplied for an option value that should not be null or empty.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionCannotBeNullOrEmptyException.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a new OptionCannotBeNullOrEmptyException.
+            </summary>
+            <param name="optionsName">Name of the options element that contained the invalid value.</param>
+            <param name="optionProperty">Name of the option value that was invalid.</param>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionCannotBeNullOrEmptyException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Deserialization constructor.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Exceptions.OptionValidationException">
+            <summary>
+            OptionValidationException is thrown when an invalid option value was supplied in <see cref="T:DryRunner.Options.TestSiteDeployerOptions"/> 
+            or <see cref="T:DryRunner.Options.TestSiteServerOptions"/>.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionValidationException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructs a new OptionValidationException.
+            </summary>
+            <param name="message">A message describing in what way the option value was invalid.</param>
+            <param name="optionsName">Name of the options element that contained the invalid value.</param>
+            <param name="optionProperty">Name of the option value that was invalid.</param>
+        </member>
+        <member name="M:DryRunner.Exceptions.OptionValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Deserialization constructor.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Util.MsBuildFileLogger">
+            <summary>
+            Represents a MSBuild file logger.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.Path">
+            <summary>
+             The path to the resulting log file.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.Verbosity">
+            <summary>
+            The logging verbosity.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ShowSummary">
+            <summary>
+            True to show the error and warning summary at the end.
+            Defaults to <see langword="null" />.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ShowPerformanceSummary">
+            <summary>
+            True to show the time that’s spent in tasks, targets, and projects.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.MessageFilter">
+            <summary>
+            Control which messages are shown.
+            Defaults to <see cref="F:DryRunner.Util.MsBuildFileLoggerMessageFilter.Everything"/>.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.NoItemAndPropertyList">
+            <summary>
+            True to suppress the list of items and properties that would appear at the start of each project build if 
+            the verbosity level is set to <see cref="F:DryRunner.Util.MsBuildVerbosity.Diagnostic"/>.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ShowTimestamp">
+            <summary>
+            True to show the timestamp as a prefix to any message.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ShowCommandLine">
+            <summary>
+            True to show TaskCommandLineEvent messages.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ShowEventId">
+            <summary>
+            True to show the event ID for each started event, finished event, and message.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.ForceNoAlign">
+            <summary>
+            True to don't align the text to the size of the console buffer.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.DisableConsoleColor">
+            <summary>
+            True to disable console colors.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.EnableMultiprocessorLogging">
+            <summary>
+            True to enable the multiprocessor logging style even when running in non-multiprocessor mode.
+            Defaults to <see langword="null" />.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Util.MsBuildFileLogger.AdditionalFlags">
+            <summary>
+            Provides a way to provide additional flags that are not covered by the other options.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Util.MsBuildFileLogger.#ctor(System.String,DryRunner.Util.MsBuildVerbosity)">
+            <summary>
+            Creates a <see cref="T:DryRunner.Util.MsBuildFileLogger"/> with the given <paramref name="path"/> and <paramref name="verbosity"/>.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Util.MsBuildFileLoggerMessageFilter">
+            <summary>
+            Allows filtering the messages shown by a <see cref="T:DryRunner.Util.MsBuildFileLogger"/>.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildFileLoggerMessageFilter.Everything">
+            <summary>
+            Show all messages.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildFileLoggerMessageFilter.ErrorsOnly">
+            <summary>
+            Show only error messages.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildFileLoggerMessageFilter.WarningsOnly">
+            <summary>
+            Show only warning messages.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Util.MsBuildVerbosity">
+            <summary>
+            Verbosity used for MSBuild output.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildVerbosity.Normal">
+            <summary>
+            Normal verbosity, which displays errors, warnings, messages with high importance, some status events, and a build summary.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildVerbosity.Detailed">
+            <summary>
+            Detailed verbosity, which displays errors, warnings, messages with normal or high importance, all status events, and a build summary.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildVerbosity.Diagnostic">
+            <summary>
+            Diagnostic verbosity, which displays all errors, warnings, messages, status events, and a build summary.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildVerbosity.Minimal">
+            <summary>
+            Minimal verbosity, which displays errors, warnings, messages with high importance, and a build summary.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildVerbosity.Quiet">
+            <summary>
+            Quiet verbosity, which displays a build summary.
+            </summary>
+        </member>
+        <member name="T:DryRunner.Util.MsBuildToolsVersion">
+            <summary>
+            Represents a MSBuild tools version.
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v2_0">
+            <summary>
+            MSBuild version included in .NET Framework 2.0
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v3_5">
+            <summary>
+            MSBuild version included in .NET Framework 3.5
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v4_0">
+            <summary>
+            MSBuild version included in .NET Framework 4.0
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v12_0">
+            <summary>
+            MSBuild version included with Visual Studio 2013
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v14_0">
+            <summary>
+            MSBuild version included with Visual Studio 2015
+            </summary>
+        </member>
+        <member name="F:DryRunner.Util.MsBuildToolsVersion.v15_0">
+            <summary>
+            MSBuild version included with Visual Studio 2017
+            </summary>
+        </member>
+        <member name="M:DryRunner.Util.MsBuildToolsVersion.Custom(System.String)">
+            <summary>
+            Enables creation of a <see cref="T:DryRunner.Util.MsBuildToolsVersion"/> that is covered in the default cases.
+            </summary>
+            <param name="version">Version string (e.g. '13.5')</param>
+        </member>
+        <member name="M:DryRunner.Util.MsBuildToolsVersion.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:DryRunner.Options.TestSiteServerOptions">
+            <summary>
+            Options for customizing the way a test site is hosted (inside IISExpress)
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.Port">
+            <summary>
+            Port to use for the IIS Express instance. Defaults to 8888 for HTTP and 4433 for HTTPS.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.ApplicationPath">
+            <summary>
+            Website application path. Defaults to the server root <c>"/"</c>.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.ShowIisExpressWindow">
+            <summary>
+            True to make the IIS Express command-line window visible, otherwise false.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.EnableWindowsAuthentication">
+            <summary>
+            Enables Windows Authentication for IIS Express.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.UseHttps">
+            <summary>
+            Use HTTPS for hosting, default is <see langword="false" />.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteServerOptions.Use64BitIisExpress">
+            <summary>
+            Use a 64-bit IIS Express, default is <see langword="false" />.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Options.TestSiteServerOptions.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="T:DryRunner.Options.TestSiteDeployerOptions">
+            <summary>
+            Options for customizing the way a test site is deployed (=built and packaged with MSBuild)
+            </summary>
+        </member>
+        <member name="T:DryRunner.Options.TestSiteDeployerOptions.ResolveMsBuildExePath">
+            <summary>
+            Returns a path to an MSBuild executable dependent on the <paramref name="toolsVersion"/> and the <paramref name="use32Bit"/> flag.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.ProjectFolderName">
+            <summary>
+            Name of the directory containing the project file.
+            With a full project file path of 'C:\Solution\Project\ProjectFile.csproj' the ProjectFolderName would be 'Project'.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.ProjectFileName">
+            <summary>
+            File name of the website project you want to test, including the extension (e.g. .csproj, .vbproj).
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.SolutionDir">
+            <summary>
+            The path to the solution file.
+            This is used to set the SolutionDir property so that it can be used in MSBuild macros.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.DeployDirectory">
+            <summary>
+            The directory the web application is deployed to (defaults to "{ProjectDir}\obj\{BuildConfiguration}\Package\PackageTmp").
+            Note that, the deploy directory is not automatically cleaned up, this has to be done outside of DryRunner.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.BuildTargets">
+            <summary>
+            The build targets that are invoked in MSBuild.
+            Defaults to 'Clean' and 'Package'.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.BuildConfiguration">
+            <summary>
+            Build configuration to use.
+            Defaults to 'Test'.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.TransformationConfiguration">
+            <summary>
+            Configuration to use for the configuration file transformation (e.g. Test means that Web.Test.config is used).
+            Defaults to <see cref="P:DryRunner.Options.TestSiteDeployerOptions.BuildConfiguration"/>.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.AdditionalBuildProperties">
+            <summary>
+            Can be used to specify additional build properties that are passed to MSBuild.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.MsBuildToolsVersion">
+            <summary>
+            The MSBuild tools version that is used to build.
+            Defaults to '4.0'.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.MsBuildVerbosity">
+            <summary>
+            The verbosity used for MSBuild log output.
+            Defaults to <see cref="F:MsBuildVerbosity.Normal"/>.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.AdditionalMsBuildFileLoggers">
+            <summary>
+            Allows specifying additional <see cref="T:DryRunner.Util.MsBuildFileLogger"/>s to be used. 
+            Only allows up to 7 additional <see cref="T:DryRunner.Util.MsBuildFileLogger"/>s (since MSBuild only supports 9 and 2 are already used internally)!
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.Use64BitMsBuild">
+            <summary>
+            True to use a 64-bit version of MSBuild.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.MsBuildExePathResolver">
+            <summary>
+            Function that resolves the MSBuild exe path dependent on the <see cref="P:DryRunner.Options.TestSiteDeployerOptions.MsBuildToolsVersion"/> and <see cref="P:DryRunner.Options.TestSiteDeployerOptions.Use64BitMsBuild"/>.
+            Can be overwritten to use a non-default MSBuild exe path.
+            </summary>
+        </member>
+        <member name="P:DryRunner.Options.TestSiteDeployerOptions.ShowMsBuildWindow">
+            <summary>
+            True to make the IIS Express command-line window visible, otherwise false.
+            Defaults to false.
+            </summary>
+        </member>
+        <member name="M:DryRunner.Options.TestSiteDeployerOptions.#ctor(System.String)">
+            <summary>
+            Creates new <see cref="T:DryRunner.Options.TestSiteDeployerOptions"/>. 
+            Use this constructor when the project folder and file name are equal (e.g. 'C:\Solution\Project\Project.csproj').
+            </summary>
+        </member>
+        <member name="M:DryRunner.Options.TestSiteDeployerOptions.#ctor(System.String,System.String)">
+            <summary>
+            Creates new <see cref="T:DryRunner.Options.TestSiteDeployerOptions"/>. 
+            Use this constructor when the project folder and file name are not equal (e.g. 'C:\Solution\ProjectFolder\ProjectFile.csproj').
+            </summary>
+        </member>
+        <member name="T:DryRunner.TestSiteDeployer">
+            <summary>
+            Builds and packages the test site using MSBuild.
+            </summary>
+        </member>
+        <member name="P:DryRunner.TestSiteDeployer.TestSitePath">
+            <summary>
+            The path at which the built and packaged test site lies.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteDeployer.#ctor(DryRunner.Options.TestSiteDeployerOptions)">
+            <summary>
+            Creates a new test site deployed using options defined in <paramref name="options"/>.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteDeployer.Deploy">
+            <summary>
+            Deploys (builds and packages) the test site.
+            </summary>
+        </member>
+        <member name="T:DryRunner.TestSiteManager">
+            <summary>
+            Deploys and hosts a test site (by using <see cref="T:DryRunner.TestSiteDeployer"/> and <see cref="T:DryRunner.TestSiteServer"/>.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteManager.#ctor(DryRunner.Options.TestSiteDeployerOptions,DryRunner.Options.TestSiteServerOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DryRunner.TestSiteManager" /> class.
+            </summary>
+            <param name="deployerOptions">Options for the deployment (MsBuild deploy/publish).</param>
+            <param name="serverOptions">Options for the server (IIS Express).</param>
+        </member>
+        <member name="M:DryRunner.TestSiteManager.#ctor(System.String,DryRunner.Options.TestSiteServerOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:DryRunner.TestSiteManager" /> class.
+            </summary>
+            <param name="projectName">Name of the web project. This is assumed to be
+            both the project folder name, and also the <c>.csproj</c> name (without the .csproj extension).
+            If the project folder name and .csproj name are different, use the 
+            <see cref="M:DryRunner.TestSiteManager.#ctor(DryRunner.Options.TestSiteDeployerOptions,DryRunner.Options.TestSiteServerOptions)" /> constructor.
+            </param>
+            <param name="serverOptions">Options for the server (IIS Express).</param>
+        </member>
+        <member name="M:DryRunner.TestSiteManager.Start">
+            <summary>
+            Deploys and starts the configured test site.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteManager.Stop">
+            <summary>
+            Stops the configured test site.
+            </summary>
+        </member>
+        <member name="T:DryRunner.TestSiteServer">
+            <summary>
+            Hosts the test site in IISExpress.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteServer.#ctor(System.String,DryRunner.Options.TestSiteServerOptions)">
+            <summary>
+            Creates a new test site server that hosts the application located on the given <paramref name="physicalSitePath"/> using 
+            options defined in <paramref name="options"/>.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteServer.#ctor(DryRunner.TestSiteDeployer,DryRunner.Options.TestSiteServerOptions)">
+            <summary>
+            Creates a new test site server that hosts the application deployed by the given <paramref name="deployer"/> using 
+            options defined in <paramref name="options"/>.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteServer.Start">
+            <summary>
+            Starts the IISExpress process that hosts the test site.
+            </summary>
+        </member>
+        <member name="M:DryRunner.TestSiteServer.Stop">
+            <summary>
+            Stops the IISExpress process that hosts the test site.
+            </summary>
+        </member>
+    </members>
+</doc>

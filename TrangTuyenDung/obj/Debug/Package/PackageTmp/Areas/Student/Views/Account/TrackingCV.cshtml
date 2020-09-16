@@ -1,0 +1,556 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Apply_Recruitments>
+@{
+    ViewBag.Title = "Theo Dõi CV";
+    Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+}
+
+@section Styles {
+    <!-- Profile cover -->
+    <link href="~/Content/Student/dashboard.css" rel="stylesheet" />
+    <!-- Jobs card -->
+    <link href="~/Content/list-recruitment.css" rel="stylesheet" />
+        <!-- datatable boostrap4 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+}
+
+@Html.Action("LeftMenu", "Home", new { area = "" })
+
+<div class="container py-4 dashboard_detail">
+    <div class="card">
+        <!-- nav -->
+        <div class="card-header bg-light">
+            <ul class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link text-dark active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">
+                        Tất cả (@Model.Where(x => x.CV_Status == 3 || x.CV_Status == 4 || x.CV_Status == 6).Count())
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">
+                        Đợi duyệt
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="interview-tab" data-toggle="tab" href="#interview" role="tab" aria-controls="interview" aria-selected="true">
+                        Đợi phỏng vấn
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" id="reject-tab" data-toggle="tab" href="#reject" role="tab" aria-controls="reject" aria-selected="true">
+                        Bị từ chối
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- content -->
+        <div class="card-body px-0">
+            <div class="tab-content" id="nav-tabContent">
+                <!-- all -->
+                <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                    @if (Model.Count() <= 0) {
+                        <div class="text-center my-3">
+                            <span class="h6">Hiện tại chưa có</span>
+                        </div>
+                    }
+                    else {
+                        foreach (var result in Model.Where(x => x.CV_Status == 3 || x.CV_Status == 4 || x.CV_Status == 6)) {
+                            <div class="col-12 mb-2">
+                                <div class="media recruit_post px-2 px-md-3 pt-3 pb-2 pb-md-3">
+                                    <!-- logo -->
+                                    <div class="company_logo overflow-hidden border mr-3 d-lg-block d-none">
+                                        @if (result.Recruitment.Company_id != null) {
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/" + result.Recruitment.Company_id)" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                        else {
+                                            <img src="@Url.Content("~/Assets/img/vlu-logo-foot.png")" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                    </div>
+
+                                    <div class="media-body">
+                                        <div class="d-flex">
+                                            <!-- title/location -->
+                                            <div class="mb-2 col pl-0">
+                                                <h5 class="my-0 text-capitalize text-truncate">@result.Recruitment.title</h5>
+                                                <div class="text-truncate font-weight-medium">@result.Recruitment.Company_Info.Name_Company</div>
+                                                <div><i class="fas fa-map-marker-alt"></i> @result.Recruitment.District.Province.Name</div>
+                                            </div>
+
+                                            <div class="d-none d-md-block">
+                                                @if (result.CV_Status == 3) {
+                                                    <span class="h6 text-info">Đợi duyệt</span>
+                                                }
+                                                else if (result.CV_Status == 4) {
+                                                    <span class="h6 text-success">Đợi phỏng vấn</span>
+                                                }
+                                                else if (result.CV_Status == 6) {
+                                                    <span class="h6 text-danger">Bị từ chối</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <!-- location - job types - salary -->
+                                        <div class="row mt-1 mt-md-0">
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Địa điểm</li>
+                                                    <li class="font-weight-medium">
+                                                        @if (!String.IsNullOrEmpty(result.Recruitment.District.District_Name)) {
+                                                            <span>Quận @result.Recruitment.District.District_Name,&nbsp</span>
+                                                        }
+                                                        @result.Recruitment.District.Province.Name
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            @if (result.Recruitment.Is_Full_Time != false
+                                                || result.Recruitment.Is_Part_Time != false
+                                                || result.Recruitment.Is_Intership != false) {
+                                                <div class="col-md-3">
+                                                    <ul class="list-inline mb-0">
+                                                        <li class="small text-secondary font-weight-medium">Loại công việc</li>
+                                                        @if (result.Recruitment.Is_Full_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-info">Full-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Part_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-dark">Part-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Intership == true) {
+                                                            <li class="font-weight-medium text-white badge badge-success">Thực tập</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Lương (VNĐ)</li>
+                                                    @if (result.Recruitment.Salary_from == null && result.Recruitment.Salary_to == null) {
+                                                        <li class="font-weight-medium">Lương Thỏa Thuận</li>
+                                                    }
+                                                    else {
+                                                        var localCurrency = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                                                        <li class="font-weight-medium">
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_from)
+                                                            &nbsp;-&nbsp;
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_to)
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="col d-flex align-items-center justify-content-between justify-content-md-end mt-2 mt-md-0">
+                                                <div class="d-block d-md-none">
+                                                    @if (result.CV_Status == 3) {
+                                                        <span class="h6 text-info">Đợi duyệt</span>
+                                                    }
+                                                    else if (result.CV_Status == 4) {
+                                                        <span class="h6 text-success">Đợi phỏng vấn</span>
+                                                    }
+                                                    else if (result.CV_Status == 6) {
+                                                        <span class="h6 text-danger">Bị từ chối</span>
+                                                    }
+                                                </div>
+                                                <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = result.Recruitment_ID })" class="btn btn-sm btn-outline-primary" role="button">
+                                                    Xem chi tiết
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- pending -->
+                <div class="tab-pane fade show" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                    @if (Model.Where(x => x.CV_Status == 3).Count() <= 0) {
+                        <div class="text-center my-3">
+                            <span class="h6">Hiện tại chưa có</span>
+                        </div>
+                    }
+                    else {
+                        foreach (var result in Model.Where(x => x.CV_Status == 3)) {
+                            <div class="col-12 mb-2">
+                                <div class="media recruit_post px-2 px-md-3 pt-3 pb-2 pb-md-3">
+                                    <!-- logo -->
+                                    <div class="company_logo overflow-hidden border mr-3 d-lg-block d-none">
+                                        @if (result.Recruitment.Company_id != null) {
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/" + result.Recruitment.Company_id)" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                        else {
+                                            <img src="@Url.Content("~/Assets/img/vlu-logo-foot.png")" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                    </div>
+
+                                    <div class="media-body">
+                                        <div class="d-flex">
+                                            <!-- title/location -->
+                                            <div class="mb-2 col pl-0">
+                                                <h5 class="my-0 text-capitalize text-truncate">@result.Recruitment.title</h5>
+                                                <div class="text-truncate font-weight-medium">@result.Recruitment.Company_Info.Name_Company</div>
+                                                <div><i class="fas fa-map-marker-alt"></i> @result.Recruitment.District.Province.Name</div>
+                                            </div>
+
+                                            <div class="d-none d-md-block">
+                                                <span class="h6 text-info">Đợi duyệt</span>
+                                            </div>
+                                        </div>
+                                        <!-- location - job types - salary -->
+                                        <div class="row mt-1 mt-md-0">
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Địa điểm</li>
+                                                    <li class="font-weight-medium">
+                                                        @if (!String.IsNullOrEmpty(result.Recruitment.District.District_Name)) {
+                                                            <span>Quận @result.Recruitment.District.District_Name,&nbsp</span>
+                                                        }
+                                                        @result.Recruitment.District.Province.Name
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            @if (result.Recruitment.Is_Full_Time != false
+                                                || result.Recruitment.Is_Part_Time != false
+                                                || result.Recruitment.Is_Intership != false) {
+                                                <div class="col-md-3">
+                                                    <ul class="list-inline mb-0">
+                                                        <li class="small text-secondary font-weight-medium">Loại công việc</li>
+                                                        @if (result.Recruitment.Is_Full_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-info">Full-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Part_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-dark">Part-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Intership == true) {
+                                                            <li class="font-weight-medium text-white badge badge-success">Thực tập</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Lương (VNĐ)</li>
+                                                    @if (result.Recruitment.Salary_from == null && result.Recruitment.Salary_to == null) {
+                                                        <li class="font-weight-medium">Lương Thỏa Thuận</li>
+                                                    }
+                                                    else {
+                                                        var localCurrency = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                                                        <li class="font-weight-medium">
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_from)
+                                                            &nbsp;-&nbsp;
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_to)
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="col d-flex align-items-center justify-content-between justify-content-md-end mt-2 mt-md-0">
+                                                <div class="d-block d-md-none">
+                                                    <span class="h6 text-info">Đợi duyệt</span>
+                                                </div>
+
+                                                <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = result.Recruitment_ID })" class="btn btn-sm btn-outline-primary" role="button">
+                                                    Xem chi tiết
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- interview -->
+                <div class="tab-pane fade show" id="interview" role="tabpanel" aria-labelledby="interview-tab">
+                    @if (Model.Where(x => x.CV_Status == 4).Count() <= 0) {
+                        <div class="text-center my-3">
+                            <span class="h6">Hiện tại chưa có</span>
+                        </div>
+                    }
+                    else {
+                        foreach (var result in Model.Where(x => x.CV_Status == 4)) {
+                            <div class="col-12 mb-2">
+                                <div class="media recruit_post px-2 px-md-3 pt-3 pb-2 pb-md-3">
+                                    <!-- logo -->
+                                    <div class="company_logo overflow-hidden border mr-3 d-lg-block d-none">
+                                        @if (result.Recruitment.Company_id != null) {
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/" + result.Recruitment.Company_id)" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                        else {
+                                            <img src="@Url.Content("~/Assets/img/vlu-logo-foot.png")" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                    </div>
+
+                                    <div class="media-body">
+                                        <div class="d-flex">
+                                            <!-- title/location -->
+                                            <div class="mb-2 col pl-0">
+                                                <h5 class="my-0 text-capitalize text-truncate">@result.Recruitment.title</h5>
+                                                <div class="text-truncate font-weight-medium">@result.Recruitment.Company_Info.Name_Company</div>
+                                                <div><i class="fas fa-map-marker-alt"></i> @result.Recruitment.District.Province.Name</div>
+                                            </div>
+
+                                            <div class="d-none d-md-block">
+                                                @if (result.Student_Confirm == null) {
+                                                    <span class="h6 text-primary">Chưa xác nhận</span>
+                                                }
+                                                else if (result.Student_Confirm == true) {
+                                                    <span class="h6 text-success">Đồng ý phỏng vấn</span>
+                                                }
+                                                else if (result.Student_Confirm == false) {
+                                                    <span class="h6 text-danger">Từ chối phỏng vấn</span>
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                        <!-- location - job types - salary -->
+                                        <div class="row mt-1 mt-md-0">
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Địa điểm</li>
+                                                    <li class="font-weight-medium">
+                                                        @if (!String.IsNullOrEmpty(result.Recruitment.District.District_Name)) {
+                                                            <span>Quận @result.Recruitment.District.District_Name,&nbsp</span>
+                                                        }
+                                                        @result.Recruitment.District.Province.Name
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            @if (result.Recruitment.Is_Full_Time != false
+                                                || result.Recruitment.Is_Part_Time != false
+                                                || result.Recruitment.Is_Intership != false) {
+                                                <div class="col-md-3">
+                                                    <ul class="list-inline mb-0">
+                                                        <li class="small text-secondary font-weight-medium">Loại công việc</li>
+                                                        @if (result.Recruitment.Is_Full_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-info">Full-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Part_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-dark">Part-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Intership == true) {
+                                                            <li class="font-weight-medium text-white badge badge-success">Thực tập</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Lương (VNĐ)</li>
+                                                    @if (result.Recruitment.Salary_from == null && result.Recruitment.Salary_to == null) {
+                                                        <li class="font-weight-medium">Lương Thỏa Thuận</li>
+                                                    }
+                                                    else {
+                                                        var localCurrency = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                                                        <li class="font-weight-medium">
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_from)
+                                                            &nbsp;-&nbsp;
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_to)
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="col d-flex align-items-center justify-content-between justify-content-md-end mt-2 mt-md-0">
+                                                <div class="d-block d-md-none">                                                 
+                                                </div>
+                                                @if (result.Student_Confirm == null) {
+                                                    <a href="@Url.Action("Accept", "Account", new { area = "Student", id = result.Recruitment_ID })" role="button" class="btn btn-success">Đồng ý</a>
+
+                                                    <button id="rejectButton" type="button" data-url="@Url.Action("Reject", "Account", new { area = "Student", id = result.Recruitment_ID })" class="btn btn-danger" data-toggle="modal" data-target="#rejectDialog">
+                                                        Từ chối
+                                                    </button>
+                                                }
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- rejected -->
+                <div class="tab-pane fade show" id="reject" role="tabpanel" aria-labelledby="reject-tab">
+                    @if (Model.Where(x => x.CV_Status == 6).Count() <= 0) {
+                        <div class="text-center my-3">
+                            <span class="h6">Hiện tại chưa có</span>
+                        </div>
+                    }
+                    else {
+                        foreach (var result in Model.Where(x => x.CV_Status == 6)) {
+                            <div class="col-12 mb-2">
+                                <div class="media recruit_post px-2 px-md-3 pt-3 pb-2 pb-md-3">
+                                    <!-- logo -->
+                                    <div class="company_logo overflow-hidden border mr-3 d-lg-block d-none">
+                                        @if (result.Recruitment.Company_id != null) {
+                                            <img src="@Url.Content("~/App_Data/Company/Logos/" + result.Recruitment.Company_id)" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                        else {
+                                            <img src="@Url.Content("~/Assets/img/vlu-logo-foot.png")" alt="EJob @result.Recruitment.Company_Info.Name_Company" />
+                                        }
+                                    </div>
+
+                                    <div class="media-body">
+                                        <div class="d-flex">
+                                            <!-- title/location -->
+                                            <div class="mb-2 col pl-0">
+                                                <h5 class="my-0 text-capitalize text-truncate">@result.Recruitment.title</h5>
+                                                <div class="text-truncate font-weight-medium">@result.Recruitment.Company_Info.Name_Company</div>
+                                                <div><i class="fas fa-map-marker-alt"></i> @result.Recruitment.District.Province.Name</div>
+                                            </div>
+
+                                            <div class="d-none d-md-block">
+                                                <span class="h6 text-danger">Bị từ chối</span>
+                                            </div>
+                                        </div>
+                                        <!-- location - job types - salary -->
+                                        <div class="row mt-1 mt-md-0">
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Địa điểm</li>
+                                                    <li class="font-weight-medium">
+                                                        @if (!String.IsNullOrEmpty(result.Recruitment.District.District_Name)) {
+                                                            <span>Quận @result.Recruitment.District.District_Name,&nbsp</span>
+                                                        }
+                                                        @result.Recruitment.District.Province.Name
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            @if (result.Recruitment.Is_Full_Time != false
+                                                || result.Recruitment.Is_Part_Time != false
+                                                || result.Recruitment.Is_Intership != false) {
+                                                <div class="col-md-3">
+                                                    <ul class="list-inline mb-0">
+                                                        <li class="small text-secondary font-weight-medium">Loại công việc</li>
+                                                        @if (result.Recruitment.Is_Full_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-info">Full-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Part_Time == true) {
+                                                            <li class="font-weight-medium text-white badge badge-dark">Part-time</li>
+                                                        }
+                                                        @if (result.Recruitment.Is_Intership == true) {
+                                                            <li class="font-weight-medium text-white badge badge-success">Thực tập</li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="small text-secondary font-weight-medium">Lương (VNĐ)</li>
+                                                    @if (result.Recruitment.Salary_from == null && result.Recruitment.Salary_to == null) {
+                                                        <li class="font-weight-medium">Lương Thỏa Thuận</li>
+                                                    }
+                                                    else {
+                                                        var localCurrency = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+                                                        <li class="font-weight-medium">
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_from)
+                                                            &nbsp;-&nbsp;
+                                                            @String.Format(localCurrency, "{0:N0}", result.Recruitment.Salary_to)
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="col d-flex align-items-center justify-content-between justify-content-md-end mt-2 mt-md-0">
+                                                <div class="d-block d-md-none">
+                                                    <span class="h6 text-danger">Bị từ chối</span>
+                                                </div>
+
+                                                <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = result.Recruitment_ID })" class="btn btn-sm btn-outline-primary" role="button">
+                                                    Xem chi tiết
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject modal -->
+<div class="modal fade" id="rejectDialog" role="dialog">
+    <div class="modal-dialog">
+        <form class="form" id="rejectForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-medium">Vui lòng chọn lý do từ chối</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-2 custom-control custom-checkbox">
+                        <input class="custom-control-input" id="option1" name="option1" type="checkbox" value="1" />
+                        <label class="custom-control-label" for="option1">Đã tìm được công Việc</label>
+                    </div>
+
+                    <div class="form-group mb-1 custom-control custom-checkbox">
+                        <input class="custom-control-input" id="option_other" name="option_other" type="checkbox" value="3" />
+                        <label class="custom-control-label" for="option_other">Khác</label>
+
+                        <div id="showReason" class="inputGroup" style="display:none;">
+                            <textarea id="other_reason" name="other_reason" style="width:350px" rows="3"  placeholder="Nhập lý do từ chối..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Quay lại</button>
+                    <button type="submit" name="submit" class="btn btn-danger">Từ Chối</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+<!-- dataTable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+<!-- tinyMCE -->
+<script src="~/Scripts/Vendor/tinymce/tinymce.min.js"></script>
+
+<!-- common func -->
+<script src="~/Scripts/common.js"></script>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+       
+
+            const reasonCheckbox = $('#option_other');
+            const reasonInp = $('#showReason');
+
+            // show option rejected candidate
+            reasonCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    reasonInp.show();
+                } else {
+                    reasonInp.hide();
+                }
+            });
+
+
+            $(document).on("click", "#rejectButton", function () {
+                $('#rejectForm').attr('action', $(this).data('url'));
+            });
+        });
+</script>
+}

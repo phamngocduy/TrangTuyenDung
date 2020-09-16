@@ -1,0 +1,603 @@
+﻿@model TrangTuyenDung.Areas.Student.Models.Personal_infoViewModel
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html lang="en" class="crt crt-side-box-on crt-nav-on crt-nav-type2 crt-main-nav-on crt-sidebar-on crt-layers-1">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Assets/img/favicon.ico">
+    <title>@Model.Student_Name</title>
+    <meta name="description" content="">
+
+    @*<link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="shortcut icon" href="favicon.ico">*@
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- Icon Fonts -->
+    <link href="~/Content/CSS_Cv/fonts/iconmoon/style.css" rel="stylesheet" />
+
+
+    <!-- Styles -->
+    <link href="~/Content/CSS_Cv/css/style.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_Cv/css/plugins.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_Company/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+    <!--Customize-->
+    <link href="~/Content/CSS_Cv/CV_Custom.css" rel="stylesheet" />
+
+     <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+
+   
+
+    <!-- Modernizer -->
+
+    <script src="~/Scripts/JS_CV/vendor/modernizr-3.3.1.min.js"></script>
+
+
+    <!-- Google Analytics -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-92973565-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</head>
+
+<body class="">
+    <div class="crt-wrapper">
+        <header id="crt-header">
+            <div class="crt-head-inner crt-container">
+                <div class="crt-container-sm">
+
+                </div><!-- .crt-head-inner -->
+            </div>
+            <nav id="crt-nav-sm" class="crt-nav hidden-lg hidden-md">
+                <ul class="clear-list">
+                    <li>
+                        <a href="#about" data-tooltip="Trang chủ"><img class="avatar avatar-42" src="@Url.Content("~/App_Data/Student/Logos/" + Model.Account_Id + "?r=" + ViewBag.Random)" alt="Ảnh đại diện" onError="this.src='@Url.Content("~/App_Data/Student/Logos/Anonymous_User")';"></a>
+                    </li>
+                    <li>
+                        <a href="#skills" data-tooltip="Kỹ năng cá nhân"><span class="crt-icon crt-icon-graduation-cap"></span></a>
+                    </li>
+
+
+                    <li>
+                        <a href="#experience" data-tooltip="Kinh nghiệm công việc"><span class="crt-icon crt-icon-experience"></span></a>
+                    </li>
+                    <li>
+                        <a href="#project" data-tooltip="Dự án tiêu biểu"><span class="crt-icon crt-icon-tasks"></span></a>
+                    </li>
+                    <li>
+                        <a href="#certificate" data-tooltip="Chứng chỉ cá nhân"><span class="crt-icon crt-icon-certificate"></span></a>
+                    </li>
+                </ul>
+            </nav><!-- #crt-nav-sm -->
+        </header><!-- #crt-header -->
+
+        <div id="crt-container" class="crt-container">
+            <div id="crt-side-box-wrap" class="crt-sticky">
+                <div id="crt-side-box">
+
+                    <div class="crt-side-box-item">
+
+                        <div style="background-color:#b8e4e8" class="crt-card bg-info text-center">
+                            <div class="crt-card-avatar">
+                                <img class="avatar avatar-195" src="@Url.Content("~/App_Data/Student/Logos/" +Model.Account_Id )" width="195" height="195" alt="Ảnh đại diện" onError="this.src='@Url.Content("~/App_Data/Student/Logos/Anonymous_User")';">
+
+                            </div>
+                            <div class="crt-card-info">
+                                <h2 class="text-upper">@Model.Student_Name</h2>
+
+                                <p class="text-muted" style="color:white !important;font-weight:bold">@Model.Faculty.Name</p>
+
+                            </div>
+                        </div>
+                        <div class="crt-side-box-btn">
+                            @*<a class="btn btn-default btn-lg btn-block btn-thin btn-upper" href="#">Logo Trường</a>*@
+                            <img src="~/Assets/img/vlu-logo-blue.png" style="width:90%" />
+                        </div>
+                    </div>
+                    <!-- Vị trị nút xác nhận -->
+                 
+
+                    <!-- .crt-side-box-item -->
+
+                </div>
+
+                <!-- #crt-side-box -->
+            </div><!-- #crt-side-box-wrap -->
+            <!-- #crt-side-box-wrap -->
+            <div id="crt-nav-wrap" class="hidden-sm hidden-xs">
+                <div id="crt-nav-inner">
+                    <div class="crt-nav-cont">
+                        <div id="crt-nav-scroll">
+                            <nav id="crt-nav" class="crt-nav">
+                                <ul class="clear-list">
+                                    <li>
+                                        <a href="#about" data-tooltip="Trang chủ"><img class="avatar avatar-42" src="@Url.Content("~/App_Data/Student/Logos/" +Model.Account_Id )" alt="Ảnh đại diện" onError="this.src='@Url.Content("~/App_Data/Student/Logos/Anonymous_User")';"></a>
+                                    </li>
+                                    <li>
+                                        <a href="#skills" data-tooltip="Kỹ năng cá nhân"><span class="crt-icon crt-icon-graduation-cap"></span></a>
+                                    </li>
+
+
+                                    <li>
+                                        <a href="#experience" data-tooltip="Kinh nghiệm công việc"><span class="crt-icon crt-icon-experience"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#project" data-tooltip="Dự án tiêu biểu"><span class="crt-icon crt-icon-tasks"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#certificate" data-tooltip="Chứng chỉ cá nhân"><span class="crt-icon crt-icon-certificate"></span></a>
+                                    </li>
+
+
+
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <div id="crt-nav-tools" class="hidden">
+                            <span class="crt-icon crt-icon-dots-three-horizontal"></span>
+
+                            <button id="crt-nav-arrow" class="clear-btn">
+                                <span class="crt-icon crt-icon-chevron-thin-down"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="crt-nav-btm"></div>
+                </div>
+            </div><!-- .crt-nav-wrap -->
+
+            <div class="crt-container-sm">
+                <div id="about" class="crt-paper-layers crt-animate">
+                    <div class="crt-paper clearfix">
+                        <div class="crt-paper-cont paper-padd clear-mrg">
+
+                            <section class="section brd-btm padd-box">
+                                <div class="row">
+                                    <div class="col-sm-12" style="margin-bottom: 2rem">
+                                        <h2 class="title-lg text-upper">Giới thiệu bản thân</h2>
+
+                                        <div class="text-box" style="font-family: 'Roboto',sans-serif;">
+                                            @Html.Raw(Model.About_Student)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <h2 class="title-lg text-upper">Mục tiêu nghề nghiệp </h2>
+
+                                        <div class="text-box" style="font-family:'Roboto',sans-serif;">
+                                            @Html.Raw(Model.Personal_Goal)
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </section>
+                            <!-- .section -->
+
+                            <section class="section padd-box">
+                                <div class="row">
+                                    <div class="col-sm-8 clear-mrg">
+                                        <h2 class="title-thin text-muted">Thông tin cá nhân</h2>
+
+                                        <dl class="dl-horizontal clear-mrg" style="font-family: 'Roboto',sans-serif;">
+                                            <dt class="text-upper">Họ và Tên</dt>
+                                            <dd>@Model.Student_Name</dd>
+
+                                            <dt class="text-upper">Ngày sinh</dt>
+                                            <dd>@Model.Student_Birthday.Value.ToString("dd/MM/yyyy")</dd>
+
+                                            <dt class="text-upper">Địa chỉ</dt>
+                                            <dd>
+                                                @Model.Student_Address
+                                            </dd>
+
+                                            <dt class="text-upper">e-mail</dt>
+                                            <dd><a href="mailto: @Model.AspNetUser.Email">@Model.AspNetUser.Email</a></dd>
+
+                                            <dt class="text-upper">Số điện thoại</dt>
+                                            <dd> @Model.Student_PhoneNumber</dd>
+
+
+                                        </dl>
+                                    </div>
+                                    <!-- .col-sm-6 -->
+
+                                    <div id="skills" class="col-sm-4 clear-mrg">
+                                        <h2 class="title-thin text-muted">Kỹ năng</h2>
+                                        @foreach (var item in Model.Student_Skills)
+                                        {
+                                            if (!string.IsNullOrEmpty(item.Name))
+                                            {
+                                                <p style="font-family: 'Roboto',sans-serif;">@item.Name</p>
+                                                var rate = item.Rate + "%";
+                                                <div class="progress">
+
+                                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:@item.Rate% ;background-color: #b8e4e8;color:black">
+                                                        @rate
+                                                    </div>
+                                                </div>
+                                            }
+
+
+                                        }
+
+                                    </div>
+                                    <!-- .col-sm-6 -->
+                                </div>
+                                <!-- .row -->
+                            </section>
+                            <!-- .section -->
+
+                        </div>
+                        <!-- .crt-paper-cont -->
+                    </div>
+                    <!-- .crt-paper -->
+                </div>
+                <!-- .crt-paper-layers -->
+                <!-- Begin Kinh nghiệm công việc -->
+                <div id="experience" class="crt-paper-layers crt-animate">
+                    <div class="crt-paper clearfix">
+                        <div class="crt-paper-cont paper-padd clear-mrg">
+
+                            <section class="section padd-box">
+                                <h2 class="title-lg text-upper">Kinh nghiệm</h2>
+                                <div class="education">
+                                    @foreach (var item in Model.Student_Work_Experiences)
+                                    {
+                                        if (!string.IsNullOrEmpty(item.Job_Position) || !string.IsNullOrEmpty(item.Company_Name))
+                                        {
+                                            <div class="education-box">
+                                                <time class="education-date">
+                                                    <span><strong>@item.Date_Start - @item.Date_End</strong> </span>
+                                                </time>
+                                                <h3 style="font-family: 'Roboto',sans-serif;">@item.Company_Name</h3>
+                                                <span style="font-family: 'Roboto',sans-serif;">@item.Job_Position</span>
+
+                                                <p style="font-family: 'Roboto',sans-serif;">
+                                                    @Html.Raw(item.Description)
+                                                </p>
+                                            </div>
+                                        }
+
+                                        <!-- .education-box -->
+                                    }
+
+
+
+                                </div>
+                                <!-- .education -->
+                            </section>
+                            <!-- .section -->
+
+                        </div>
+                        <!-- .crt-paper-cont -->
+                    </div>
+                    <!-- .crt-paper -->
+                </div>
+                <!-- End Kinh nghiệm công việc -->
+
+                <div id="project" class="crt-paper-layers crt-animate">
+                    <div class="crt-paper clearfix">
+                        <div class="crt-paper-cont paper-padd clear-mrg">
+
+                            <section class="section padd-box">
+                                <h2 class="title-lg text-upper">Thành tựu - Dự án tiêu biểu</h2>
+                                <div class="education">
+                                    @foreach (var item in Model.Student_Projects)
+                                    {
+                                        if (!string.IsNullOrWhiteSpace(item.Name) && !string.IsNullOrWhiteSpace(item.Description) && !string.IsNullOrWhiteSpace(item.Date_Start) && !string.IsNullOrWhiteSpace(item.Date_End))
+                                        {
+                                            <div class="education-box">
+                                                <time class="education-date">
+                                                    <span><strong>@item.Date_Start - @item.Date_End</strong> </span>
+                                                </time>
+                                                <h3 style="font-family: 'Roboto',sans-serif;">@item.Name</h3>
+
+                                                @Html.Raw(item.Description)
+                                            </div>
+                                        }
+
+
+
+                                        <!-- .education-box -->
+                                    }
+
+
+
+                                </div>
+                                <!-- .education -->
+                            </section>
+                            <!-- .section -->
+
+                        </div>
+                        <!-- .crt-paper-cont -->
+                    </div>
+                    <!-- .crt-paper -->
+                </div>
+                <!-- .crt-paper-layers -->
+                <!-- .crt-paper-layers -->
+
+                <div id="certificate" class="crt-paper-layers crt-animate">
+                    <div class="crt-paper clearfix">
+                        <div class="crt-paper-cont paper-padd clear-mrg">
+
+                            <section class="section padd-box">
+                                <h2 class="title-lg text-upper">Bằng Cấp - Chứng chỉ</h2>
+
+                                <div class="padd-box-sm clear-mrg">
+                                    <div class="ref-box brd-btm hreview" style="font-family: 'Roboto',sans-serif;">
+
+                                        @foreach (var item in Model.Student_Certificates)
+                                        {
+                                            if (!string.IsNullOrEmpty(item.Name))
+                                            {
+                                                <div class="ref-info">
+                                                    <div class="ref-author">
+                                                        <strong>@item.Name</strong>
+                                                        <span>@item.Date_Get</span>
+                                                    </div>
+
+                                                    <blockquote class="ref-cont clear-mrg">
+                                                        @Html.Raw(item.Description)
+                                                    </blockquote>
+                                                </div>
+                                            }
+
+
+                                        }
+
+                                    </div><!-- .ref-box -->
+
+
+                                </div><!-- .padd-box-sm -->
+                            </section>
+                            <!-- .section -->
+
+
+
+                        </div>
+                        <!-- .crt-paper-cont -->
+                    </div>
+                    <!-- .crt-paper -->
+                </div>
+                <!-- .crt-paper-layers -->
+                <!-- .crt-paper-layers -->
+            </div>
+            <!-- .crt-container-sm -->
+        </div>
+        <!-- .crt-container -->
+
+
+        <footer id="crt-footer" class="crt-container-lg">
+            <div class="crt-container">
+                <div class="crt-container-sm clear-mrg text-center">
+                    <p></p>
+                </div>
+            </div>
+            <!-- .crt-container -->
+        </footer>
+        <!-- #crt-footer -->
+
+        <svg id="crt-bg-shape-1" class="hidden-sm hidden-xs" height="519" width="758">
+            <polygon class="pol" points="0,455,693,352,173,0,92,0,0,71" />
+        </svg>
+
+        <svg id="crt-bg-shape-2" class="hidden-sm hidden-xs" height="536" width="633">
+            <polygon points="0,0,633,0,633,536" />
+        </svg>
+    </div>
+    <!-- .crt-wrapper -->
+    <!--Modal Here-->
+    <!-- Interview Input Dialog -->
+    <div class="modal fade" id="approveDialog" role="dialog" style="margin-top:12%">
+        <div class="modal-dialog">
+            <form class="form" id="approveForm" method="post" action="#">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Vui lòng chọn thời gian phỏng vấn</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Thời gian phỏng vấn:</label>
+                            <input class="form-control" id="interviewDate" name="interviewDate" type="text" style="border: 0.5px solid darkcyan;" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa điểm phỏng vấn:</label>
+                            <input class="form-control" id="interviewAddress" name="interviewAddress" type="text" style="border: 0.5px solid darkcyan;" required/>
+                        </div>
+                        <div class="form-group">
+                            <input id="approveNote" name="approveNote" type="checkbox" onclick="javascript: valueChecked(this);" />
+                            <label for="approveNote">Thêm ghi chú</label>
+                            <div id="showNote" class="form-group" style="display:none;">
+                                <textarea class="form-control" id="approveNoted" name="approveNoted" rows="3" placeholder="Nhập một vài ghi chú..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Để Sau</button>
+                        <button type="submit" name="submit" class="btn btn-success">Xác Nhận</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-------------->
+    <!-- Reject Confirm Dialog -->
+    <div class="modal fade" id="rejectDialog" role="dialog" style="margin-top:12%">
+        <div class="modal-dialog">
+            <form class="form" id="rejectForm" method="post">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Vui lòng chọn lý do từ chối</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input id="option1" name="option1" type="checkbox" value="1" />
+                            <label class="lblReject" for="option1">Chưa đạt yêu cầu cho công việc</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="option2" name="option2" type="checkbox" value="2" />
+                            <label class="lblReject" for="option2">Đã tuyển đủ người</label>
+                        </div>
+                        <div class="form-group">
+                            <input id="option_other" name="option_other" type="checkbox" onclick="javascript: valueChecked(this);" value="3" />
+                            <label class="lblReject" for="option_other">Khác</label>
+                            <div id="showReason" class="inputGroup" style="display:none;">
+                                <textarea class="form-control" id="other_reason" name="other_reason" rows="3" placeholder="Nhập lý do từ chối..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Quay lại</button>
+                        <button type="submit" name="submit" class="btn btn-danger">Từ Chối</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Hire Public CV Dialog -->
+    <div class="modal fade" id="hireDialog" role="dialog" style="margin-top:12%">
+        <div class="modal-dialog">
+            <form class="form" id="hireForm" method="post" action="#">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Xác Nhận Tuyển</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="text-danger"><i>Lưu ý: Chức năng đang trong giai đoạn phát triển!!!</i></label>
+                        <div class="form-group">
+                            <label>Thời gian phỏng vấn:</label>
+                            <input class="form-control" id="interviewDate" name="interviewDate" type="text" style="border: 0.5px solid darkcyan;" />
+                        </div>
+                        <div class="form-group">
+                            <input id="approveNote" name="approveNote" type="checkbox" onclick="javascript: valueChecked(this);" />
+                            <label for="approveNote">Thêm ghi chú</label>
+                            <div id="showNote" class="form-group" style="display:none;">
+                                <textarea class="form-control" id="approveNoted" name="approveNoted" rows="3" placeholder="Nhập một vài ghi chú..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Để Sau</button>
+                        <button type="submit" name="submit" class="btn btn-success">Tuyển Ngay</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @if (User.IsInRole("Student")) {
+        <div class="confirm" style="text-align: center;margin-top:2rem">
+            <a href="@Url.Action("Dashboard","Account",new { area = "Student"})"><button class="btn btn-success btn-md" style="margin-bottom:10px">Về trang chính</button></a>
+            <a href="@Url.Action("Detail","Account", new { area = "Student"})"><button class="btn btn-danger btn-md" style="margin-bottom:10px">Cập nhật hồ sơ</button></a>
+        </div>
+    }
+    else if (User.IsInRole("Company")) {
+        //Check status of CV
+        if (ViewBag.CV_Status == 3) //Pending
+        {
+            <div class="confirm" style="text-align: center;margin-top:.7rem">
+                <a id="approveButton" data-toggle="modal" data-target="#approveDialog" data-url="@Url.Action("Approve","Candidate",new { area = "Company", applyID = ViewBag.Apply_Id})" data-address="@ViewBag.Address"><button class="btn btn-success btn-md">Xác nhận</button></a>
+                <button id="rejectButton" type="button" data-url="@Url.Action("Reject", "Candidate", new { area = "Company", id = ViewBag.Apply_Id})" data-toggle="modal" data-target="#rejectDialog" class="btn btn-danger btn-md">Từ chối</button>
+                <a href="@Url.Action("Pending","Candidate",new { area = "Company"})"><button class="btn btn-link btn-md">Trở Về Danh Sách Đợi Duyệt</button></a>
+            </div>
+
+        }
+        else if (ViewBag.CV_Status == 4) //Interviewing
+        {
+            <div class="confirm" style="text-align: center;margin-top:2rem">
+                <a href="@Url.Action("Interviewing","Candidate",new { area = "Company"})"><button class="btn btn-success btn-md">Trở Về Danh Sách Đợi Phỏng Vấn</button></a>
+            </div>
+        }
+        else if (ViewBag.CV_Status == 2) //Public
+        {
+            <div class="confirm" style="text-align: center;margin-top:2rem">
+                @*<a id="hireButton" data-url="@Url.Action("HireStudent","Candidate",new { area = "Company", id = ViewBag.PublicId})" data-toggle="modal" data-target="#hireDialog"><button class="btn btn-info btn-md">Tuyển Sinh Viên</button></a>*@
+                <a href="@Url.Action("PublicCVs","Candidate",new { area = "Company"})"><button class="btn btn-link btn-md">Trở Về Danh Sách Công Khai</button></a>
+            </div>
+        }
+
+    }
+    <!-------------->
+    <!-- Scripts -->
+    <script type="text/javascript" src="../../../ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="~/Scripts/JS_CV/vendor/jquery-1.12.4.min.js"></script>
+
+
+    <script src="~/Scripts/JS_CV/plugins.min.js"></script>
+    <script src="~/Scripts/JS_CV/theme.min.js"></script>
+    <!--JS for Approve and Reject-->
+    <!----Js for Other Reason Checkbox-->
+    <script>
+        $(document).ready(function () {
+            $('#approveNote').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#showNote').show();
+                } else {
+                    $('#showNote').hide();
+                }
+            });
+        });
+        $(document).ready(function () {
+            $('#option_other').click(function () {
+                if ($(this).is(':checked')) {
+                    $('#showReason').show();
+                } else {
+                    $('#showReason').hide();
+                }
+            });
+        });
+    </script>
+    <!-- Js for send parameter value to modal-->
+    <script type="text/javascript">
+        $(document).on("click", "#approveButton", function () {
+            $('#approveForm').attr('action', $(this).data('url')); // update the links url
+            $('#interviewDate').attr('value', "");
+            $('#interviewAddress').attr('value', $(this).data('address'));
+        });
+        $(document).on("click", "#rejectButton", function () {
+            $('#rejectForm').attr('action', $(this).data('url')); // update the links url
+
+        });
+    </script>
+    <!--JS for Datetimepicker-->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/flick/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="~/Scripts/Js_Company/jquery-ui-sliderAccess.js"></script>
+    <script src="~/Scripts/Js_Company/jquery-ui-timepicker-addon.js"></script>
+    <script>
+        $('#interviewDate').datetimepicker();
+    </script>
+
+</body>
+
+</html>

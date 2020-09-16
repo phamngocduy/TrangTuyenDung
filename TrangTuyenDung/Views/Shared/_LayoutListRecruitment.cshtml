@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>EJOB - @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/Assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="~/Assets/img/favicon.ico">
+
+    <link href="~/Content/CSS_ListRecruitment/animate.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/line-awesome.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/line-awesome-font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/slick.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/slick-theme.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/style.css" rel="stylesheet" />
+    <link href="~/Content/CSS_Student/StudentStyles.css" rel="stylesheet" />
+    <link href="~/Content/CSS_ListRecruitment/responsive.css" rel="stylesheet" />
+    <link href="~/Content/csscuabannerlistrecruitment.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <script src="~/Scripts/moment.js"></script>
+    <link href="~/Content/allplugins.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/responsive.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.8.3.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="wrapper">
+        @RenderPage("~/Views/Shared/_LayoutBlackHeader.cshtml")
+        <main>
+            <div class="search-banner">
+                <div id="particles-js" class="particles-banner">
+                    <div class="row">
+                        <div class="filter-banner element-style-search col-lg-10 col-md-12 col-sm-12 offset-lg-1">
+                            @Html.Action("partialJobFilter", "Home", new { area = "" })
+                        </div>
+                    </div>
+                </div>
+                <div class="main-section">
+                    <div class="container">
+                        <div class="main-section-data">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 no-pd">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $('#city').select2({ dropdownAutoWidth: true, width: '100%' });
+        $('#fac').select2({ dropdownAutoWidth: true, width: '100%' });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

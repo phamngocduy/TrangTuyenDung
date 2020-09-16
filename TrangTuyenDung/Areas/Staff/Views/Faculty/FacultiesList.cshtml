@@ -1,0 +1,301 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Faculty>
+
+@{
+    ViewBag.Title = "Danh sách Khoa/Ngành";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "faculty";
+}
+
+@section Styles {
+    <!-- datatable -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+
+    <!-- autocomplete -->
+    <link href="~/Content/Vendor/autocomplete/autocomplete.css" rel="stylesheet" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Quản lý danh sách khoa/ngành</div>
+
+<!-- create faculty -->
+<div class="card shadow mb-4">
+    <a href="#collapseCreateFaculty" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCreateFaculty">
+        <h6 class="m-0 font-weight-bold text-primary">Thêm khoa mới</h6>
+    </a>
+
+    <div class="collapse fade show" id="collapseCreateFaculty">
+        <div class="card-body">
+            <!-- store list jobpostions -->
+            <input id="listFaculty" hidden data-listfaculty="@ViewBag.listFaculty" value="" />
+
+            @using (Html.BeginForm("AddFaculty", "Faculty", new { area = "Staff" }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "formAddFaculty" })) {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                <div class="form-group">
+                    <label for="Name">Tên Khoa</label>
+                    <input name="Name" type="text" class="form-control" id="Name" placeholder="Nhập tên Khoa" autocomplete="off" required>
+
+                    <div id="errmsg" class="text-danger small mt-1 font-weight-medium"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-sm px-3">Thêm mới</button>
+                <a href="@Url.Action("Export_Faculties")" role="button"  class="btn btn-outline-primary btn-sm px-3 ml-2 h-100">Xuất Excel</a>
+               
+            }
+        </div>
+    </div>
+</div>
+
+<!-- notify message -->
+@if (@ViewBag.Message == "AddSuccess") {
+    //swal("Thành Công!", "Một Khoa/Ngành đã được thêm mới!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Thêm khoa mới</b> mới thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "AddFail") {
+    //swal("Lỗi!", "Vui lòng kiểm tra các trường và thực hiện lại!", "error");
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <div><b>Lỗi khi thực hiện thêm Khoa, </b>xin vui lòng thực hiện lại. Xin cảm ơn!</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "DeleteSuccess") {
+    //swal("Thành Công!", "Một Khoa/Ngành đã bị xóa!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div>Đã <b>xóa Khoa</b> thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "AddMajorSuccess") {
+    //swal("Thành Công!", "Một Chuyên Ngành đã được thêm mới!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Thêm Chuyên ngành</b> thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "AddMajorFail") {
+    //swal("Lỗi!", "Vui lòng kiểm tra các trường và thực hiện lại!", "error");
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <div><b>Có lỗi khi thực hiện thêm Ngành, </b>xin vui lòng thử lại. Xin cảm ơn!</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (@ViewBag.Message == "DeleteMajorSuccess") {
+    //swal("Thành Công!", "Một Chuyên Ngành đã xóa!", "success");
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <div><b>Xóa chuyên ngành </b>thành công.</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+  
+
+<!-- list all faculty/major -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách khoa / ngành hiện tại</h6>
+    </div>
+
+    <div class="card-body">
+        @if (Model.Count() <= 0) {
+            <div>Hiện tại không có Khoa và ngành nào.</div>
+        }
+        else {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="table" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Tên Khoa</th>
+                            <th>Ngày tạo</th>
+                            <th>Chuyên Ngành</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count() > 10) {
+                        <tfoot>
+                            <tr>
+                                <th>Tên Khoa</th>
+                                <th>Ngày tạo</th>
+                                <th>Chuyên Ngành</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </tfoot>
+                    }
+
+                    <tbody>
+                        @Html.Hidden("item-to-delete", "", new { @id = "item-to-delete" })
+                        @foreach (var item in Model) {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>@item.Date_Created.ToString("dd/MM/yyyy - HH:MM")</td>
+                                <td>
+                                    @foreach (var data in item.Faculties_Majors.Where(x => x.Faculty_Id == item.Id)) {
+                                        <div class="mb-1">
+                                            <button class="btn btn-sm btn-outline-danger" id="deleteMajorButton" data-name="Chuyên ngành: @data.Name" data-toggle="modal" data-target="#deleteConfirm" data-id="@data.Id" data-urlm="@Url.Action("DeleteMajor", "Faculty", new { area = "Staff" , @id = data.Id })" title="Xóa chuyên ngành này">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            @data.Name
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-success btn-sm mb-2 mb-lg-0 addNewMajor" data-name="@item.Name" data-id="@item.Id" data-toggle="modal" data-target="@("#addConfirm" + item.Id)">
+                                        <i class="fas fa-plus"></i>
+                                        Thêm chuyên ngành
+                                    </button>
+
+                                    <button id="deleteFaculty" class="btn btn-sm btn-outline-danger modalDeleteMajor" data-name="Khoa: @item.Name" data-toggle="modal" data-url="@Url.Action("DeleteFaculty", new {area = "Staff", @id = item.Id })" data-target="#deleteConfirm">
+                                        <i class="far fa-trash-alt"></i>
+                                        Xóa Khoa
+                                    </button>
+
+                                    <!-- add new major modal -->
+                                    <div class="modal fade" id="@("addConfirm" + item.Id)" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                @using (Html.BeginForm("AddNewMajor", "Faculty", new { area = "Staff" }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" })) {
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title">
+                                                            Thêm chuyên ngành mới vào Khoa: <span class="text-dark font-weight-medium" id="@("showname" + item.Id)"></span>
+                                                        </h6>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <label for="@("newFaculty" + item.Id)">Chuyên ngành </label>
+                                                        <input id="@("Faculty_Id" + item.Id)" name="Faculty_Id" hidden value="@item.Id" />
+                                                        <input class="form-control" id="@("newFaculty" + item.Id)" name="Name" type="text" placeholder="Nhập tên chuyên ngành..." required />
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Hủy bỏ</button>
+                                                        <button type="submit" class="btn btn-success btn-sm">Thêm</button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- delete faculty modal -->
+                                    <div class="modal fade" id="deleteConfirm" role="dialog">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">
+                                                        Xác nhận
+                                                    </h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    Bạn sẽ xóa <span id="nameFac" class="font-weight-bold text-danger"></span> bạn có chắc muốn làm điều này?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light btn-sm" data-dismiss="modal">Hủy</button>
+                                                    <a class="btn btn-danger btn-sm" id="willDelete" href="#">Xóa</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <!-- jquery datatable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <!-- devbridge autocomplete -->
+    <script src="~/Scripts/Vendor/devbridge-autocomplete/jquery.autocomplete.min.js"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            autocompleteFacutyName()
+            initDatatable($('#table'));
+
+            // delete faculty
+            $(document).on("click", "#deleteFaculty", function () {
+                const url = $(this).data('url');
+                const displayFacultyName = $(this).data('name');
+
+                $('#willDelete').attr('href', url); // update the links url
+                $('#nameFac').text(displayFacultyName); // update the name
+            });
+
+            // add new major
+            $(document).on("click", ".addNewMajor", function () {
+                const id = $(this).data('id');
+                const displayMajorName = $(this).data('name');
+
+                $(`#Faculty_Id${id}`).attr('value', id);
+                $(`#showname${id}`).text(displayMajorName);
+            });
+
+            // delete major
+            $(document).on("click", "#deleteMajorButton", function () {
+                const url = $(this).data('urlm');
+                const displayFacultyName = $(this).data('name');
+
+                $('#willDelete').attr('href', url);
+                $('#nameFac').text(displayFacultyName);
+            });
+
+            $("#formAddFaculty").submit(function () {
+                const inpName = $("#Name").val().trim();
+                const listFaculyName = getAllFacultyName().map(el => el.toLowerCase());
+                const errmsg = $('#errmsg');
+
+                if (listFaculyName.indexOf(inpName.toLowerCase()) >= 0) {
+                    errmsg.text(`Khoa [${inpName}] đã tồn tại trong hệ thống`);
+                    return false;
+                }
+                return true;
+            });
+
+            function autocompleteFacutyName() {
+                const listFaculty = getAllFacultyName();
+                $("#Name").autocomplete({
+                    lookup: listFaculty,
+                    showNoSuggestionNotice: true,
+                    noSuggestionNotice: "Bạn có thể thêm mới Khoa này"
+                });
+            }
+
+            function getAllFacultyName() {
+                let $listFaculty = $('#listFaculty').data('listfaculty').trim();
+                $listFaculty = $listFaculty.slice("|", -1);
+                $listFaculty = $listFaculty.split("|");
+                $listFaculty.sort((a, b) => a.localeCompare(b, "vi", { sensitivity: 'base' }));
+
+                return $listFaculty;
+            }
+        });
+    </script>
+}

@@ -1,0 +1,367 @@
+﻿@model TrangTuyenDung.Areas.Company.Models.CompanyRegisterViewModel
+@{
+    ViewBag.Title = "Đăng Ký Công Ty";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@section Styles {
+    <!-- select2 -->
+    <link href="~/Content/Vendor/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/Vendor/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+
+    <link href="~/Content/auth.css" rel="stylesheet" />
+}
+
+<div class="auth_page d-flex">
+    <div class="auth_sidebar p-5 bg-light d-none d-lg-block">
+        <a href="@Url.Action("IndexCallBack", "Home", new { area=""})">
+            <img class="logo img-fluid" src="~/Assets/img/vlu-logo-foot.png" alt="Ejob Văn Lang Đại Học" />
+        </a>
+        <h1 class="d-inline">Chào mừng bạn đến với EJob.</h1>
+    </div>
+
+    <main class="px-3 py-2">
+        <div class="auth_content w-100">
+            <div class="mb-4">
+                <a class="d-block d-lg-none my-3" href="@Url.Action("IndexCallBack", "Home", new { area=""})">
+                    <img class="img-fluid" src="~/Assets/img/vlu-logo-blue.png" alt="Ejob Văn Lang Đại Học" style="height: 4rem;" />
+                </a>
+
+                <h2 class="font-weight-bold text-dark mb-3">Đăng ký công ty</h2>
+
+                <div class="text-muted">
+                    <div>
+                        <a href="@Url.Content("~/App_Data/Guideline_Recruiter.pdf")" target="_blank">Hướng dẫn </a>cho nhà tuyển dụng
+                    </div>
+                    <div>
+                        <a href="@Url.Action("Login", "Account", new { area = "" })">Đăng nhập </a>nếu bạn đã có tài khoản
+                    </div>
+                </div>
+            </div>
+
+
+            @using (Html.BeginForm("Register", "Account", new { area = "Company" }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "", role = "form" })) {
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <!-- fullname, email -->
+                    <div class="h4 mt-4">Thông tin đăng nhập</div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="FullName">Họ và tên</label>
+                            @Html.TextBoxFor(m => m.FullName, "", new { @class = "form-control", @required = "" })
+                            @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Email">Email</label>
+                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @type = "email", @required = "" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                    </div>
+
+                    <!-- password, repassword -->
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Password">Mật khẩu</label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="ConfirmPassword">Nhập lại mật khẩu</label>
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "6+ kí tự", @required = "" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+
+                    <!-- name, phone -->
+                    <div class="h4 mt-4">Thông tin công ty</div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Com_Name">Tên công ty</label>
+                            @Html.TextBoxFor(m => m.Com_Name, "", new { @class = "form-control", @required = "" })
+                            @Html.ValidationMessageFor(m => m.Com_Name, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Phone_Contact">Điện thoại liên hệ</label>
+                            @Html.TextBoxFor(m => m.Phone_Contact, "", new { @class = "form-control", @type = "number", @required = "" })
+                            @Html.ValidationMessageFor(m => m.Phone_Contact, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                    </div>
+
+                    <!-- company code, site, adress -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Com_Code">Mã số doanh nghiệp</label>
+                            @Html.TextBoxFor(m => m.Com_Code, new { @class = "form-control", @required = "" })
+                            @Html.ValidationMessageFor(m => m.Com_Code, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Com_Website">Website</label>
+                            @Html.TextBoxFor(m => m.Com_Website, new { @class = "form-control", @required = "" })
+                            @Html.ValidationMessageFor(m => m.Com_Website, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Com_Address">Địa chỉ</label>
+                        @Html.TextBoxFor(m => m.Com_Address, new { @class = "form-control", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Com_Address, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+
+                    <!-- province -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Com_Province">Thành phố</label>
+                            @Html.DropDownList("Com_Province", ViewBag.province as List<SelectListItem>, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Com_Province, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="font-weight-medium d-block" for="Com_District">Quận/Huyện</label>
+                            @Html.DropDownList("Com_District", new SelectList(string.Empty, "Value", "Text"), "", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Com_District, "", new { @class = "text-danger small font-weight-medium" })
+                        </div>
+                    </div>
+
+                    <!-- email, introduct, faculty -->
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Email_Contact">Email liên hệ</label>
+                        @Html.TextBoxFor(m => m.Email_Contact, new { @class = "form-control", @type = "email", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Email_Contact, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Representative">Người đại diện</label>
+                        @Html.TextBoxFor(m => m.Representative, new { @class = "form-control", @type = "email", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Representative, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Com_Intro">Giới thiệu về công ty</label>
+                        @Html.TextArea("Com_Intro", new { @class = "form-control", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Com_Intro, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Company_Faculty">Lĩnh vực hoạt động</label>
+                        @Html.DropDownList("company_facultites", (SelectList)ViewBag.faculty, new { @class = "", @title = "Faculty", @data_placeholder = " " })
+                        @Html.ValidationMessageFor(m => m.company_facultites, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <div class="form-group custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="other_falcuty">
+                        <label class="custom-control-label" for="other_falcuty">Lĩnh vực khác</label>
+                    </div>
+                    @Html.TextBoxFor(m => m.Com_OtherFaculties, new { @class = "form-control mb-3 d-none", @placeholder = "Điền tên lĩnh vực" })
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Com_Faculty">Ngành tuyển dụng tại ĐH Văn Lang</label>
+                        @Html.DropDownList("Com_Faculty", (SelectList)ViewBag.faculty, new { @class = "", @title = "Faculty",  @data_placeholder = " " })
+                        @Html.ValidationMessageFor(m => m.Com_Faculty, "", new { @class = "text-danger small font-weight-medium" })
+                    </div>
+                    <!-- logo -->
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="upload" name="Com_Logo" required>
+                        <label class="custom-file-label" for="upload">Logo công ty</label>
+                        <small id="upload" class="form-text text-muted">
+                            Dung lượng ảnh không quá 2MB.
+                        </small>
+                    </div>
+                    <img id="preview_img" class="img-thumbnail mt-1" src="~/Assets/img/vlu-logo-foot.png" />
+                </div>
+                <button type="submit" class="btn btn-primary font-weight-medium w-50">Đăng Ký</button>
+            }
+            <div class="text-muted small my-3"><a href="@Url.Action("IndexCallBack", "Home", new { area=""})">Trang chủ</a></div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <!-- select2 -->
+    <script src="~/Scripts/Vendor/select2/select2.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Debounce typing
+            function debounce(fn, delay, immediate) {
+                let timeout;
+
+                return function executedFn() {
+                    let context = this;
+                    let args = arguments;
+                    let later = function () {
+                        timeout = null;
+                        if (!immediate) fn.apply(context, args);
+                    };
+
+                    let callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, delay);
+                    if (callNow) fn.apply(context, args);
+                }
+            }
+
+            // Preview logo image
+            function preview(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#preview_img').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#upload").change(function () {
+                preview(this);
+            });
+
+            // Select compony province and district
+            $("#Com_Province").change(function () {
+                $("#Com_District").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDistrictsByProvinceID", "Account",new { area="Company"})',
+                    dataType: 'json',
+                    data: { id: $("#Com_Province").val() },
+                    success: function (districts) {
+                        $.each(districts, function (i, district) {
+                            $("#Com_District").append('<option value="' + district.Value + '">' +
+                                district.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Không thể xuất ra Quận/Huyện tương ứng' + ex);
+                    }
+                });
+                return false;
+            });
+
+            function checkExistEmail() {
+                const emailInput = $('input#Email');
+                const errorEmailMsg = emailInput.next();
+
+                const emailKeyupHandler = event => {
+                    const emailPattern = /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    const email = event.target.value;
+                    if (!emailPattern.test(email)) {
+                        errorEmailMsg.html('Email không đúng định dạng.');
+                    }
+                    else {
+                        errorEmailMsg.html('');
+                        const classList = "small font-weight-medium ";
+                        $.ajax({
+                            url: '@Url.Action("checkEmailAlreadyExist", "Account", new { area = "Company"})',
+                            type: 'post',
+                            data: { email },
+                            success: function (data) {
+                                if (data == "true") {
+                                    errorEmailMsg.attr('class', `${classList} text-success`);
+                                    errorEmailMsg.text("Bạn có thể sử dụng email này!");
+
+                                } else if (data == "false") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Email đã được sử dụng, vui lòng chọn Email khác!");
+                                } else if (data == "empty") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Vui lòng nhập Email!");
+                                } else if (data == "invalid") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Email không đúng định dạng!");
+                                }
+                            },
+                            error: function () {
+                                alert("Đã có lỗi xảy ra! Vui lòng làm mới lại trang và thử lại!");
+                            }
+                        });
+                    }
+                }
+                const debouncedKeyup = debounce(emailKeyupHandler, 1000);
+                emailInput.on('input', debouncedKeyup);
+            }
+            checkExistEmail();
+
+            function checkRePassword() {
+                const pw = $('input#Password');
+                const rePw = $('input#ConfirmPassword');
+                const rePwErrMsg = rePw.next();
+
+                $('#Password, #ConfirmPassword').on('keyup', function () {
+                    if (pw.val().trim() !== rePw.val().trim()) {
+                        rePwErrMsg.text('Sai mật khẩu');
+                    }
+                    else {
+                        rePwErrMsg.text('');
+                    }
+                });
+            }
+            checkRePassword();
+
+            //JS for check exists company code
+            function checkExistCompanyCode() {
+                const codeInput = $('#Com_Code');
+                const errorCodeMsg = codeInput.next();
+
+                const codeKeyupHandler = event => {
+                    const code = event.target.value;
+                    if (code.trim() !== '') {
+                        $.ajax({
+                            url: '@Url.Action("checkBusinessCode", "Account", new { area = "Company" })',
+                            type: 'POST',
+                            data: { code  },
+                            success: function (data) {
+                                if (data == "true") {
+                                    errorCodeMsg.attr('class', 'small font-weight-medium text-success');
+                                    errorCodeMsg.text("");
+                                } else if (data == "false") {
+                                    errorCodeMsg.attr('class', 'small font-weight-medium text-danger');
+                                    errorCodeMsg.text("Mã số doanh nghiệp không hợp lệ hoặc đã tồn tại!");
+                                }
+                            },
+                            error: function () {
+                                alert("Đã có lỗi xảy ra! Vui lòng làm mới lại trang và thử lại!");
+                            }
+                        });
+                    }
+                }
+                const debouncedKeyup = debounce(codeKeyupHandler, 1000);
+                codeInput.on('input', debouncedKeyup);
+            }
+            checkExistCompanyCode();
+
+            // Register success
+            if ('@ViewBag.Message' == "RegisterSuccess") {
+                showModalRegisterSuccess();
+            }
+            function showModalRegisterSuccess() {
+                const notiModal = $('#notify_modal');
+                const modalTit = notiModal.find('#notify_modal_label');
+                const bodyContent = notiModal.find('.modal-body');
+
+                modalTit.text('Đăng kí thành công');
+                bodyContent.html("<div class='text-center'><div class='h4 font-weight-medium text-success'>Chúc mừng</div><p>Tài khoản của bạn đã đăng kí thành công. Chúng tôi đã gửi mail xác nhận. Chân thành cảm ơn</p></div>");
+                notiModal.modal('show');
+            }
+
+            // Show input another falcuty
+            function showAnotherFalcuty() {
+                const checkbox = $('#other_falcuty:checkbox');
+                const falcutyInp = $('#Com_OtherFaculties');
+                checkbox.change(function () {
+                    falcutyInp.toggleClass('d-none');
+                });
+            }
+            showAnotherFalcuty();
+
+            searchSelect2($("#Com_Province"), "--Chọn Tỉnh/TP--");
+            searchSelect2($("#Com_District"), "--Chọn Quận/Huyện--");
+            searchSelect2($("#Com_Faculty"), "--Chọn Ngành--");
+            searchSelect2($("#company_facultites"), "--Chọn Ngành--");
+
+
+            function searchSelect2(el ,placeholder = "--Chọn--", options) {
+                return el.select2({
+                    theme: 'bootstrap4',
+                    dropdownAutoWidth: true,
+                    width: '100%',
+                    placeholder: placeholder,
+                    sorter: data => sortSelect(data),
+                    ...options
+                });
+            };
+            function sortSelect(data) {
+                return data.sort((a, b) => (a.text).localeCompare((b.text), 'vi', { sensitivity: 'base' }));
+            }
+        });
+    </script>
+}

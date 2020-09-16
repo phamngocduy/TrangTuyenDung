@@ -1,0 +1,63 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.User_In_Company>
+@{
+    ViewBag.Title = "Danh sách nhân viên";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+
+<div class="dashboard-content-container" data-simplebar>
+
+    <div class="dashboard-content-inner">
+
+        <!-- Row -->
+        <div class="row">
+            <!-- Dashboard Box -->
+            <div class="col-xl-12">
+                <div class="dashboard-box margin-top-0">
+                    <!-- Headline -->
+                    <div class="headline">
+                        <h3><i class="icon-material-outline-supervisor-account"></i> @ViewBag.numEmployee Nhân Viên</h3>
+                    </div>
+                    <div class="content">
+                        <ul class="dashboard-box-list">
+                            @foreach (var item in Model) {
+                                <li>
+                                    <!-- Candidate -->
+                                    <div class="freelancer-overview manage-candidates">
+                                        <div class="freelancer-overview-inner">
+                                            <!-- Avatar -->
+                                            @*<div class="freelancer-avatar">
+                                                    <div class="verified-badge"></div>
+                                                    <a href="#"><img src="images/user-avatar-big-03.jpg" alt=""></a>
+                                                </div>*@
+                                            <!-- Name -->
+                                            <div class="freelancer-name">
+                                                <h4><i class="icon-material-outline-account-circle"></i> @item.FullName</h4>
+                                                <!-- Details -->
+                                                <span class="freelancer-detail-item"><i class="icon-feather-mail"></i> <span class="__cf_email__"> @item.AspNetUser.Email</span></span>
+                                                @*<span class="freelancer-detail-item"><i class="icon-feather-phone"></i> (+61) 123-456-789</span>*@
+                                                <br />
+                                                <span class="freelancer-detail-item"><i class="icon-feather-calendar"></i> Ngày tham gia: @item.Date_Create</span>
+                                                <!-- Rating -->
+                                                @*<div class="freelancer-rating">
+                                                        <div class="star-rating" data-rating="5.0"></div>
+                                                    </div>*@
+                                                <!-- Buttons -->
+                                                @*<div class="buttons-to-right always-visible margin-top-25 margin-bottom-5">
+                                                        <a href="#" class="button ripple-effect"><i class="icon-feather-file-text"></i> Download CV</a>
+                                                        <a href="#small-dialog" class="popup-with-zoom-anim button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                                        <a href="#" class="button gray ripple-effect ico" title="Remove Candidate" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Row / End -->
+
+    </div>
+</div>

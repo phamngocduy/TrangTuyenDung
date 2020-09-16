@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Bảng điều khiển";
+    ViewBag.active = "dashboard";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+
+<!-- Page Header -->
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Dashboard</span>
+        <h3 class="page-title">
+            @Html.ActionLink("Xin chào " + Html.Action("Get_Company_Name", "Manage", new { area = "", user_id = User.Identity.GetUserId() }) + "!", "Dashboard", "Home", new { area = "Company" }, htmlAttributes: new { title = "Bảng điều khiển" })
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recruitment -->
+    <div class="col-md-4 col-12 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Danh sách tin đã đăng</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_PostedRecs</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-6 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Tin tuyển dụng đợi duyệt</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_PendingRecs</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-6 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Tin cần điều chỉnh</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_RejectedRecs</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <!-- Candidate -->
+    <div class="col-6 col-md-3 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex bg-light">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Ứng Viên Đang Đợi Duyệt</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_PendingStu</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex bg-light">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Ứng Viên Đang Đợi Phỏng Vấn</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_InterviewingStu</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex bg-light">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Đậu Phỏng Vấn</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_SuccessStu</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-3 mb-4">
+        <div class="stats-small stats-small--1 card card-small">
+            <div class="card-body p-0 d-flex bg-light">
+                <div class="d-flex flex-column m-auto">
+                    <div class="stats-small__data text-center">
+                        <span class="stats-small__label text-uppercase">Trượt Phỏng Vấn</span>
+                        <h6 class="stats-small__value count my-3">@ViewBag.num_FailStu</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

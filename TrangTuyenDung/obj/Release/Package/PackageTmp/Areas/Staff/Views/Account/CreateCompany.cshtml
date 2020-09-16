@@ -1,0 +1,149 @@
+﻿@model TrangTuyenDung.Areas.Staff.Models.CreateCompanyViewModel
+
+@{
+    ViewBag.Title = "Thêm công ty";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.itemActive = "company";
+}
+
+@section Styles {
+    <!-- custom style in this file, custome autocomplete suggestion -->
+    <link href="~/Content/Admin/create-company.css" rel="stylesheet" />
+
+    <!-- autocomplete -->
+    <link href="~/Content/Vendor/autocomplete/autocomplete.css" rel="stylesheet" />
+}
+
+<!-- page heading -->
+<div class="h3 mb-3 text-gray-800">Tạo Công ty mới</div>
+
+<!-- create company -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tạo công ty và mời họ tham gia EJob</h6>
+    </div>
+
+    <div class="card-body">
+        <!-- store list jobpostions -->
+        <input id="companies" hidden data-companies="@ViewBag.Companies" value="" />
+
+        @using (Html.BeginForm("CreateCompany", "Account", new { area = "Staff" }, FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @id = "myForm" })) {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <!-- company name -->
+            <div class="form-group">
+                <label for="Com_Name">Tên công ty</label>
+                @Html.EditorFor(model => model.Com_Name, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                @Html.ValidationMessageFor(model => model.Com_Name, "", new { @class = "text-danger small font-weight-medium" })
+                <p id="errmsg" class="text-danger small font-weight-medium mt-1"></p>
+                <span class="label label-default" id="selected_option"></span>
+            </div>
+
+             <!-- Respentation -->
+            <div class="form-group">
+                <label for="Com_Name">Tên người đại diện</label>
+                @Html.EditorFor(model => model.Representative, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                @Html.ValidationMessageFor(model => model.Representative, "", new { @class = "text-danger small font-weight-medium" })
+                <p id="errmsg" class="text-danger small font-weight-medium mt-1"></p>
+                <span class="label label-default" id="selected_option"></span>
+            </div>
+
+                 <!--  Email contact -->
+            <div class="form-group">
+                <label for="Com_Name">Email liên hệ</label>
+                @Html.EditorFor(model => model.Email_contact, new { htmlAttributes = new { @class = "form-control", @required = "" } })
+                @Html.ValidationMessageFor(model => model.Email_contact, "", new { @class = "text-danger small font-weight-medium" })
+                <p id="errmsg" class="text-danger small font-weight-medium mt-1"></p>
+                <span class="label label-default" id="selected_option"></span>
+            </div>
+
+            <!-- logo -->
+            <div class="form-group">
+                <label for="imageUpload">Logo</label>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" name="Com_Logo" accept=".png,.jpg,.jpeg" />
+                        <label for="imageUpload"><i class="fas fa-file-upload"></i></label>
+                    </div>
+                    <div class="avatar-preview">
+                        <div id="imagePreview" style="background-image: url(@Url.Content("~/Assets/img/vlu-logo-foot.png"));">
+                        </div>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(m => m.Com_Logo, "", new { @class = "text-danger small font-weight-medium d-block" })
+                <small id="alert">*Lưu ý: dung lượng ảnh cho phép tối đa 2MB</small>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="btn btn-outline-primary btn-sm">Thêm mới</button>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <!-- devbridge autocomplete -->
+    <script src="~/Scripts/Vendor/devbridge-autocomplete/jquery.autocomplete.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            autocompleteCompanyName();
+
+            function readFileURL(input) {
+                const $btnSubmit = $('#btnSubmit');
+                const $alert = $('#alert');
+
+                if (input.files[0].size > 2097152) { // 2MB
+                    $btnSubmit.prop('disabled', true);
+                    $alert.addClass('text-danger');
+                    return;
+                }
+                else {
+                    $btnSubmit.prop('disabled', false);
+                    $alert.removeClass('text-danger');
+                }
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                        $('#imagePreview').hide();
+                        $('#imagePreview').fadeIn(650);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $("#imageUpload").change(function() {
+                readFileURL(this);
+            });
+
+            $("#myForm").submit(function() {
+                const listCompany = getAllCompanyName().map(el => el.toLowerCase());
+                const newCompanyName = $("#Com_Name").val().trim();
+                const $errmsg = $("#errmsg");
+
+                if (listCompany.indexOf(newCompanyName.toLowerCase()) >= 0) {
+                    $errmsg.text('Công Ty này đã tồn tại trong hệ thống');
+                    return false;
+                }
+                return true;
+            });
+
+            function autocompleteCompanyName() {
+                const listCompany = getAllCompanyName();
+                $("#Com_Name").autocomplete({
+                    lookup: listCompany,
+                    showNoSuggestionNotice: true,
+                    noSuggestionNotice: "Bạn có thể thêm mới Công Ty với tên này"
+                });
+            }
+
+            function getAllCompanyName() {
+                let $companies = $('#companies').data('companies').trim();
+                $companies = $companies.slice("|", -1);
+                $companies = $companies.split("|");
+                $companies.sort((a, b) => a.localeCompare(b, "vi", { sensitivity: 'base' }));
+
+                return $companies;
+            }
+        });
+    </script>
+}

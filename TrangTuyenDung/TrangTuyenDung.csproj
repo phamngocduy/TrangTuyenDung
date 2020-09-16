@@ -1,0 +1,939 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3FBCD647-CA50-4442-B1BC-BD2DE6383130}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TrangTuyenDung</RootNamespace>
+    <AssemblyName>TrangTuyenDung</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.94.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.94.2\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=2.1.2.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.2.1.2\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.3.0\lib\net45\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.45.0\lib\net45\Google.Apis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.45.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.45.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.45.0\lib\net45\Google.Apis.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.45.0.1911, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.45.0.1911\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.45.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Plus.v1, Version=1.45.0.1627, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Plus.v1.1.45.0.1627\lib\net45\Google.Apis.Plus.v1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.VanLangAccount, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vanlanguni.Authentication.VanlangAccount.1.0.0\lib\Microsoft.Owin.Security.VanLangAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.2.4.400, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.2.4\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
+    <Compile Include="Areas\Company\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Company\Controllers\CandidateController.cs" />
+    <Compile Include="Areas\Company\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Company\Controllers\RecruitmentController.cs" />
+    <Compile Include="Areas\Company\Models\CompanyViewModel.cs" />
+    <Compile Include="Areas\Company\Models\DataPointViewModel.cs" />
+    <Compile Include="Areas\Company\Models\StatisticViewModel.cs" />
+    <Compile Include="Areas\Manager\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
+    <Compile Include="Areas\Staff\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Staff\Controllers\CandidateController.cs" />
+    <Compile Include="Areas\Staff\Controllers\ConfirmInternController.cs" />
+    <Compile Include="Areas\Staff\Controllers\FacultyController.cs" />
+    <Compile Include="Areas\Staff\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Staff\Controllers\InternshipController.cs" />
+    <Compile Include="Areas\Staff\Controllers\RecruitmentController.cs" />
+    <Compile Include="Areas\Staff\Models\EmailViewModel.cs" />
+    <Compile Include="Areas\Staff\Models\StaffViewModel.cs" />
+    <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
+    <Compile Include="Areas\Student\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Student\Controllers\ConfirmInternController.cs" />
+    <Compile Include="Areas\Student\Controllers\IntershipController.cs" />
+    <Compile Include="Areas\Student\Controllers\RecruitmentController.cs" />
+    <Compile Include="Areas\Student\Models\Student_InfoViewModel.cs" />
+    <Compile Include="Areas\Student\StudentAreaRegistration.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RecruitmentController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Action.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AllowHTMlAttribute.cs" />
+    <Compile Include="Models\ApplyViewModel.cs" />
+    <Compile Include="Models\Apply_Recruitments.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetRole.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUser.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaim.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogin.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Bookmark.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Company_Info.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Company_Registration.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\confirmation_intern.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Country.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CV_Info.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CV_Publics.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\District.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Email_Configs.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Faculties_In_Companies.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Faculties_Majors.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Faculty.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Internship.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\InternshipSupport.cs" />
+    <Compile Include="Models\ManageJob_Position.cs" />
+    <Compile Include="Models\Job_Positions.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Majors_In_Recruitments.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Province.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Recruitment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RecruitmentSuppor.cs" />
+    <Compile Include="Models\Searchsupport.cs" />
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StaffAccountSuppor.cs" />
+    <Compile Include="Models\Staff_Info.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Status_Account.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Status_Company.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Status_CV.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Status_Recruitment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student_Certificates.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student_Info.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student_Projects.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student_Skills.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Student_Work_Experiences.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tag.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tags_Recruitments.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tag_In_Faculties.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User_In_Actions.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User_In_Company.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ward.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sercurity_SendMail\EmailJob.cs" />
+    <Compile Include="Sercurity_SendMail\JobScheduler.cs" />
+    <Compile Include="Sercurity_SendMail\SendMail.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\icon\12.png" />
+    <Content Include="Assets\icon\13.png" />
+    <Content Include="Assets\icon\14.png" />
+    <Content Include="Assets\icon\15.png" />
+    <Content Include="Assets\icon\16.png" />
+    <Content Include="Assets\icon\17.png" />
+    <Content Include="Assets\icon\4.png" />
+    <Content Include="Assets\img\4.jpg" />
+    <Content Include="Assets\img\ajax-loader.gif" />
+    <Content Include="Assets\img\Background25noLogo.jpg" />
+    <Content Include="Assets\img\Background25years.jpg" />
+    <Content Include="Assets\img\banner-002.jpg" />
+    <Content Include="Assets\img\banner-1903x634-001.jpg" />
+    <Content Include="Assets\img\BannerEjob.png" />
+    <Content Include="Assets\img\bg-1.jpg" />
+    <Content Include="Assets\img\bg-banner1.jpg" />
+    <Content Include="Assets\img\bg-recruimentdetail.jpg" />
+    <Content Include="Assets\img\bg1.jpg" />
+    <Content Include="Assets\img\counter-background.jpg" />
+    <Content Include="Assets\img\CV_Template01.png" />
+    <Content Include="Assets\img\CV_Template02.png" />
+    <Content Include="Assets\img\dribbble_1.gif" />
+    <Content Include="Assets\img\favicon.ico" />
+    <Content Include="Assets\img\headshot.jpg" />
+    <Content Include="Assets\img\image %281%29.jpeg" />
+    <Content Include="Assets\img\login\businessman2.png" />
+    <Content Include="Assets\img\login\enterprise.png" />
+    <Content Include="Assets\img\login\HoctaiCS3-2.jpg" />
+    <Content Include="Assets\img\login\IMG_0616.JPG" />
+    <Content Include="Assets\img\login\student-icon.png" />
+    <Content Include="Assets\img\login\Tong the 1.jpg" />
+    <Content Include="Assets\img\logo-vlu-6.png" />
+    <Content Include="Assets\img\login\logo.png" />
+    <Content Include="Assets\img\login-background.png" />
+    <Content Include="Assets\img\logoVLUfavicon.png" />
+    <Content Include="Assets\img\user-coverimg.jpg" />
+    <Content Include="Assets\img\vlu-02.jpg" />
+    <Content Include="Assets\img\VLU-Logo25nam.png" />
+    <Content Include="Assets\img\vlu-logo-blue.png" />
+    <Content Include="Assets\img\vlu-logo-foot.png" />
+    <Content Include="Assets\img\vlu-logo-white.png" />
+    <Content Include="Assets\img_Company\chosen-sprite%402x.png" />
+    <Content Include="Assets\img_Company\chosen-sprite.png" />
+    <Content Include="Assets\img_Company\com_bg4.png" />
+    <Content Include="Assets\img_Company\Dashboard\businessman.png" />
+    <Content Include="Assets\img_Company\Dashboard\Candidate-approved.png" />
+    <Content Include="Assets\img_Company\Dashboard\Candidate-pending.png" />
+    <Content Include="Assets\img_Company\Dashboard\interview.png" />
+    <Content Include="Assets\img_Company\Dashboard\recruitment-reject.png" />
+    <Content Include="Assets\img_Company\Dashboard\rejectCan.png" />
+    <Content Include="Assets\img_Company\Dashboard\research.png" />
+    <Content Include="Assets\img_Company\Dashboard\time-management.png" />
+    <Content Include="Assets\img_Company\InformationsCompany\annie-spratt-608001-unsplash.jpg" />
+    <Content Include="Assets\img_Company\InformationsCompany\browse-companies-03.png" />
+    <Content Include="Assets\img_Company\InformationsCompany\single-company.jpg" />
+    <Content Include="Assets\img_Student\5c9614c45859c.png" />
+    <Content Include="Assets\img_Student\bg-student-tracking.jpg" />
+    <Content Include="Assets\img_Student\calendar-with-a-clock-time-tools.svg" />
+    <Content Include="Assets\img_Student\conversation.svg" />
+    <Content Include="Assets\img_Student\Date-128.png" />
+    <Content Include="Assets\img_Student\Document-Check-128.png" />
+    <Content Include="Assets\Img_Subjects\bg.png" />
+    <Content Include="Assets\Img_Subjects\chothuan.jpeg" />
+    <Content Include="Assets\Img_Subjects\vlu-cong-nghe-ky-thuat-moi-truong.png" />
+    <Content Include="Assets\Img_Subjects\vlu-cong-nghe-sinh-hoc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-cong-nghe-thong-tin1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-dieu-duong.png" />
+    <Content Include="Assets\Img_Subjects\vlu-dong-phuong-hoc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-duoc-hoc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ke-toan1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-kinh-doanh-thuong-mai1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ky-thuat-cong-trinh-xay-dung.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ky-thuat-nhiet1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ky-thuat-phan-mem1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ky-thuat-xay-dung.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ky-thuat-xet-nghiem-y-hoc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-luat-kinh-te.png" />
+    <Content Include="Assets\Img_Subjects\vlu-ngon-ngu-anh.png" />
+    <Content Include="Assets\Img_Subjects\vlu-piano.png" />
+    <Content Include="Assets\Img_Subjects\vlu-quan-he-cong-chung1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-quan-ly-xay-dung.png" />
+    <Content Include="Assets\Img_Subjects\vlu-quan-tri-dich-vu-du-lich-lu-hanh.png" />
+    <Content Include="Assets\Img_Subjects\vlu-quan-tri-khach-san.png" />
+    <Content Include="Assets\Img_Subjects\vlu-quan-tri-kinh-doanh1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-tai-chinh-ngan-hang1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-tam-ly-hoc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thanh-nhac.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thiet-ke-cong-nghiep.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thiet-ke-do-hoa.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thiet-ke-kien-truc.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thiet-ke-noi-that.png" />
+    <Content Include="Assets\Img_Subjects\vlu-thiet-ke-thoi-trang1.png" />
+    <Content Include="Assets\Img_Subjects\vlu-van-hoc-ung-dung1.png" />
+    <Content Include="Assets\img\user-coverimg.png" />
+    <Content Include="Content\Admin\create-company.css" />
+    <Content Include="Content\Admin\sb-admin-2.css" />
+    <Content Include="Content\allplugins.css" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\auth.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap1.min.css" />
+    <Content Include="Content\company\extras.min.css" />
+    <Content Include="Content\company\shards-dashboards-default.min.css" />
+    <Content Include="Content\CSS_Company\jquery-ui-timepicker-addon.css" />
+    <Content Include="Content\CSS_Company\style.css" />
+    <Content Include="Content\CSS_Cv\css\mCSB_buttons.html" />
+    <Content Include="Content\CSS_Cv\css\plugins.min.css" />
+    <Content Include="Content\CSS_Cv\css\style.min.css" />
+    <Content Include="Content\CSS_Cv\CV_Custom.css" />
+    <Content Include="Content\CSS_Cv\fonts\iconmoon\fonts\icomoond3a2.svg" />
+    <Content Include="Content\CSS_Cv\fonts\iconmoon\style.css" />
+    <Content Include="Content\CSS_Cv\Template02\css\plugins.min.css" />
+    <Content Include="Content\CSS_Cv\Template02\css\style.min.css" />
+    <Content Include="Content\CSS_Cv\Template02\fonts\iconmoon\fonts\icomoond3a2.svg" />
+    <Content Include="Content\CSS_Cv\Template02\fonts\iconmoon\style.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Home\index.css" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\magnific-popup.css" />
+    <Content Include="Content\meanmenu.min.css" />
+    <Content Include="Content\nice-select.css" />
+    <Content Include="Content\owl.carousel.min.css" />
+    <Content Include="Content\responsive.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\slick-theme.css" />
+    <Content Include="Content\slick.css" />
+    <Content Include="Content\Student\account-detail.css" />
+    <Content Include="Content\Student\dashboard.css" />
+    <Content Include="Content\style-login.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\Vendor\autocomplete\autocomplete.css" />
+    <Content Include="Content\Vendor\bootstrap-datepicker\bootstrap-datepicker.min.css" />
+    <Content Include="Content\Vendor\select2\select2-bootstrap4.min.css" />
+    <Content Include="Content\Vendor\select2\select2.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fonts_Admin\educate-icon.svg" />
+    <Content Include="fonts\fonts_Awesome\fa-brands-400.svg" />
+    <Content Include="fonts\fonts_Awesome\fa-light-300.svg" />
+    <Content Include="fonts\fonts_Awesome\fa-regular-400.svg" />
+    <Content Include="fonts\fonts_Awesome\fa-solid-900.svg" />
+    <Content Include="fonts\fonts_Company\Layout\Brand-Icons036a.svg" />
+    <Content Include="fonts\fonts_Company\Layout\Feather-Iconse198.svg" />
+    <Content Include="fonts\fonts_Company\Layout\Line-Awesomea4dd.svg" />
+    <Content Include="fonts\fonts_Company\Layout\Material-Iconsb7df.svg" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\css\material-design-iconic-font.css" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\css\material-design-iconic-font.min.css" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\fonts\Material-Design-Iconic-Font.svg" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfont3e6e.svg" />
+    <Content Include="fonts\fonts_Recruitment\line-awesomeeb4f.svg" />
+    <Content Include="fonts\fonts_Recruitment\slick.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Models\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\Admin\sb-admin-2.min.js" />
+    <Content Include="fonts\Flaticon.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\slick.woff" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfont3e6e.eot" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfont3e6e.ttf" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfont3e6e.woff" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfont3e6e.woff2" />
+    <Content Include="fonts\fonts_Recruitment\fontawesome-webfontd41d.eot" />
+    <Content Include="fonts\fonts_Recruitment\line-awesome0176.eot" />
+    <Content Include="fonts\fonts_Recruitment\line-awesomeeb4f.eot" />
+    <Content Include="fonts\fonts_Recruitment\line-awesomeeb4f.ttf" />
+    <Content Include="fonts\fonts_Recruitment\line-awesomeeb4f.woff" />
+    <Content Include="fonts\fonts_Recruitment\line-awesomeeb4f.woff2" />
+    <Content Include="fonts\fonts_Recruitment\slick.eot" />
+    <Content Include="fonts\fonts_Recruitment\slick.ttf" />
+    <Content Include="fonts\fonts_Recruitment\slick.woff" />
+    <Content Include="fonts\fonts_Recruitment\slickd41d.eot" />
+    <Content Include="Areas\Student\Views\web.config" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Company\Views\web.config" />
+    <Content Include="Areas\Staff\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\Approve.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\List.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\Create.cshtml" />
+    <Content Include="Areas\Company\Views\Account\Register.cshtml" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\fonts\Material-Design-Iconic-Font.eot" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\fonts\Material-Design-Iconic-Font.ttf" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\fonts\Material-Design-Iconic-Font.woff" />
+    <Content Include="fonts\fonts_Company\material-design-iconic-font\fonts\Material-Design-Iconic-Font.woff2" />
+    <Content Include="fonts\fonts_Company\muli\Muli-Bold.ttf" />
+    <Content Include="fonts\fonts_Company\muli\Muli-Regular.ttf" />
+    <Content Include="fonts\fonts_Company\muli\Muli-SemiBold.ttf" />
+    <Content Include="Areas\Admin\Views\Account\Show_ListAccount.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Create_Staff.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\Post_NewRecruitment.cshtml" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fonts_Admin\educate-icon.ttf" />
+    <Content Include="fonts\fonts_Admin\educate-icon.woff" />
+    <Content Include="Areas\Staff\Views\Account\Pending.cshtml" />
+    <Content Include="Areas\Staff\Views\Account\ApprovedList.cshtml" />
+    <Content Include="Areas\Staff\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Staff\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Staff\Views\Account\ViewPendingCompanyDetail.cshtml" />
+    <Content Include="Areas\Staff\Views\Account\CreateCompany.cshtml" />
+    <Content Include="Areas\Staff\Views\Account\EmailConfig.cshtml" />
+    <Content Include="Areas\Student\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Company\Views\Home\Dashboard.cshtml" />
+    <Content Include="Areas\Company\Views\Home\InterviewCalendar.cshtml" />
+    <Content Include="Areas\Company\Views\Shared\_LayoutCompany.cshtml" />
+    <Content Include="Areas\Company\Views\Shared\_PartialLogoCompany.cshtml" />
+    <Content Include="Areas\Company\Views\Home\Index.cshtml" />
+    <Content Include="fonts\fonts_Company\Layout\Brand-Icons036a.ttf" />
+    <Content Include="fonts\fonts_Company\Layout\Brand-Icons036a.woff" />
+    <Content Include="fonts\fonts_Company\Layout\Feather-Iconse198.ttf" />
+    <Content Include="fonts\fonts_Company\Layout\Feather-Iconse198.woff" />
+    <Content Include="fonts\fonts_Company\Layout\Line-Awesomea4dd.ttf" />
+    <Content Include="fonts\fonts_Company\Layout\Line-Awesomea4dd.woff" />
+    <Content Include="fonts\fonts_Company\Layout\Material-Iconsb7df.ttf" />
+    <Content Include="fonts\fonts_Company\Layout\Material-Iconsb7df.woff" />
+    <Content Include="Areas\Company\Views\Account\Update.cshtml" />
+    <Content Include="Areas\Student\Views\Account\Detail.cshtml" />
+    <Content Include="Areas\Student\Views\Account\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Faculty\FacultiesList.cshtml" />
+    <Content Include="Areas\Student\Views\Account\View_CV.cshtml" />
+    <Content Include="Areas\Company\Views\Home\Statistic.cshtml" />
+    <Content Include="Areas\Company\Views\Candidate\Pending.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\Edit.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\List.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\Pending.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\Rejected.cshtml" />
+    <Content Include="Areas\Company\Views\Candidate\Interviewing.cshtml" />
+    <Content Include="Areas\Staff\Views\Faculty\ListJob_Position.cshtml" />
+    <Content Include="Areas\Student\Views\Account\Dashboard.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_LayoutStudent.cshtml" />
+    <Content Include="Areas\Staff\Views\Candidate\Pending.cshtml" />
+    <Content Include="fonts\fonts_Awesome\fa-brands-400.eot" />
+    <Content Include="fonts\fonts_Awesome\fa-brands-400.ttf" />
+    <Content Include="fonts\fonts_Awesome\fa-brands-400.woff" />
+    <Content Include="fonts\fonts_Awesome\fa-brands-400.woff2" />
+    <Content Include="fonts\fonts_Awesome\fa-light-300.eot" />
+    <Content Include="fonts\fonts_Awesome\fa-light-300.ttf" />
+    <Content Include="fonts\fonts_Awesome\fa-light-300.woff" />
+    <Content Include="fonts\fonts_Awesome\fa-light-300.woff2" />
+    <Content Include="fonts\fonts_Awesome\fa-regular-400.eot" />
+    <Content Include="fonts\fonts_Awesome\fa-regular-400.ttf" />
+    <Content Include="fonts\fonts_Awesome\fa-regular-400.woff" />
+    <Content Include="fonts\fonts_Awesome\fa-regular-400.woff2" />
+    <Content Include="fonts\fonts_Awesome\fa-solid-900.eot" />
+    <Content Include="fonts\fonts_Awesome\fa-solid-900.ttf" />
+    <Content Include="fonts\fonts_Awesome\fa-solid-900.woff" />
+    <Content Include="fonts\fonts_Awesome\fa-solid-900.woff2" />
+    <Content Include="Areas\Company\Views\Shared\_StatisticResult.cshtml" />
+    <Content Include="Areas\Company\Views\Account\CreateEmployee.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\RePost.cshtml" />
+    <Content Include="Areas\Company\Views\Account\ListEmployee.cshtml" />
+    <Content Include="Areas\Staff\Views\Home\Dashboard.cshtml" />
+    <Content Include="Areas\Staff\Views\Home\Statistic.cshtml" />
+    <Content Include="Areas\Staff\Views\Shared\_StatisticResult.cshtml" />
+    <Content Include="Areas\Company\Views\Recruitment\PreView.cshtml" />
+    <Content Include="Areas\Student\Views\Recruitment\Bookmarked.cshtml" />
+    <Content Include="Areas\Student\Views\Account\TrackingCV.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\PreView.cshtml" />
+    <Content Include="Areas\Company\Views\Candidate\PublicCVs.cshtml" />
+    <Content Include="Areas\Student\Views\Account\Public_CV.cshtml" />
+    <Content Include="Areas\Manager\Views\Home\Dashboard.cshtml" />
+    <Content Include="Areas\Manager\Views\Home\Statistic.cshtml" />
+    <Content Include="Areas\Manager\Views\web.config" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Student\Views\Account\InterviewResult.cshtml" />
+    <Content Include="Areas\Student\Views\Shared\_InterviewDetail.cshtml" />
+    <Content Include="Areas\Company\Views\Candidate\Hired.cshtml" />
+    <Content Include="Areas\Staff\Views\Recruitment\PreViewCreateRecruitment.cshtml" />
+    <Content Include="Areas\Student\Views\Intership\Index.cshtml" />
+    <Content Include="Areas\Student\Views\Intership\Create.cshtml" />
+    <Content Include="Areas\Student\Views\Intership\Preview.cshtml" />
+    <Content Include="Areas\Staff\Views\Internship\List.cshtml" />
+    <Content Include="Areas\Staff\Views\Internship\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Internship\Preview.cshtml" />
+    <Content Include="Areas\Student\Views\ConfirmIntern\Create.cshtml" />
+    <Content Include="Areas\Student\Views\ConfirmIntern\Preview.cshtml" />
+    <Content Include="Areas\Staff\Views\ConfirmIntern\List.cshtml" />
+    <Content Include="Areas\Staff\Views\Internship\Export.cshtml" />
+    <Content Include="Areas\Staff\Views\ConfirmIntern\Preview.cshtml" />
+    <Content Include="Areas\Student\Views\ConfirmIntern\Upload.cshtml" />
+    <Content Include="Areas\Staff\Views\Candidate\Studentlist.cshtml" />
+    <Content Include="Areas\Staff\Views\Candidate\CVlist.cshtml" />
+    <Content Include="Content\CSS_Cv\fonts\iconmoon\fonts\icomoond3a2.ttf" />
+    <Content Include="Content\CSS_Cv\fonts\iconmoon\fonts\icomoond3a2.woff" />
+    <Content Include="Content\CSS_Cv\Template02\fonts\iconmoon\fonts\icomoond3a2.ttf" />
+    <Content Include="Content\CSS_Cv\Template02\fonts\iconmoon\fonts\icomoond3a2.woff" />
+    <Content Include="App_Data\Company\Logos\9135" />
+    <Content Include="App_Data\Company\Logos\9163" />
+    <Content Include="App_Data\Company\Logos\10151" />
+    <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Company\Views\Candidate\Fail.cshtml" />
+    <None Include="Properties\PublishProfiles\cntttest.pubxml" />
+    <None Include="Properties\PublishProfiles\Development.pubxml" />
+    <None Include="Properties\PublishProfiles\ejob.pubxml" />
+    <None Include="Properties\PublishProfiles\product.pubxml" />
+    <None Include="Properties\PublishProfiles\Production.pubxml" />
+    <None Include="Properties\PublishProfiles\test.pubxml" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\homepage.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\Js_Company\bootstrap.js" />
+    <Content Include="Scripts\Js_Company\bootstrap.min.js" />
+    <Content Include="Scripts\Js_Company\calendar.js" />
+    <Content Include="Scripts\Js_Company\chart.min.js" />
+    <Content Include="Scripts\Js_Company\chosen.jquery.js" />
+    <Content Include="Scripts\Js_Company\jquery-1.8.2.min.js" />
+    <Content Include="Scripts\Js_Company\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\Js_Company\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\Js_Company\jquery-3.3.1.js" />
+    <Content Include="Scripts\Js_Company\jquery-ui-sliderAccess.js" />
+    <Content Include="Scripts\Js_Company\jquery-ui-timepicker-addon.js" />
+    <Content Include="Scripts\Js_Company\jquery-ui.js" />
+    <Content Include="Scripts\Js_Company\jquery-ui.min.js" />
+    <Content Include="Scripts\Js_Company\polyfiller.js" />
+    <Content Include="Scripts\Js_Company\popper.min.js" />
+    <Content Include="Scripts\JS_CV\plugins.min.js" />
+    <Content Include="Scripts\JS_CV\Template02\plugins.min.js" />
+    <Content Include="Scripts\JS_CV\Template02\theme.min.js" />
+    <Content Include="Scripts\JS_CV\Template02\vendor\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\JS_CV\Template02\vendor\modernizr-3.3.1.min.js" />
+    <Content Include="Scripts\JS_CV\theme.min.js" />
+    <Content Include="Scripts\JS_CV\vendor\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\JS_CV\vendor\modernizr-3.3.1.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\navigator.js" />
+    <Content Include="Scripts\slick.min.js" />
+    <Content Include="Scripts\Vendor\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\Vendor\bootstrap-datepicker\bootstrap-datepicker.vi.min.js" />
+    <Content Include="Scripts\Vendor\select2\select2.min.js" />
+    <Content Include="Scripts\Vendor\tinymce\langs\vi.js" />
+    <Content Include="Scripts\Vendor\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="Scripts\Vendor\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Scripts\Vendor\tinymce\skins\content\dark\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\content\default\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\content\document\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\content\writer\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\content.inline.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\content.mobile.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\skin.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\skin.mobile.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\content.inline.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\content.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\content.mobile.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\skin.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\skin.mobile.min.css" />
+    <Content Include="Scripts\Vendor\tinymce\themes\mobile\theme.min.js" />
+    <Content Include="Scripts\Vendor\tinymce\themes\silver\theme.min.js" />
+    <Content Include="Scripts\Vendor\tinymce\tinymce.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LayoutBlackHeader.cshtml" />
+    <Content Include="Views\Shared\_LayoutFooter.cshtml" />
+    <Content Include="Views\Shared\_LayoutHeader.cshtml" />
+    <Content Include="Views\Shared\_LayoutIndex.cshtml" />
+    <Content Include="Views\Shared\_LayoutMain.cshtml" />
+    <Content Include="Views\Recruitment\Detail.cshtml" />
+    <Content Include="Views\Recruitment\Fillter.cshtml" />
+    <Content Include="Views\Shared\_LayoutListRecruitment.cshtml" />
+    <Content Include="Views\Shared\_LeftMenu.cshtml" />
+    <Content Include="Views\Shared\_RightMenu.cshtml" />
+    <Content Include="Views\Shared\_partialJobFilter.cshtml" />
+    <Content Include="Views\Manage\_ChangePassword.cshtml" />
+    <Content Include="Views\Home\Company.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Error\FileSizeExceed.cshtml" />
+    <Content Include="Views\Home\ListCompany.cshtml" />
+    <Content Include="Views\Shared\_partialCompany.cshtml" />
+    <Content Include="Views\Shared\_partialDetail.cshtml" />
+    <Content Include="Views\Recruitment\ListOfRecruitment.cshtml" />
+    <Content Include="Views\Shared\CV_Templates\_CVTemplate01.cshtml" />
+    <Content Include="Views\Shared\CV_Templates\_CVTemplate02.cshtml" />
+    <Content Include="Views\Shared\CV_Templates\_CVDefault.cshtml" />
+    <Content Include="Views\Shared\_partialHotCompany.cshtml" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide-dark\fonts\tinymce-mobile.woff" />
+    <Content Include="Scripts\Vendor\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
+    <Content Include="Views\Shared\_LayoutPrint.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\Student\Logos\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Manager\Models\" />
+    <Folder Include="Areas\Manager\Views\Shared\" />
+    <Folder Include="Areas\Staff\Shared\" />
+    <Folder Include="Content\CSS_ListRecruitment\" />
+    <Folder Include="Content\CSS_LoginConfirm\" />
+    <Folder Include="Content\CSS_Summernote\font\" />
+    <Folder Include="GoogleDriveFiles\" />
+    <Folder Include="Scripts\Js_Recruitment\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49925</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49925/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
