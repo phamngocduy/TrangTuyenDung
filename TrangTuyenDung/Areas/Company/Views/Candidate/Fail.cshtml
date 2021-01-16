@@ -1,0 +1,148 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Apply_Recruitments>
+
+@{
+    ViewBag.Title = "Trượt phỏng vấn";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+    ViewBag.active = "candidate-interview";
+}
+
+@section Styles {
+    <!-- datatable boostrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+
+<!-- Page Header -->
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Ứng tuyển</span>
+        <h3 class="page-title">Ứng Viên trượt phỏng vấn</h3>
+    </div>
+</div>
+<!-- End Page Header -->
+<!-- Main Content -->
+
+    <div class="col-12">
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Trượt</h6>
+            </div>
+
+            <div class="card-body">
+                @if (Model.Count() <= 0) {
+                    <div>Không có dữ liệu.</div>
+                }
+                else {
+                    <table id="table" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Họ Tên</th>
+                                <th>Vị Trí Ứng Tuyển</th>
+                                <th>Ngày Nộp</th>
+                                <th>Ngày Phỏng Vấn</th>
+                                <th>Xem CV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model) {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV_Info.Student_Info.Student_Name)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = item.Recruitment_ID })">
+                                            @item.Recruitment.title
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date_Apply)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date_Interview)
+                                    </td>
+                                    <td>
+                                        <a role="button" class="btn btn-outline-success" href="@Url.Action("ViewCV", "Candidate", new { area = "Company", id = item.Id })" target="_blank">Xem CV</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Interview Date Dialog -->
+
+@section scripts{
+    <!-- dataTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const changeDateCheckbox = $('#changeDateNote');
+            const changeDateInput = $('#showNote');
+
+            const hireNoteCheckbox = $('#hireNote');
+            const hireNoteInput = $('#showHireNote');
+
+            const rejectCheckbox = $('#option_other');
+            const rejectInput = $('#showReason');
+
+            // init-table
+            initDatatable($('#table'));
+
+            changeDateCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    changeDateInput.show();
+                } else {
+                    changeDateInput.hide();
+                }
+            });
+
+            hireNoteCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    hireNoteInput.show();
+                } else {
+                    hireNoteInput.hide();
+                }
+            });
+
+            rejectCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    rejectInput.show();
+                } else {
+                    rejectInput.hide();
+                }
+            });
+
+            $('#interviewDate').datepicker({
+                minDate: new Date(),
+                todayHighlight: true,
+            });
+            $('#workDate').datepicker({
+                minDate: new Date(),
+                todayHighlight: true,
+            });
+
+            $(document).on("click", "#changeDateButton", function () {
+                $('#changeDateForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#cancelDateButton", function () {
+                $('#cancelDateForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#hireButton", function () {
+                $('#hireForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#notHireButton", function () {
+                $('#notHireForm').attr('action', $(this).data('url'));
+            });
+        });
+    </script>
+}
+
+

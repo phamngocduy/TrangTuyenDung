@@ -1,0 +1,387 @@
+﻿@model TrangTuyenDung.Areas.Staff.Models.StaffDashboardViewModel
+@{
+    ViewBag.Title = "Bảng Điểu Khiển";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/CSS_Staff/dashboard-custom.css" rel="stylesheet" />
+<link href="~/Content/CSS_Admin/Lobibox.min.css" rel="stylesheet" />
+<link href="~/Content/CSS_Admin/notifications.css" rel="stylesheet" />
+<link href="~/Content/animate.css" rel="stylesheet" />
+@*<div class="breadcome-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="breadcome-list single-page-breadcome">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <ul class="breadcome-menu" style="text-align:left">
+                                    <li>
+                                        <label class="bread-blod">Bảng Điều Khiển</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="page">
+    <div class="dashboard-header h-300 mb-30">
+        <h3>Bảng Điều Khiển</h3>
+    </div>
+</div>
+
+<!--Statistic for Recruitments-->
+
+<div class="widgets-programs-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3 class="page-header">Tin Tuyển Dụng</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Tổng Tin Tuyển Dụng</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-apps"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-1">
+                            <h1 class="text-success">@Model.numRecs</h1>
+                            <small>
+                                Tổng số tin tuyển dụng <strong>hiện có</strong> trong hệ thống (bao gồm tin Đợi duyệt/Đang tuyển/Hết hạn).
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" id="boxPendingRec">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <a href="@Url.Action("Approve","Recruitment",new { area = "Staff"})" class="tooltips-a" data-tippy-placement="top" data-tippy-content="Nhấn để xem chi tiết" data-tippy-theme="light"><h4>Tin Đợi Duyệt</h4></a>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-professor"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-2">
+                            <h1 class="text-info">@Model.numPendingRecs</h1>
+                            <small>
+                                Tổng số tin tuyển dụng <strong>đang đợi duyệt</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30 res-tablet-mg-t-30 dk-res-t-pro-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <a href="@Url.Action("List","Recruitment",new { area = "Staff"})" class="tooltips-a" data-tippy-placement="top" data-tippy-content="Nhấn để xem chi tiết" data-tippy-theme="light"><h4>Tin Đang Tuyển</h4></a>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-department"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-3">
+                            <h1 class="text-warning">@Model.numActivedRecs</h1>
+                            <small>
+                                Tổng số tin tuyển dụng <strong>đang hoạt động</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape res-tablet-mg-t-30 dk-res-t-pro-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4 class="tooltips-a" data-tippy-placement="top" data-tippy-content="Số lượng tin đã hết hạn" data-tippy-theme="light">Tin Hết Hạn</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-message"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-4">
+                            <h1 class="text-danger">@Model.numExpiredRecs</h1>
+                            <small>
+                                Tổng số tinh đã bị <strong>hết hạn</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Statistic for Company-->
+<div class="widgets-programs-area" style="margin:30px 0px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3 class="page-header">Công Ty</h3>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <a href="@Url.Action("ApprovedList","Account",new { area = "Staff"})" class="tooltips-a" data-tippy-placement="top" data-tippy-content="Nhấn để xem chi tiết" data-tippy-theme="light"><h4>Tổng Số Công Ty</h4></a>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-apps"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-1">
+                            <h1 class="text-success">@Model.numCompany</h1>
+                            <small>
+                                Tổng số Công ty <strong>đang hoạt động</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="boxPendingCom">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <a href="@Url.Action("Pending","Account",new { area = "Staff"})" class="tooltips-a" data-tippy-placement="top" data-tippy-content="Nhấn để xem chi tiết" data-tippy-theme="light"><h4>Công Ty Chờ Xác Nhận</h4></a>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-professor"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-2">
+                            <h1 class="text-info">@Model.numPendingComs</h1>
+                            <small>
+                                Tổng số Công ty <strong>đang đợi duyệt</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Statistic for Candidates-->
+<div class="widgets-programs-area" style="margin:30px 0px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3 class="page-header">Sinh Viên</h3>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Tổng Số Sinh Viên</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-apps"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-1">
+                            <h1 class="text-success">@Model.numCandidate</h1>
+                            <small>
+                                Tổng số Sinh viên <strong>đang hoạt động</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Đơn Đang Ứng Tuyển</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-professor"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-2">
+                            <h1 class="text-info">@Model.numApplyingCans</h1>
+                            <small>
+                                Tổng số <strong>đơn ứng tuyển đang được nộp</strong> của Sinh Viên trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30 res-tablet-mg-t-30 dk-res-t-pro-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Tổng CV</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-department"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-3">
+                            <h1 class="text-warning">@Model.numCVs</h1>
+                            <small>
+                                Tổng số CV mà sinh viên <strong>đã tạo</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape res-tablet-mg-t-30 dk-res-t-pro-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Quan Tâm</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-message"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-4">
+                            <h1 class="text-danger">..đang cập nhật</h1>
+                            <small>
+                                Tổng số lượt quan tâm của Sinh viên trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="widgets-programs-area" style="margin:30px 0px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4>Sinh Viên Đi Làm</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-apps"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-1">
+                            <h1 class="text-success">...đang cập nhật</h1>
+                            <small>
+                                Tổng số Sinh viên <strong>đã tìm được việc</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Statistic for Others-->
+<div class="widgets-programs-area" style="margin:30px 0px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3 class="page-header">Nhà Trường</h3>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4 class="tooltips-a" data-tippy-placement="top" data-tippy-content="Số lượng Khoa/Ngành hiện tại" data-tippy-theme="light">Khoa/Ngành</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-apps"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-1">
+                            <h1 class="text-success"><label style="color:brown">@Model.numFaculties</label> Khoa / <label style="color:brown">@Model.numMajors</label> Ngành Đào Tạo</h1>
+                            <small>
+                                Tổng số Khoa/Ngành <strong>đang hoạt động</strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="boxPendingCom">
+                <div class="hpanel widget-int-shape responsive-mg-b-30">
+                    <div class="panel-body">
+                        <div class="stats-title pull-left">
+                            <h4 class="tooltips-a" data-tippy-placement="top" data-tippy-content="Số lượng Vị trí việc làm hiện tại" data-tippy-theme="light">Vị Trí Việc Làm</h4>
+                        </div>
+                        <div class="stats-icon pull-right">
+                            <i class="educate-icon educate-professor"></i>
+                        </div>
+                        <div class="m-t-xl widget-cl-2">
+                            <h1 class="text-info">@Model.numJobPositions</h1>
+                            <small>
+                                Tổng số Vị trí việc làm của các<strong> Khoa/Ngành </strong> trong hệ thống.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="page">
+    <div class="page-header h-300 mb-30">
+        <div class="text-center blue-grey-800 m-0 mt-50">
+            <div class="font-size-50 mb-30 blue-grey-800">
+
+            </div>
+        </div>
+    </div>
+</div>
+<button id="btnPendingCom" class="btn btn-info" style="display:none">notifications</button>
+<button id="btnPendingRec" class="btn btn-info" style="display:none">notifications</button>
+<!--basicErrorNoDelay-->
+<!----JS HERE-->
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.page-header').css('margin', "30px 0 10px");
+            $('.page-header').css('color', "#6997a1");
+            if ('@Model.numPendingComs' > 0) {
+                $('#boxPendingCom').css('background-color', "#f53314");
+                $('#boxPendingCom').css('box-shadow', "0px 1px 5px -1px");
+                document.getElementById('btnPendingCom').click();
+                $(".icon-el i").attr("class", "fas fa-exclamation-circle");
+            }
+            if ('@Model.numPendingRecs' > 0) {
+                $('#boxPendingRec').css('background-color', "#f53314");
+                $('#boxPendingRec').css('box-shadow', "0px 1px 5px -1px");
+                document.getElementById('btnPendingRec').click();
+            }
+        });
+    </script>
+    <script>
+        $('#btnPendingCom').on('click', function () {
+            Lobibox.notify('error', {
+                delay: false,
+                title: 'Xét duyệt Công ty ngay!',
+                msg: 'Có một số Công ty đang yêu cầu xét duyệt! Vui lòng kiểm tra mục "Công ty đang chờ xác nhận" ngay!'
+            });
+            $('.lobibox-notify').attr('id', "notiPendingCom");
+        });
+        $('#btnPendingRec').on('click', function () {
+            Lobibox.notify('error', {
+                delay: false,
+                title: 'Xét duyệt Tin tuyển dụng ngay!',
+                msg: 'Có một số Tin tuyển dụng đang yêu cầu xét duyệt! Vui lòng kiểm tra mục "Tin tuyển dụng chờ xác nhận" ngay!'
+            });
+            $('.lobibox-notify').attr('data-rec', "notiPendingRec");
+        });
+    </script>
+    @*<script>
+            $(document).on('click', '.lobibox-notify', function () {
+                window.location = '@Url.Action("Pending","Account",new { area = "Staff"})';
+            });
+        </script>*@
+
+    <script src="~/Scripts/Js_Admin/Lobibox.js"></script>
+    <script src="~/Scripts/Js_Admin/notification-active.js"></script>
+    <!--JS for tooltips-->
+    <script src="~/Scripts/Js_Company/popper.min.js"></script>
+    <script src="~/Scripts/JS_Student/index.all.min.js"></script>
+    <script>
+        tippy('.tooltips-a');
+    </script>
+}
+

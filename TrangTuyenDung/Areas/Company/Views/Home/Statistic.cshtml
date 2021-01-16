@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "Statistic";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+@section styles{
+    <link href="~/Content/CSS_Company/Layout/master_style.css" rel="stylesheet" />
+    <link href="~/Content/allplugins.css" rel="stylesheet" />
+    <link href="~/Content/CSS_Company/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+}
+
+<div class="dashboard-content-container" data-simplebar>
+
+
+    <div class="dashboard-content-inner">
+        <!--Input Form-->
+        <div class="dashboard-box">
+            <div class="headline">
+                <i class="icon-material-outline-description"></i><a> Thống kê Tin tuyển dụng và Ứng viên của bạn!</a>
+                <br />
+                <!--Enable this form if you want to expand more selections for statistic - Checkbox for view list-->
+                @*<div class="col-md-6 col-lg-6" style="display:inline">
+                        <div class="inputGroup">
+                            <input type="checkbox" id="chkDetail" name="chkDetail" />
+                            <label for="chkDetail"><span class="checkbox-icon"></span> Xem Chi Tiết</label>
+                        </div>
+                    </div>*@
+            </div>
+            <div class="content">
+                <!--Date-->
+                <label>Ngày Bắt Đầu</label>
+                <input type="text" class="datepicker" id="staStart" name="staStart" />
+                <label>Ngày Kết Thúc</label>
+                <input type="text" class="datepicker" id="staEnd" name="staEnd" />
+                <!--Submit-->
+                <div class="row">
+                    <div class="col-xl-12" style="text-align:center">
+                        <button id="btnResult" data-url="@Url.Action("Statistic","Home",new { area = "Company"})" class="button ripple-effect big margin-top-30 margin-right-30 margin-bottom-30">Xuất thống kê</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*</form>*@
+        <!--Table Result-->
+        <section id="resultTable" style="margin-top:2%">
+            <label id="loadingIcon" style="display:none">Đang xử lý yêu cầu...</label>
+            <!--Ajax will show result here-->
+        </section>
+    </div>
+</div>
+<!--Developing Message-->
+<div class="modal fade" id="developingMessage" role="dialog" style="margin-top:12%">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Xuất thống kê!</h4>
+            </div>
+            <div class="modal-body">
+                <label style="color:cornflowerblue">Chức năng đang được phát triển! Vui lòng quay lại sau, xin cảm ơn!</label>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Trở Lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <link href="~/Content/CSS_Company/Layout/bootstrap-extend.css" rel="stylesheet" />
+    <script src="~/Scripts/Js_Company/bootstrap.min.js"></script>
+
+    @*<script src="~/Scripts/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css">*@
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/flick/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <!--Jquery for control html-->
+    <script type="text/javascript">
+        $(document).on('click', '#lblMore', function () {
+            if ($('#divMore').css('display') == 'inline') {
+                $('#divMore').attr('style', "display:none");
+            } else {
+                $('#divMore').attr('style', "display:inline");
+            }
+
+        });
+    </script>
+    <!-----Js for show success-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    @*<script>
+            $('li > a').click(function () {
+                $('li').removeClass();
+                $(this).parent().addClass('active');
+            });
+        </script>*@
+    <!----Ajax for generate statistic result-->
+    <script type="text/javascript">
+        function preventCrazyUsers() {
+            $('#btnResult').css('background', "grey");
+            $('#btnResult').attr('disabled', true);
+            var countDown = new Date().getTime() + 5000;
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDown - now;
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                $('#btnResult').text("Xin chờ " + seconds + "s");
+                if (distance < 0) {
+                    clearInterval(x);
+                    $('#btnResult').attr('disabled', false);
+                    $('#btnResult').css('background', "");
+                    $('#btnResult').html("Xuất thống kê");
+                }
+            }, 0);
+        }
+        $(document).on("click", "#btnResult", function () {
+
+            //Get input value
+            var startDay = $('#staStart').val();
+            var endDay = $('#staEnd').val();
+
+            //Check input value
+            if (startDay == "" || endDay == "") {
+                swal("Lỗi!", "Vui lòng chọn đủ ngày bắt đầu và ngày kết thúc!", "error");
+            }
+            else {
+                //Disabled button to prevent crazy users :(
+                preventCrazyUsers();
+
+                $(document).ajaxStart(function () {
+                    //show a waiting label
+                    $('#loadingIcon').attr('style', "display:inline");
+                });
+                $(document).ajaxStop(function () {
+                    //hide progress
+                    $('#loadingIcon').attr('style', "display:none");
+                });
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { startDay: startDay, endDay: endDay },
+                    success: function (data) {
+                        $('#resultTable').html(data);
+                    }
+                });
+            }
+
+        });
+    </script>
+}

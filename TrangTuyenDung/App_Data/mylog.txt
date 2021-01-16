@@ -1,0 +1,1 @@
+Vui lòng truy cập vào link để tham gia: <a href='http://localhost:49925/Company/Account/AccountRegister?_ref=6ORGWTSCXMH7QBU1W31Q'>Đăng ký ngay</a><br />Vui lòng truy cập vào link để tham gia: <a href='http://localhost:49925/Company/Account/AccountRegister?_ref=SFYAVLCH41ZKW6DUUZJY'>Đăng ký ngay</a><br />The specified string is not in the form required for an e-mail address.

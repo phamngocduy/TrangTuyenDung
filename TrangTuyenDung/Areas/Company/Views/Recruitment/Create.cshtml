@@ -1,0 +1,307 @@
+﻿@model TrangTuyenDung.Models.RecruitmentCreate
+
+@{
+    ViewBag.Title = "Đăng tin tuyển dụng";
+    ViewBag.active = "create";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+}
+
+@section Styles {
+    <!-- select2 with bootstrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" integrity="sha256-FdatTf20PQr/rWg+cAKfl6j4/IY3oohFAJ7gVC3M34E=" crossorigin="anonymous" />
+    <link href="~/Content/Vendor/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+}
+
+<!-- Page Header -->
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Tin Tuyển dụng</span>
+        <h3 class="page-title">Đăng Tin Tuyển Dụng</h3>
+    </div>
+</div>
+<!-- End Page Header -->
+<div class="row">
+    @if (ViewBag.Message == "PostSuccess") {
+        <div class="col-12 col-lg-9 col-md-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Tin tuyển dụng của bạn đã được gửi đi và đợi phê duyệt. Bạn có thể kiểm tra tại <a class="alert-link" href="@Url.Action("Pending", "Recruitment", new { area = "Company" })">
+                    [đây].
+                </a>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    }
+
+    <div class="col-12 col-lg-9 col-md-12">
+        <!-- Add New Post Form -->
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Tin Tuyển Dụng</h6>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Create", "Recruitment", new { area = "Company" }, FormMethod.Post, new { entype = "multiple", @id = "myForm" })) {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-row">
+                        <!-- title -->
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="title">Tiêu đề</label>
+                            @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- province/district -->
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="Province_ID">Tỉnh</label>
+                            @Html.DropDownList("Province_ID", ViewBag.province as List<SelectListItem>, new { @class = "form-control form-control-lg", style = "" })
+                            @Html.ValidationMessageFor(m => m.Districts_id, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="Districts_id">Quận/ Huyện</label>
+                            @Html.DropDownList("Districts_id", new SelectList(string.Empty, "Value", "Text"), "--Chọn Quận/Huyện--", htmlAttributes: new { @class = "form-control form-control-lg" })
+                        </div>
+
+                        <!-- job-type -->
+                        <div class="col-12">
+                            <label class="font-weight-medium">Loại hình công việc</label>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-3">
+                            <div class="custom-control custom-checkbox mb-1">
+                                @Html.EditorFor(model => model.Is_Full_Time, new { htmlAttributes = new { @class = "custom-control-input" } })
+                                <label class="custom-control-label" for="Is_Full_Time">Toàn thời gian (Fulltime)</label>
+                                <input class="form-control mb-1 d-none" type="number" id="Num_FullTime" name="Num_FullTime" min="0" placeholder="Số lượng (nếu có)" />
+
+                                @Html.ValidationMessageFor(model => model.Is_Full_Time, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-3">
+                            <div class="custom-control custom-checkbox mb-1">
+                                @Html.EditorFor(model => model.Is_Part_Time, new { htmlAttributes = new { @class = "custom-control-input" } })
+                                <label class="custom-control-label" for="Is_Part_Time">Bán thời gian (Parttime)</label>
+                                <input class="form-control mb-1 d-none" type="number" id="Num_PartTime" name="Num_PartTime" min="0" placeholder="Số lượng (nếu có)" />
+
+                                @Html.ValidationMessageFor(model => model.Is_Part_Time, "", new { @class = "text-danger", @style = "" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4 mb-3">
+                            <div class="custom-control custom-checkbox mb-1">
+                                @Html.EditorFor(model => model.Is_Intership, new { htmlAttributes = new { @class = "custom-control-input" } })
+                                <label class="custom-control-label" for="Is_Intership">Thực tập sinh (Intern)</label>
+                                <input class="form-control mb-1 d-none" type="number" id="Num_Intern" name="Num_Intern" min="0" placeholder="Số lượng (nếu có)" />
+
+                                @Html.ValidationMessageFor(model => model.Is_Intership, "", new { @class = "text-danger", @style = "" })
+                            </div>
+                        </div>
+
+                        <!-- salary -->
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="Salary_from">Lương thấp nhất</label>
+                            @Html.EditorFor(model => model.Salary_from, new { htmlAttributes = new { @class = "form-control form-control-lg", min = "0", @placeholder = "VD: 1.000.000", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Salary_from, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="Salary_to">Lương cao nhất</label>
+                            @Html.EditorFor(model => model.Salary_to, new { htmlAttributes = new { @class = "form-control form-control-lg", min = "0", @placeholder = "VD: 10.000.000", @type = "text" } })
+                            @Html.ValidationMessageFor(model => model.Salary_to, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- date-time recruit -->
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium">Chọn ngày khoảng ngày tuyển dụng</label>
+                            <div id="pickup-date-range" class="input-daterange input-group input-group-lg">
+                                @Html.EditorFor(model => model.Recruiting_dates, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                @Html.EditorFor(model => model.Expire_date, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ngày hết hạn", @autocomplete = "off" } })
+                                <span class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="material-icons"></i>
+                                    </span>
+                                </span>
+                                @Html.ValidationMessageFor(model => model.Recruiting_dates, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.Expire_date, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <!-- marjor + job-position -->
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="RecMajor">Ngành đào tạo tại Văn Lang</label>
+                            @Html.ListBoxFor(m => m.RecMajor, ViewBag.RecMajor as List<SelectListItem>, new { @class = "selectpicker", @id = "RecMajor", @title = "-- Chọn chuyên ngành --", @name = "RecMajor", @multiple = "true" })
+                            @Html.ValidationMessageFor(m => m.RecMajor, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="font-weight-medium" for="Job_Position_Id">Vị Trí Ứng Tuyển</label>
+                            @Html.DropDownList("Job_Position_Id", new SelectList(string.Empty, "Value", "Text"), "-- Chọn Vị Trí Ứng Tuyển --", htmlAttributes: new { @class = "form-control form-control-lg" })
+                            @Html.ValidationMessageFor(m => m.Job_Position_Id, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-12 col-md-6 offset-md-6 mb-3">
+                            <div class="custom-control custom-checkbox mb-1">
+                                <input type="checkbox" class="custom-control-input" id="checkOtherJobPos" />
+                                <label class="custom-control-label" for="checkOtherJobPos">Vị trí khác</label>
+                            </div>
+                            @Html.EditorFor(model => model.other_job, new { htmlAttributes = new { @class = "form-control form-control-sm mb-2 d-none", @id = "otherJobPosition", @placeholder = "Nhập loại thực tập (Khác)" } })
+                            @Html.ValidationMessageFor(model => model.other_job, "", new { @class = "text-danger d-block" })
+                        </div>
+
+                        <!-- job description -->
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="Mo_ta_Chi_Tiet">Mô tả công việc</label>
+                            @Html.TextAreaFor(model => model.Mo_ta_Chi_Tiet, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                            @Html.ValidationMessageFor(model => model.Mo_ta_Chi_Tiet, "", new { @class = "text-danger", @style = "" })
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="Ky_Nang_Cong_Viec">Kĩ năng yêu cầu</label>
+                            @Html.TextAreaFor(model => model.Ky_Nang_Cong_Viec, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                            @Html.ValidationMessageFor(model => model.Ky_Nang_Cong_Viec, "", new { @class = "text-danger", @style = "" })
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="Yeu_Cau_Cong_Viec">Công việc yêu cầu</label>
+                            @Html.TextAreaFor(model => model.Yeu_Cau_Cong_Viec, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                            @Html.ValidationMessageFor(model => model.Yeu_Cau_Cong_Viec, "", new { @class = "text-danger", @style = "" })
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="Phuc_Loi">Phúc lợi</label>
+                            @Html.TextAreaFor(model => model.Phuc_Loi, new { htmlAttributes = new { @class = "form-control form-control-lg" } })
+                            @Html.ValidationMessageFor(model => model.Phuc_Loi, "", new { @class = "text-danger", @style = "" })
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="font-weight-medium" for="Tuy_Chon">Thông tin liên hệ</label>
+                            @Html.TextAreaFor(model => model.Tuy_Chon, new { htmlAttributes = new { @class = "form-control form-control-lg", @required = "true" } })
+                            @Html.ValidationMessageFor(model => model.Tuy_Chon, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end pt-3 border-top">
+                        <input type="submit" value="XEM TRƯỚC" class="btn btn-outline-secondary px-3 mr-2" name="submit" />
+                        <input type="submit" value="ĐĂNG TIN" class="btn btn-primary btn-xl px-3" name="submit" />
+                    </div>
+                }
+            </div>
+        </div>
+        <!-- / Add New Post Form -->
+    </div>
+</div>
+
+@section scripts{
+    <!-- select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js" integrity="sha256-wfVTTtJ2oeqlexBsfa3MmUoB77wDNRPqT1Q1WA2MMn4=" crossorigin="anonymous"></script>
+
+    <!-- tinyMCE -->
+    <script src="~/Scripts/Vendor/tinymce/tinymce.min.js"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const form = $("#myForm");
+            const salaryFr = $("#Salary_from");
+            const salaryTo = $("#Salary_to");
+            const dateRage = $('#pickup-date-range');
+
+            // select company
+            const companySelect = $("#Company_Id");
+
+            // select province/district
+            const provinceSelect = $("#Province_ID");
+            const districtSelect = $("#Districts_id");
+
+            // select-dropdowm
+            const recMajor = $("#RecMajor");
+            const jobPost = $("#Job_Position_Id");
+
+            initTinymce();
+
+            // Search in dropdown
+            searchSelect2(provinceSelect, "--Chọn Tỉnh/TP--");
+            searchSelect2(districtSelect, "--Chọn Quận/Huyện--");
+            searchSelect2(companySelect, "--Chọn công ty--");
+            searchSelect2(recMajor, "--Chọn chuyên Ngành--");
+            searchSelect2(jobPost, "--Chọn vị trí ứng tuyển--");
+
+            // Show input when chechked
+            showInputOnChecked($('#Is_Full_Time'), $('#Num_FullTime'));
+            showInputOnChecked($('#Is_Part_Time'), $('#Num_PartTime'));
+            showInputOnChecked($('#Is_Intership'), $('#Num_Intern'));
+            showInputOnChecked($('#checkOtherJobPos'), $('#otherJobPosition'));
+
+            // init daterange picker
+            dateRage.datepicker({ todayHighlight: true });
+
+            // format currency
+            salaryFr.keyup(function () {
+                this.value = formatCurrency(this.value);
+            });
+            salaryTo.keyup(function () {
+                this.value = formatCurrency(this.value);
+            });
+
+            // format be4 submit form
+            form.submit(function () {
+                salaryFr.val((_i, v) => Number(v.replace(/\./g, '')));
+                salaryTo.val((_i, v) => Number(v.replace(/\./g,'')));
+            });
+
+
+            // loading province
+            provinceSelect.change(function () {
+                districtSelect.empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDistrictsByProvinceID", "Account",new { area="Company"})',
+                    dataType: 'json',
+                    data: { id: provinceSelect.val() },
+                    success: function (districts) {
+                        $.each(districts, function (_, district) {
+                            districtSelect.append('<option value="' + district.Value + '">' +
+                                district.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        districtSelect.append('<option value="" selected hidden>' + 'Không có dữ liệu tương ứng' + '</option>');
+                    }
+                });
+                return false;
+            })
+
+            // loading major
+            recMajor.change(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetJobPositionByMajor", "Recruitment", new { area=""})',
+                    dataType: 'json',
+                    data: { id: recMajor.val() },
+                    success: function (Job_Position) {
+                        $.each(Job_Position, function (_, Job_Position) {
+                            jobPost.append('<option value="' + Job_Position.Value + '">' +
+                                Job_Position.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        jobPost.append('<option value="" selected hidden>' + 'Không có dữ liệu tương ứng' + '</option>');
+                    }
+                });
+                return false;
+            });
+
+            function showInputOnChecked(checkbox, inputField) {
+                checkbox.click(function () {
+                    if ($(this).is(':checked')) {
+                        inputField.removeClass('d-none');
+                    } else {
+                        inputField.addClass('d-none');
+                    }
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Thống Kê";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/CSS_Staff/preloader-style.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="sparkline13-list">
+            <div class="sparkline13-hd">
+                <div class="main-sparkline13-hd">
+                    <h2>Thống Kê</h2>
+                </div>
+            </div>
+            <hr />
+            <div class="sparkline13-graph">
+                <!--Input Date-->
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label>Ngày Bắt Đầu</label>
+                            <input type="text" class="form-control datepicker" id="staStart" name="staStart" />
+                        </div>                        
+                        <div class="form-group">
+                            <label>Ngày Kết Thúc</label>
+                            <input type="text" class="datepicker form-control" id="staEnd" name="staEnd" />
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-info" id="btnResult" data-url="@Url.Action("Statistic","Home",new { area = "Manager"})">Xuất Thống Kê</button>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="resultTable" id="resultTable">
+                    <hr />
+                    <label class="control-label" id="lblLoading" style="display:none">Đang tải dữ liệu...</label>
+                </section>
+                <div class="row" id="ajaxLoading" style="display:none">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="preloader-single shadow-inner res-mg-b-30">
+                            <div class="ts_preloading_box">
+                                <h5>Đang tải dữ liệu...</h5>
+                                <div id="ts-preloader-absolute23">
+                                    <div class="tsperloader23" id="tsperloader23_one"></div>
+                                    <div class="tsperloader23" id="tsperloader23_two"></div>
+                                    <div class="tsperloader23" id="tsperloader23_three"></div>
+                                    <div class="tsperloader23" id="tsperloader23_four"></div>
+                                    <div class="tsperloader23" id="tsperloader23_five"></div>
+                                    <div class="tsperloader23" id="tsperloader23_six"></div>
+                                    <div class="tsperloader23" id="tsperloader23_seven"></div>
+                                    <div class="tsperloader23" id="tsperloader23_eight"></div>
+                                    <div class="tsperloader23" id="tsperloader23_big"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <!--Datepicker-->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/flick/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+    <!-----Js for show success-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!--Ajax for export statistic-->
+    <script type="text/javascript">
+        //this function for prevent user continuity click btnResult
+        function preventCrazyUsers() {
+            $('#btnResult').css('background', "grey");
+            $('#btnResult').attr('disabled', true);
+            var countDown = new Date().getTime() + 5000;
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDown - now;
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                $('#btnResult').text("Xin chờ " + seconds + "s");
+                if (distance < 0) {
+                    clearInterval(x);
+                    $('#btnResult').attr('disabled', false);
+                    $('#btnResult').css('background', "");
+                    $('#btnResult').html("Xuất thống kê");
+                }
+            }, 0);
+        }
+        $(document).on("click", "#btnResult", function () {
+            //Get input value
+            var startDay = $('#staStart').val();
+            var endDay = $('#staEnd').val();
+
+            //Check input value
+            if (startDay == "" || endDay == "") {
+                swal("Lỗi!", "Vui lòng chọn đủ ngày bắt đầu và ngày kết thúc!", "error");
+            }
+            else {
+                //Disabled button to prevent crazy users
+                preventCrazyUsers();
+
+                $(document).ajaxStart(function () {
+                    //Hide result table
+                    $('#resultTable').attr('style', "display:none");
+                    //show a loading animation
+                    $('#ajaxLoading').attr('style', "display:inline");
+
+                });
+                $(document).ajaxStop(function () {
+                    //hide loading animation
+                    $('#ajaxLoading').attr('style', "display:none");
+                    //show result table
+                    $('#resultTable').attr('style', "display:inline");
+                });
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST',
+                    dataType: 'html',
+                    data: { startDay: startDay, endDay: endDay },
+                    success: function (data) {
+                        $('#resultTable').html(data);
+                    }
+                });
+            }
+        });
+    </script>
+
+}
+

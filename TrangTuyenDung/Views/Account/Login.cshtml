@@ -1,0 +1,239 @@
+﻿@using TrangTuyenDung.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/auth.css" rel="stylesheet" />
+}
+
+<div class="auth_page d-flex">
+    <div class="auth_sidebar p-5 bg-light d-none d-lg-block">
+        <a href="@Url.Action("IndexCallBack", "Home", new { area="" })">
+            <img class="logo img-fluid" src="~/Assets/img/vlu-logo-foot.png" alt="Ejob Văn Lang Đại Học" />
+        </a>
+        <h1 class="d-inline">Chào mừng bạn đến với EJob.</h1>
+    </div>
+
+    <main class="justify-content-lg-center align-items-lg-center px-3 py-2">
+        <div class="auth_content w-100">
+            <div class="mb-4">
+                <a class="d-block d-lg-none my-3" href="@Url.Action("IndexCallBack", "Home", new { area=""})">
+                    <img class="img-fluid" src="~/Assets/img/vlu-logo-blue.png" alt="Ejob Văn Lang Đại Học" style="height: 4rem;" />
+                </a>
+                <h2 class="font-weight-bold mb-3 text-dark">Đăng nhập</h2>
+
+                <div class="text-muted">
+                    <div>Bạn là nhà tuyển dụng mới? <a href="@Url.Action("AccountRegister", "Account", new { area = "Company"})">Tạo tài khoản</a></div>
+                    <div>
+                        <span>Là sinh viên Văn Lang?</span>
+                        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                    </div>
+                </div>
+
+
+                @if (ViewBag.Message == "CantLogin") {
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Vui lòng sử dụng tài khoản Sinh viên Văn Lang. Xin cảm ơn!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                else if (ViewBag.Message == "Blocked") {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Công ty của bạn đã bị khóa tạm thời. Vui lòng liên hệ đến email <a class="alert-link" href="mailto:qhdn@vanlanguni.edu.vn">qhdn@vanlanguni.edu.vn</a> để được hỗ trợ.
+                        <br />
+                        Xin cảm ơn!
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                else if (ViewBag.Message == "Success") {
+                    <div class="h5 text-success font-weight-normal">
+                       Đổi mật khẩu thành công.
+                    </div>
+                }
+            </div>
+
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "loginForm", role = "form" })) {
+                @Html.AntiForgeryToken()
+                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                var formMsg = "";
+                if (!ViewData.ModelState.IsValid) {
+                    var showMsgEmail = "";
+                    var showMsgPassword = "";
+                    foreach (var modelStateKey in ViewData.ModelState.Keys) {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors) {
+                            if (modelStateKey == "Email") {
+                                showMsgEmail = " is-invalid";
+                            }
+                            if (modelStateKey == "Password") {
+                                showMsgPassword = " is-invalid";
+                            }
+                            if (String.IsNullOrWhiteSpace(modelStateKey)) {
+                                formMsg = error.ErrorMessage;
+                            }
+                        }
+                    }
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Email">Email</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" + showMsgEmail, @required = "" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "invalid-feedback" })
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Password">Mật khẩu</label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" + showMsgPassword, @required = "" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                    </div>
+                }
+                else {
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Email">Email</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "invalid-feedback" })
+                    </div>
+
+                    <div class="form-group">
+                        <label class="font-weight-medium d-block" for="Password">Mật khẩu</label>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @required = "" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                    </div>
+                }
+
+                <p id="form_msg" class="text-danger">@formMsg</p>
+                <button type="submit" class="btn btn-primary w-50 font-weight-medium">Đăng nhập</button>
+            }
+        <div class="text-muted small my-3">
+            <a href="@Url.Action("IndexCallBack", "Home", new { area=""})">Trang chủ</a>
+            &nbsp;·&nbsp;
+            <a href="@Url.Action("ForgotPassword", "Account", new { area= "" })">Quên mật khẩu?</a>
+        </div>
+        </div>
+    </main>
+</div>
+
+@*
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-6 login-form-1">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </div>
+            <div class="col-md-6 login-form-2">
+                <form>
+                    <div class="login-logo">
+                        <img src="~/Assets/img/vlu-logo-foot.png" alt="" />
+                    </div>
+                    <div class="form-group">
+                        <img src="~/Assets/img/login/enterprise.png" alt="Icon" class="img-responsive" />
+                    </div>
+                    <h3>Bạn là Nhà Tuyển Dụng?</h3>
+                    <div class="form-group">
+                        <h5>@ViewBag.com+ Công ty đang tham gia</h5>
+                    </div>
+                    <div class="form-group">
+                        <a id="#btnLogin" data-toggle="modal" data-target="#loginModal">
+                            <button class='myButt one'>
+                                <div class='insider'></div>
+                                Đăng Nhập Ngay
+                            </button>
+                        </a>
+
+                    </div>
+                    <div class="form-group">
+                        <a href="@Url.Action("Register","Account",new { area = "Company"})" class="btnForgetPwd" style="text-decoration:none;color:white" value="Login">Bạn là Nhà Tuyển Dụng mới? Đăng Ký Ngay!</a>
+                    </div>
+                </form>
+
+                <div class="form-group" style="color:white">
+                    <strong><a href="@Url.Content("~/App_Data/Guideline_Recruiter.pdf")" target="_blank" style="color:#56e4e9">Hướng Dẫn </a> Dành Cho Doanh Nghiệp</strong>
+                </div>
+                <!--Custom Modal-->
+                <!-- Modal -->
+                <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="myModalLabel">Đăng nhập Công Ty</h3>
+                            </div>
+                            <div class="modal-body">
+                                <!--Login Form -->
+                                <section id="loginForm">
+                                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" })) {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        if (!ViewData.ModelState.IsValid) {
+                                            <script type="text/javascript">
+
+                                                    var errors = @Html.Raw(
+                                                    Json.Encode(
+                                                        string.Join(
+                                                    Environment.NewLine,
+                                                    ViewData.ModelState
+                                                        .Where(x => x.Value.Errors.Count > 0)
+                                                        .SelectMany(x => x.Value.Errors)
+                                                        .Select(error => error.ErrorMessage))
+                                                        )
+                                                            );
+                                                    swal("Đăng nhập lỗi!",""+errors,"error");
+                                            </script>
+                                        }
+                                        <br />
+                                        <div class="row">
+                                            @Html.LabelFor(m => m.Email, new { @class = "labelLogin col-md-3 control-label" })
+                                            <div class="col-md-7">
+                                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @style = "width:95%;margin:5px" })
+                                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <label class="labelLogin col-md-3"> Mật Khẩu</label>
+                                            <div class="col-md-7">
+                                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @style = "width:95%;margin:5px" })
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="form-group">
+                                            <input type="submit" value="Đăng Nhập" class="btnSubmit" id="button-1" style="border-color:brown" />
+                                        </div>
+                                        <p style="text-align:center">
+                                            <a href="@Url.Action("Register","Account",new { area = "Company"})">Bạn là Nhà tuyển dụng mới? Đăng ký ngay!</a>
+                                        </p>
+                                    }
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+*@
+
+@section scripts {
+    @*
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="text/javascript">
+            // If have ModalState error, show login diaglog
+            $(document).ready(function () {
+                $(".swal-button").attr('data-toggle', 'modal');
+                $(".swal-button").attr('data-target','#loginModal');
+            });
+
+            if('@ViewBag.Message' == 'CantLogin'){
+                swal("Thông báo!","Vui lòng sử dụng tài khoản Sinh viên Văn Lang! \n Xin cảm ơn!","warning");
+            }
+            else if('@ViewBag.Message' == 'Blocked'){
+                swal("Thông báo!","Công ty đã bị tạm khóa! \n Vui lòng liên hệ đến email: \"p.ctsv@vanlanguni.edu.vn\" \n để được hỗ trợ! \n Xin cảm ơn!","error");
+            }
+        </script>
+    *@
+}

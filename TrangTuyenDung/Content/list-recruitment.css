@@ -1,0 +1,29 @@
+﻿.recruit_post {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+    .recruit_post:hover {
+        background: #fff;
+        border-color: #fff;
+        -webkit-box-shadow: 0 1.25rem 6.25rem 0 rgba(0,0,0,.1);
+        box-shadow: 0 1.25rem 6.25rem 0 rgba(0,0,0,.1);
+    }
+
+    .recruit_post .company_logo {
+        height: 80px;
+        flex: 0 1 80px;
+        border-radius: .25rem;
+        display: flex;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+        .recruit_post .company_logo img {
+            align-self: center;
+            width: 100%;
+        }
+
+    .recruit_post .media-body {
+        width: 100%;
+    }

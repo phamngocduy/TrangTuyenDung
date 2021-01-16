@@ -1,0 +1,592 @@
+﻿@model TrangTuyenDung.Areas.Student.Models.Personal_infoViewModel
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+
+    var msg = "";
+    var notiType = "danger";
+}
+
+@section Styles {
+    <!-- select2 with bootstrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" integrity="sha256-FdatTf20PQr/rWg+cAKfl6j4/IY3oohFAJ7gVC3M34E=" crossorigin="anonymous" />
+    <link href="~/Content/Vendor/select2/select2-bootstrap4.min.css" rel="stylesheet" />
+
+    <!-- bootstrap datepicker3 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha256-FAOaXTpl90/K8cXmSdsskbQN3nKYulhCpPbcFzGTWKI=" crossorigin="anonymous" />
+
+    <!-- account detail CSS -->
+    <link href="~/Content/Student/account-detail.css" rel="stylesheet" />
+}
+
+<div class="container pt-2 pb-4">
+    <div class="mb-2">
+        <a class="btn btn-link" href="@Url.Action("Dashboard", "Account", new { area = "Student" })" role="button"><i class="fas fa-long-arrow-alt-left"></i>  Bảng điều khiển</a>
+
+        @if (ViewBag.Message != "NeedCreateCV") {
+            <a class="btn btn-success float-right px-4" href="@Url.Action("View_CV", "Account", new { area = "Student" })" role="button">Xem CV</a>
+        }
+    </div>
+
+    @if (ViewBag.Message == "NeedCreateCV") {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div>Hiện tại bạn chưa có CV, bạn hãy cập nhật đầy đủ thông tin trước khi xem CV nhé!</div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["update"] == "UserUpdateSuccess") {
+        notiType = "success";
+        msg = "Thông tin cá nhân đã được cập nhật, bạn hãy cập nhật thông tin mới nhất để hiển thị trên CV (ở mục Công Khai CV).";
+    }
+    else if (TempData["update"] == "CvUpdateSuccess") {
+        notiType = "success";
+        msg = "Thông tin CV đã được cập nhật, bạn hãy cập nhật thông tin mới nhất để hiển thị trên CV (ở mục Công Khai CV).";
+    }
+    else if (TempData["update"] == "UserUpdateFail") {
+        notiType = "danger";
+        msg = "Các trường thông tin cá nhân không được để trống. \n Bạn vui lòng kiểm tra lại!";
+    }
+    else if (TempData["update"] == "CVUpdateFail") {
+        notiType = "danger";
+        msg = "Các trường thông tin không hợp lệ! \n Vui lòng kiểm tra lại!";
+    }
+    else {
+        msg = "";
+    }
+
+    <div class="alert alert-@notiType alert-dismissible fade show @(string.IsNullOrWhiteSpace(msg) ? "d-none" : null)" role="alert">
+        <div>@msg</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- profile -->
+    <div class="card mb-2">
+        <div class="card-header font-weight-medium">
+            <i class="far fa-user-circle"></i> Thông tin cá nhân
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("EditStudent_Info", "Account", new { areas = "Student" }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "row flex-column flex-lg-row" })) {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ID)
+
+                <!-- avatar -->
+                <div class="col-auto d-flex justify-content-center">
+                    <div class="avatar-wrapper rounded-circle border border-secondary" title="Thay đổi ảnh đại diện">
+                        <img class="profile-pic" data-src="@Url.Content("~/App_Data/Student/Logos/" + Model.Account_Id + "?RandomKey=" + ViewBag.Random)" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+                        <div class="upload-button"></div>
+                        <input class="file-upload" type="file" accept=".png,.jpg,.jpeg" id="Student_Avatar" name="Student_Avatar" />
+                    </div>
+                    <span id="sizeError" class="d-none text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Cảnh báo: dung lượng ảnh < 2MB
+                    </span>
+                </div>
+
+                <!-- student-info -->
+                <div class="col">
+                    <div class="form-row">
+                        <!-- name -->
+                        <div class="form-group col-12 col-md-6">
+                            <label for="Student_Name">Họ và tên</label>
+                            @Html.EditorFor(model => model.Student_Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Student_Name, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- faculty -->
+                        <div class="form-group col-12 col-md-6">
+                            <label for="Faculties_Id">Chuyên ngành</label>
+                            @Html.DropDownList("Faculties_Id", ViewBag.Faculties_Id as List<SelectListItem>, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Faculties_Id, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- email -->
+                        <div class="form-group col-12 col-md-6">
+                            <label for="email">Email</label>
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+                        </div>
+
+                        <!-- stu id-->
+                        <div class="form-group col-6 col-md-3">
+                            <label for="MSSV">MSSV</label>
+                            @Html.EditorFor(model => model.MSSV, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MSSV, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- class -->
+                        <div class="form-group col-6 col-md-3">
+                            <label for="Student_Class">Lớp</label>
+                            @Html.EditorFor(model => model.Student_Class, new { htmlAttributes = new { @class = "form-control", @id = "Student_Class" } })
+                            @Html.ValidationMessageFor(model => model.Student_Class, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- gender -->
+                        <div class="form-group col-6 col-md-3">
+                            <label for="Student_Gender">Giới tính</label>
+                            @Html.DropDownList("Student_Gender", ViewBag.Student_Gender as List<SelectListItem>, new { @class = "form-control" })
+                        </div>
+
+                        <!-- DoB -->
+                        <div class="form-group col-6 col-md-3">
+                            <label for="Student_Birthday">Ngày sinh</label>
+                            @Html.EditorFor(model => model.Student_Birthday, new { htmlAttributes = new { @class = "form-control", @id = "datepicker" } })
+                            @Html.ValidationMessageFor(model => model.Student_Birthday, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- phone -->
+                        <div class="form-group col-6 col-md-6">
+                            <label for="Student_PhoneNumber">Số điện thoại</label>
+                            @Html.EditorFor(model => model.Student_PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Student_PhoneNumber, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- adress -->
+                        <div class="form-group col-6 col-md-12">
+                            <label for="Student_Address">Địa chỉ</label>
+                            @Html.EditorFor(model => model.Student_Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Student_Address, "", new { @class = "small text-danger d-block" })
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary px-5">Cập nhật</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- CV -->
+    <div class="card">
+        <div class="card-header font-weight-medium">
+            <i class="far fa-address-card"></i> Thông tin CV
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm("Update_CV", "Account", new { areas = "Student" }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "row flex-column flex-lg-row" })) {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ID)
+                <div class="col">
+                    <div class="form-row">
+                        <!-- intro -->
+                        <div class="form-group col-12 col-md-6">
+                            <label for="About_Student">Giới thiệu bản thân</label>
+                            @Html.TextAreaFor(model => model.About_Student, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.About_Student, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- goal -->
+                        <div class="form-group col-12 col-md-6">
+                            <label for="Personal_Goal">Mục tiêu cá nhân</label>
+                            @Html.TextAreaFor(model => model.Personal_Goal, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Personal_Goal, "", new { @class = "small text-danger d-block" })
+                        </div>
+
+                        <!-- skills -->
+                        <div class="form-group col-12">
+                            <div class="w-75 float-left mb-2">Kỹ năng</div>
+                            <div class="w-25 float-left mb-2">Thành thạo</div>
+
+                            <div>
+                                @Html.EditorFor(model => model.PS_01, new { htmlAttributes = new { @class = "form-control mb-1 w-75 float-left rounded-right-0", @placeholder = "Nhập kỹ năng của bạn" } })
+                                @Html.ValidationMessageFor(model => model.PS_01, "", new { @class = "small text-danger d-block" })
+
+                                <div class="input-group w-25 float-left clearfix">
+                                    @Html.EditorFor(model => model.PS_Rate_01, new { htmlAttributes = new { @class = "form-control border-left-0 rounded-0", @placeholder = "Nhập %", @max = "100", @min = "0" } })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text rounded-right" id="basic-addon2">%</span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PS_Rate_01, "", new { @class = "small text-danger d-block" })
+                                </div>
+                            </div>
+
+                            <div>
+                                @Html.EditorFor(model => model.PS_02, new { htmlAttributes = new { @class = "form-control mb-1 w-75 float-left rounded-right-0", @placeholder = "Nhập kỹ năng của bạn" } })
+                                @Html.ValidationMessageFor(model => model.PS_02, "", new { @class = "small text-danger d-block" })
+
+                                <div class="input-group w-25 float-left clearfix">
+                                    @Html.EditorFor(model => model.PS_Rate_02, new { htmlAttributes = new { @class = "form-control border-left-0 rounded-0", @placeholder = "Nhập %", @max = "100", @min = "0" } })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text rounded-right" id="basic-addon2">%</span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PS_Rate_02, "", new { @class = "small text-danger d-block" })
+                                </div>
+                            </div>
+
+                            <div>
+                                @Html.EditorFor(model => model.PS_03, new { htmlAttributes = new { @class = "form-control mb-1 w-75 float-left rounded-right-0", @placeholder = "Nhập kỹ năng của bạn" } })
+                                @Html.ValidationMessageFor(model => model.PS_03, "", new { @class = "small text-danger d-block" })
+
+                                <div class="input-group w-25 float-left clearfix">
+                                    @Html.EditorFor(model => model.PS_Rate_03, new { htmlAttributes = new { @class = "form-control border-left-0 rounded-0", @placeholder = "Nhập %", @max = "100", @min = "0" } })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text rounded-right" id="basic-addon2">%</span>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.PS_Rate_03, "", new { @class = "small text-danger d-block" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- work employee before -->
+                    <hr />
+                    <div class="clearfix">
+                        <div class="mb-3"><span class="h6">Kinh nghiệm làm việc</span> <span class="small text-secondary">(nếu có)</span></div>
+                        <ul class="nav nav-tabs nav-justified" id="weTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary active" id="we1-tab" data-toggle="tab" href="#we1" role="tab" aria-controls="we1" aria-selected="true">Công ty 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary" id="we2-tab" data-toggle="tab" href="#we2" role="tab" aria-controls="we2" aria-selected="false">Công ty 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary" id="we3-tab" data-toggle="tab" href="#we3" role="tab" aria-controls="we3" aria-selected="false">Công ty 3</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-3" id="myTabContent">
+                            <!-- we1 -->
+                            <div class="tab-pane fade show active" id="we1" role="tabpanel" aria-labelledby="we1-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Company_01">Tên công ty</label>
+                                        @Html.EditorFor(model => model.WE_Company_01, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập vào tên công ty / tổ chức" } })
+                                        @Html.ValidationMessageFor(model => model.WE_Company_01, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Date_Start_01">Ngày (mm/dd/yyyy)</label>
+                                        <div class="input-daterange input-group">
+                                            @Html.EditorFor(model => model.WE_Date_Start_01, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                            <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                                            @Html.EditorFor(model => model.WE_Date_End_01, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày kết thúc", @autocomplete = "off" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.WE_Date_Start_01, "", new { @class = "small text-danger d-block" })
+                                        @Html.ValidationMessageFor(model => model.WE_Date_End_01, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="WE_Description_01">Mô tả về công việc bạn làm</label>
+                                        @Html.TextAreaFor(model => model.WE_Description_01, new { @class = "form-control", @placeholder = "Nhập vào mô tả ngắn về công việc" })
+                                        @Html.ValidationMessageFor(model => model.WE_Description_01, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- we2 -->
+                            <div class="tab-pane fade pt-3" id="we2" role="tabpanel" aria-labelledby="we2-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Company_02">Tên công ty</label>
+                                        @Html.EditorFor(model => model.WE_Company_02, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập vào tên công ty / tổ chức" } })
+                                        @Html.ValidationMessageFor(model => model.WE_Company_02, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Date_Start_01">Ngày (mm/dd/yyyy)</label>
+                                        <div class="input-daterange input-group">
+                                            @Html.EditorFor(model => model.WE_Date_Start_02, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                            <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                                            @Html.EditorFor(model => model.WE_Date_End_02, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày kết thúc", @autocomplete = "off" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.WE_Date_Start_02, "", new { @class = "small text-danger d-block" })
+                                        @Html.ValidationMessageFor(model => model.WE_Date_End_02, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="WE_Description_02">Mô tả về công việc bạn làm</label>
+                                        @Html.TextAreaFor(model => model.WE_Description_02, new { @class = "form-control", @placeholder = "Nhập vào mô tả ngắn về công việc" })
+                                        @Html.ValidationMessageFor(model => model.WE_Description_02, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- we3-->
+                            <div class="tab-pane fade pt-3" id="we3" role="tabpanel" aria-labelledby="we3-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Company_03">Tên công ty</label>
+                                        @Html.EditorFor(model => model.WE_Company_03, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập vào tên công ty / tổ chức" } })
+                                        @Html.ValidationMessageFor(model => model.WE_Company_03, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="WE_Date_Start_01">Ngày (mm/dd/yyyy)</label>
+                                        <div class="input-daterange input-group">
+                                            @Html.EditorFor(model => model.WE_Date_Start_03, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                            <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                                            @Html.EditorFor(model => model.WE_Date_End_03, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày kết thúc", @autocomplete = "off" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.WE_Date_Start_03, "", new { @class = "small text-danger d-block" })
+                                        @Html.ValidationMessageFor(model => model.WE_Date_End_03, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="WE_Description_03">Mô tả về công việc bạn làm</label>
+                                        @Html.TextAreaFor(model => model.WE_Description_03, new { @class = "form-control", @placeholder = "Nhập vào mô tả ngắn về công việc" })
+                                        @Html.ValidationMessageFor(model => model.WE_Description_03, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project do before -->
+                    <hr />
+                    <div class="clearfix">
+                        <div class="mb-3"><span class="h6">Dự án tiêu biểu</span> <span class="small text-secondary">(nếu có)</span></div>
+                        <ul class="nav nav-tabs nav-justified" id="proTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary active" id="pro1-tab" data-toggle="tab" href="#pro1" role="tab" aria-controls="pro1" aria-selected="true">Dự án 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary" id="pro2-tab" data-toggle="tab" href="#pro2" role="tab" aria-controls="pro2" aria-selected="false">Dự án 2</a>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="tab-content pt-3" id="myTabContent">
+                            <!-- we1 -->
+                            <div class="tab-pane fade show active" id="pro1" role="tabpanel" aria-labelledby="pro1-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="Pro_01">Tên dự án</label>
+                                        @Html.EditorFor(model => model.Project_Name_1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập vào tên dự án tham gia" } })
+                                        @Html.ValidationMessageFor(model => model.Project_Name_1, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="Pro_Date_Start_01">Ngày (mm/dd/yyyy)</label>
+                                        <div class="input-daterange input-group">
+                                            @Html.EditorFor(model => model.Project_Date_Start_1, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                            <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                                            @Html.EditorFor(model => model.Project_Date_End_1, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày kết thúc", @autocomplete = "off" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Project_Date_Start_1, "", new { @class = "small text-danger d-block" })
+                                        @Html.ValidationMessageFor(model => model.Project_Date_End_1, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="Pro_Description_01">Mô tả về dự án</label>
+                                        @Html.TextAreaFor(model => model.Project_Description_1, new { @class = "form-control", @placeholder = "Nhập vào mô tả ngắn về dự án" })
+                                        @Html.ValidationMessageFor(model => model.Project_Description_1, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- we2 -->
+                            <div class="tab-pane fade pt-3" id="pro2" role="tabpanel" aria-labelledby="pro2-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="Pro_Company_02">Tên Dự án</label>
+                                        @Html.EditorFor(model => model.Project_Name_2, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nhập vào tên công ty / tổ chức" } })
+                                        @Html.ValidationMessageFor(model => model.Project_Name_2, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="Pro_Date_Start_01">Ngày (mm/dd/yyyy)</label>
+                                        <div class="input-daterange input-group">
+                                            @Html.EditorFor(model => model.Project_Date_Start_2, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày bắt đầu", @autocomplete = "off" } })
+                                            <span class="input-group-text rounded-0 border-left-0 border-right-0">đến</span>
+                                            @Html.EditorFor(model => model.Project_Date_End_2, new { htmlAttributes = new { @class = "form-control text-left", @placeholder = "Ngày kết thúc", @autocomplete = "off" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Project_Date_Start_2, "", new { @class = "small text-danger d-block" })
+                                        @Html.ValidationMessageFor(model => model.Project_Date_End_2, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="Pro_Description_02">Mô tả về dự án </label>
+                                        @Html.TextAreaFor(model => model.Project_Description_2, new { @class = "form-control", @placeholder = "Nhập vào mô tả ngắn về công việc" })
+                                        @Html.ValidationMessageFor(model => model.Project_Description_2, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- we3-->
+                        
+                        </div>
+                    </div>
+
+                    <!-- certificate -->
+                    <hr />
+                    <div class="clearfix">
+                        <div class="mb-3"><span class="h6">Chứng chỉ</span> <span class="small text-secondary">(nếu có)</span></div>
+                        <ul class="nav nav-tabs nav-justified" id="certifyTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary active" id="cer1-tab" data-toggle="tab" href="#cer1" role="tab" aria-controls="cer1" aria-selected="true">Chứng chỉ 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary" id="cer2-tab" data-toggle="tab" href="#cer2" role="tab" aria-controls="cer2" aria-selected="false">Chứng chỉ 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-medium text-secondary" id="cer3-tab" data-toggle="tab" href="#cer3" role="tab" aria-controls="cer3" aria-selected="false">Chứng chỉ 3</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-3" id="myCerTabContent">
+                            <!-- cer1 -->
+                            <div class="tab-pane fade show active" id="cer1" role="tabpanel" aria-labelledby="cer1-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-8">
+                                        <label for="Cer_Name_01">Tên chứng chỉ</label>
+                                        @Html.EditorFor(model => model.Cer_Name_01, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_Name_01, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label for="Cer_GetDate_01">Năm</label>
+                                        @Html.EditorFor(model => model.Cer_GetDate_01, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_GetDate_01, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="Cer_Description_01">Mô tả</label>
+                                        @Html.TextAreaFor(model => model.Cer_Description_01, new { @class = "form-control", @placeholder = "Nhập vào mô tả chứng chỉ" })
+                                        @Html.ValidationMessageFor(model => model.Cer_Description_01, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- cer2 -->
+                            <div class="tab-pane fade show" id="cer2" role="tabpanel" aria-labelledby="cer2-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-8">
+                                        <label for="Cer_Name_02">Tên chứng chỉ</label>
+                                        @Html.EditorFor(model => model.Cer_Name_02, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_Name_02, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label for="Cer_GetDate_02">Năm</label>
+                                        @Html.EditorFor(model => model.Cer_GetDate_02, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_GetDate_02, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="Cer_Description_02">Mô tả</label>
+                                        @Html.TextAreaFor(model => model.Cer_Description_02, new { @class = "form-control", @placeholder = "Nhập vào mô tả chứng chỉ" })
+                                        @Html.ValidationMessageFor(model => model.Cer_Description_02, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- cer3 -->
+                            <div class="tab-pane fade show" id="cer3" role="tabpanel" aria-labelledby="cer3-tab">
+                                <div class="form-row">
+                                    <div class="form-group col-8">
+                                        <label for="Cer_Name_03">Tên chứng chỉ</label>
+                                        @Html.EditorFor(model => model.Cer_Name_03, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_Name_03, "", new { @class = "small text-danger d-block" })
+                                    </div>
+
+                                    <div class="form-group col-4">
+                                        <label for="Cer_GetDate_03">Năm</label>
+                                        @Html.EditorFor(model => model.Cer_GetDate_03, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Cer_GetDate_03, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label for="Cer_Description_03">Mô tả</label>
+                                        @Html.TextAreaFor(model => model.Cer_Description_03, new { @class = "form-control", @placeholder = "Nhập vào mô tả chứng chỉ" })
+                                        @Html.ValidationMessageFor(model => model.Cer_Description_03, "", new { htmlAttributes = new { @class = "small text-danger d-block" } })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CV template -->
+                    <hr />
+                    <div class="clearfix">
+                        <div class="h6 mb-3">Chọn mẫu CV</div>
+
+                        <div class="custom-control custom-radio w-50 float-left">
+                            <input type="radio" id="CV01" name="CV_Template_Id" value="1" class="custom-control-input" checked="@(Model.CV_Template_Id == 1)" required>
+                            <label class="custom-control-label" for="CV01">
+                                Mẫu Số 01
+                                <img src="~/Assets/img/CV_Template01.png" alt="Mẫu Số 01" />
+                            </label>
+                        </div>
+                        <div class="custom-control custom-radio w-50 float-left">
+                            <input type="radio" id="CV02" name="CV_Template_Id" value="2" class="custom-control-input" checked="@(Model.CV_Template_Id == 2)">
+                            <label class="custom-control-label" for="CV02">
+                                Mẫu Số 02
+                                <img src="~/Assets/img/CV_Template02.png" alt="Mẫu Số 02" />
+                            </label>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.CV_Template_Id, "", new { @class = "small font-weight-medium text-danger" })
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-2">
+                        <button type="submit" class="btn btn-primary px-5">Lưu</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <!-- bootstrap datepicker3 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.vi.min.js" integrity="sha256-TnMvef6AxT9fg6mNrTsZCgPDkU4g5EyB+tu66oLAI4U=" crossorigin="anonymous"></script>
+
+    <!-- select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js" integrity="sha256-wfVTTtJ2oeqlexBsfa3MmUoB77wDNRPqT1Q1WA2MMn4=" crossorigin="anonymous"></script>
+
+    <!-- tinyMCE -->
+    <script src="~/Scripts/Vendor/tinymce/tinymce.min.js"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            initTinymce();
+            initDatepickup($('.input-daterange'));
+
+            searchSelect2($("#Faculties_Id"), "--Chọn ngành--");
+
+            const readURL = function (input) {
+                const errMsg = $('#sizeError');
+                if (input.files[0].size > 2097152) { // 2MB
+                    errMsg.removeClass('d-none');
+                    return;
+                }
+                else {
+                    errMsg.addClass('d-none');
+                }
+
+                if (input.files && input.files[0]) {
+                    let reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('.profile-pic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+
+            $(".upload-button").on('click', function () {
+                $(".file-upload").click();
+            });
+
+            window.addEventListener('load', function () {
+                var allimages = document.getElementsByTagName('img');
+                for (var i = 0; i < allimages.length; i++) {
+                    if (allimages[i].getAttribute('data-src')) {
+                        allimages[i].setAttribute('src', allimages[i].getAttribute('data-src'));
+                    }
+                }
+            }, false);
+        });
+    </script>
+}
+

@@ -1,0 +1,27 @@
+2021-01-15 09:35:12,486 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 09:49:22,195 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 09:51:52,762 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 09:52:17,295 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 14:20:58,981 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 14:55:39,780 INFO TrangTuyenDung.Areas.Staff.Controllers.AccountController - Duy_abu approved
+2021-01-15 14:55:39,863 ERROR TrangTuyenDung.Areas.Staff.Controllers.AccountController - Approve company error
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TrangTuyenDung.Sercurity_SendMail.SendMail.SendEmail_ApproveAccount_toCompany(Nullable`1 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Sercurity_SendMail\SendMail.cs:line 21
+   at TrangTuyenDung.Areas.Staff.Controllers.AccountController.Approved(Int32 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Areas\Staff\Controllers\AccountController.cs:line 248
+2021-01-15 14:56:25,606 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 14:59:55,893 INFO TrangTuyenDung.Areas.Staff.Controllers.AccountController - Duy_abu approved
+2021-01-15 15:09:58,798 ERROR TrangTuyenDung.Areas.Staff.Controllers.AccountController - Approve company error
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TrangTuyenDung.Sercurity_SendMail.SendMail.SendEmail_ApproveAccount_toCompany(Nullable`1 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Sercurity_SendMail\SendMail.cs:line 21
+   at TrangTuyenDung.Areas.Staff.Controllers.AccountController.Approved(Int32 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Areas\Staff\Controllers\AccountController.cs:line 248
+2021-01-15 15:15:31,904 INFO TrangTuyenDung.Areas.Staff.Controllers.AccountController - Duy_abu approved
+2021-01-15 15:16:29,503 ERROR TrangTuyenDung.Areas.Staff.Controllers.AccountController - Approve company error
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at TrangTuyenDung.Sercurity_SendMail.SendMail.SendEmail_ApproveAccount_toCompany(Nullable`1 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Sercurity_SendMail\SendMail.cs:line 21
+   at TrangTuyenDung.Areas.Staff.Controllers.AccountController.Approved(Int32 id) in D:\Projects\TrangTuyenDung\TrangTuyenDung\Areas\Staff\Controllers\AccountController.cs:line 248
+2021-01-15 15:22:57,697 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 16:15:49,748 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 16:16:20,682 INFO TrangTuyenDung.Areas.Staff.Controllers.AccountController - Duy_abu approved
+2021-01-15 16:40:30,253 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 16:42:06,090 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-01-15 16:42:58,880 INFO TrangTuyenDung.Controllers.HomeController - ::1

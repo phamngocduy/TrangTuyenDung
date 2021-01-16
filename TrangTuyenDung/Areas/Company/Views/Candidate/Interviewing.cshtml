@@ -1,0 +1,353 @@
+﻿@model IEnumerable<TrangTuyenDung.Models.Apply_Recruitments>
+
+@{
+    ViewBag.Title = "Đợi phỏng vấn";
+    Layout = "~/Areas/Company/Views/Shared/_LayoutCompany.cshtml";
+    ViewBag.active = "candidate-interview";
+}
+
+@section Styles {
+    <!-- datatable boostrap4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" integrity="sha256-F+DaKAClQut87heMIC6oThARMuWne8+WzxIDT7jXuPA=" crossorigin="anonymous" />
+}
+
+<!-- Page Header -->
+<div class="page-header row no-gutters py-4">
+    <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <span class="text-uppercase page-subtitle">Ứng tuyển</span>
+        <h3 class="page-title">Ứng Viên đợi phỏng vấn</h3>
+    </div>
+</div>
+<!-- End Page Header -->
+<!-- Main Content -->
+<div class="row">
+    <div class="col-12">
+        @if (ViewBag.Message == "ChangeDateSuccess") {
+            <div class="col-12 col-lg-9 col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Thay đổi lịch thành công.<br /> Email lịch phỏng vấn mới đã được gửi đến Ứng Viên.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        }
+        else if (ViewBag.Message == "CancelDateSuccess") {
+            <div class="col-12 col-lg-9 col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Hủy bỏ lịch phỏng vấn thành công. <br /> Email thông báo đã được gửi đến Ứng Viên.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        }
+        else if (ViewBag.Message == "HireSuccess") {
+            <div class="col-12 col-lg-9 col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Thông báo đã được gửi đến Ứng viên và chờ xác nhận đi làm.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        }
+        else if (ViewBag.Message == "NotHireSuccess") {
+            <div class="col-12 col-lg-9 col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Bạn đã lựa chọn không tuyển ứng viên.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-12">
+        <div class="card card-small mb-3">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">Ứng tuyển</h6>
+            </div>
+
+            <div class="card-body">
+                @if (Model.Count() <= 0) {
+                    <div>Không có dữ liệu.</div>
+                }
+                else {
+                    <table id="table" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Họ Tên</th>
+                                <th>Vị Trí Ứng Tuyển</th>
+                                <th>Ngày Nộp</th>
+                                <th>Ngày Phỏng Vấn</th>
+                                <th>Xem CV</th>
+                                <th>Xác nhận phỏng vấn</th>
+                                <th>Thao Tác</th>
+                                <th>Kết Quả Phỏng Vấn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model) {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV_Info.Student_Info.Student_Name)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Detail", "Recruitment", new { area = "", id = item.Recruitment_ID })">
+                                            @item.Recruitment.title
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date_Apply)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date_Interview)
+                                    </td>
+                                    <td>
+                                        <a role="button" class="btn btn-outline-success" href="@Url.Action("ViewCV", "Candidate", new { area = "Company", id = item.Id })" target="_blank">Xem CV</a>
+                                    </td>
+                                    <td>
+                                        @if (item.Student_Confirm == null) {
+                                            <p>Chưa xác nhận</p>
+                                        }
+                                        else if (item.Student_Confirm == true) {
+                                            <p>Đồng ý</p>
+                                        }
+                                        else if (item.Student_Confirm == false) {
+                                            <p>Từ chối</p>
+                                            <p>@item.Reason</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a role="button" id="changeDateButton" class="btn btn-outline-warning" data-toggle="modal" data-target="#changeDateDialog" data-url="@Url.Action("ChangeInterviewDate", "Candidate", new { area = "Company", id = item.Id })">
+                                            Đổi Lịch
+                                        </a>
+                                        <a role="button" class="btn btn-outline-danger" id="cancelDateButton" data-toggle="modal" data-target="#cancelDateDialog" data-url="@Url.Action("CancelInterviewDate", "Candidate", new { area = "Company", id = item.Id })">
+                                            Hủy Lịch
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a role="button" class="btn btn-success text-white" id="hireButton" data-toggle="modal" data-target="#hireDialog" data-url="@Url.Action("HireCandidate", "Candidate", new { area = "Company", id = item.Id })">
+                                            Tuyển
+                                        </a>
+                                        <a role="button" class="btn btn-danger text-white" id="notHireButton" data-toggle="modal" data-target="#notHireDialog" data-url="@Url.Action("NotHireCandidate", "Candidate", new { area = "Company", id = item.Id })">
+                                            Không tuyển
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Interview Date Dialog -->
+<div class="modal fade" id="changeDateDialog" role="dialog">
+    <div class="modal-dialog">
+        <form class="form" id="changeDateForm" method="post" action="#">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-medium">Thay đổi thời gian phỏng vấn</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Thời gian phỏng vấn mới:</label>
+                        <input id="interviewDate" name="interviewDate" type="text" autocomplete="off" />
+                    </div>
+                    <div>
+                        <input id="changeDateNote" name="approveNote" type="checkbox" />
+                        <label for="changeDateNote">Lưu ý</label>
+                        <div id="showNote" style="display:none;">
+                            <textarea class="w-100" id="changeDateNoted" name="changeDateNoted" rows="3" placeholder="Nhập một vài ghi chú..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Để Sau</button>
+                    <button type="submit" name="submit" class="btn btn-success">Xác Nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Cancel Interview Date Confirm Dialog -->
+<div class="modal fade" id="cancelDateDialog" role="dialog">
+    <div class="modal-dialog">
+        <form class="form" id="cancelDateForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-medium">Vui lòng chọn lý do hủy lịch phỏng vấn</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="inputGroup">
+                        <label style="font-style:italic;color:darkgray">Lưu ý: Hủy bỏ lịch phỏng vấn sẽ gây trải nghiệm không tốt đến Sinh viên!!</label>
+                    </div>
+                    <div class="inputGroup">
+                        <input id="option1" name="option1" type="checkbox" value="1" />
+                        <label for="option1">Công việc đã tuyển đủ người</label>
+                    </div>
+
+                    <div class="inputGroup">
+                        <input id="option2" name="option2" type="checkbox" value="2" />
+                        <label for="option2">Thay đổi yêu cầu tuyển dụng</label>
+                    </div>
+                    <div class="inputGroup">
+                        <input id="option_other" name="option_other" type="checkbox" value="3" />
+                        <label for="option_other">Khác</label>
+                        <div id="showReason" class="inputGroup" style="display:none;">
+                            <textarea class="w-100" id="other_reason" name="other_reason" rows="3" placeholder="Nhập lý do hủy lịch..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Quay lại</button>
+                    <button type="submit" name="submit" class="btn btn-danger">Hủy Lịch</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Hire Candidate Confirm Dialog -->
+<div class="modal fade" id="hireDialog" role="dialog" style="margin-top:12%">
+    <div class="modal-dialog">
+        <form class="form" id="hireForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tuyển Ứng Viên</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Ngày bắt đầu công việc:</label>
+                        <input id="workDate" name="workDate" type="text" autocomplete="off" />
+                    </div>
+                    <div>
+                        <label>Địa điểm làm việc:</label>
+                        <br />
+                        <textarea class="w-100" rows="2" id="workAddress" name="workAddress" placeholder="Nhập địa điểm đi làm.."></textarea>
+                    </div>
+                    <div>
+                        <input id="hireNote" name="hireNote" type="checkbox" />
+                        <label for="hireNote">Thêm ghi chú</label>
+                        <div id="showHireNote" style="display:none;">
+                            <textarea class="w-100" id="hireNoted" name="hireNoted" rows="3" placeholder="Nhập một vài ghi chú..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Quay lại</button>
+                        <button type="submit" name="submit" class="btn btn-danger">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Not Hire Confirm Dialog -->
+<div class="modal fade" id="notHireDialog" role="dialog" style="margin-top:12%">
+    <div class="modal-dialog">
+        <form class="form" id="notHireForm" method="post">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-medium">Xác nhận "Không tuyển Ứng viên này"</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="inputGroup">
+                        <label>Hồ sơ của sinh viên sẽ được chuyển đến danh sách "Ứng viên trượt phỏng vấn" trong mục "Ứng Viên"!</label>
+                    </div>
+                    <div class="inputGroup">
+                        <label style="font-style:italic;color:darkgray">Lưu ý: Sẽ có thông báo kết quả được gửi đến email của Ứng Viên!!</label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Quay lại</button>
+                    <button type="submit" name="submit" class="btn btn-danger">Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <!-- dataTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js" integrity="sha256-t5ZQTZsbQi8NxszC10CseKjJ5QeMw5NINtOXQrESGSU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js" integrity="sha256-hJ44ymhBmRPJKIaKRf3DSX5uiFEZ9xB/qx8cNbJvIMU=" crossorigin="anonymous"></script>
+
+    <!-- common func -->
+    <script src="~/Scripts/common.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const changeDateCheckbox = $('#changeDateNote');
+            const changeDateInput = $('#showNote');
+
+            const hireNoteCheckbox = $('#hireNote');
+            const hireNoteInput = $('#showHireNote');
+
+            const rejectCheckbox = $('#option_other');
+            const rejectInput = $('#showReason');
+
+            // init-table
+            initDatatable($('#table'));
+
+            changeDateCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    changeDateInput.show();
+                } else {
+                    changeDateInput.hide();
+                }
+            });
+
+            hireNoteCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    hireNoteInput.show();
+                } else {
+                    hireNoteInput.hide();
+                }
+            });
+
+            rejectCheckbox.click(function () {
+                if ($(this).is(':checked')) {
+                    rejectInput.show();
+                } else {
+                    rejectInput.hide();
+                }
+            });
+
+            $('#interviewDate').datepicker({
+                minDate: new Date(),
+                todayHighlight: true,
+            });
+            $('#workDate').datepicker({
+                minDate: new Date(),
+                todayHighlight: true,
+            });
+
+            $(document).on("click", "#changeDateButton", function () {
+                $('#changeDateForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#cancelDateButton", function () {
+                $('#cancelDateForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#hireButton", function () {
+                $('#hireForm').attr('action', $(this).data('url'));
+            });
+            $(document).on("click", "#notHireButton", function () {
+                $('#notHireForm').attr('action', $(this).data('url'));
+            });
+        });
+    </script>
+}
