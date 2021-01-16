@@ -571,6 +571,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\slick-theme.css" />
     <Content Include="Content\slick.css" />
+    <Content Include="Content\slick\ajax-loader.gif" />
+    <Content Include="Content\slick\left-right-arrow.png" />
     <Content Include="Content\Student\account-detail.css" />
     <Content Include="Content\Student\dashboard.css" />
     <Content Include="Content\style-login.css" />
