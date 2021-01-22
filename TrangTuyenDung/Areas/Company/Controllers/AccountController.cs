@@ -28,6 +28,7 @@ namespace TrangTuyenDung.Areas.Company.Controllers {
         [AllowAnonymous]
         [HttpGet]
         public ActionResult AccountRegister(string _ref, string message = null) {
+            log.Info(Request.UserHostAddress + " AccountRegisterG");
             if (_ref != null) {
                 CompanyRefRegisterViewModel model = new CompanyRefRegisterViewModel();
                 model._ref = _ref;
@@ -50,6 +51,7 @@ namespace TrangTuyenDung.Areas.Company.Controllers {
         [HttpPost]
         [AllowAnonymous]
         public ActionResult AccountRegister(CompanyRefRegisterViewModel model, string _ref) {
+            log.Info(Request.UserHostAddress + " AccountRegisterP");
             if (ModelState.IsValid) {
                 //Get Value
                
@@ -107,6 +109,7 @@ namespace TrangTuyenDung.Areas.Company.Controllers {
         //Thuan Nguyen - GET: Company/Account/Register
         [AllowAnonymous]
         public ActionResult Register(string message = null) {
+            log.Info(Request.UserHostAddress + " RegisterG");
             if (User.Identity.IsAuthenticated) {
                 return RedirectToAction("PageNotFound", "Error", new { area = "" });
             }
@@ -121,6 +124,7 @@ namespace TrangTuyenDung.Areas.Company.Controllers {
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Register(CompanyRegisterViewModel comModel) {
+            log.Info(Request.UserHostAddress + " RegisterP");
             //ApplicationDbContext context = new ApplicationDbContext();
             HttpPostedFileBase file = Request.Files["Com_Logo"];
             //var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
