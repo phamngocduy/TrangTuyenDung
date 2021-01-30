@@ -132,7 +132,8 @@ namespace TrangTuyenDung.Areas.Company.Controllers {
             if (ModelState.IsValid) {
                 if (checkCompany(comModel.Com_Name) == "false") {
                     ListAll();
-                    ModelState.AddModelError("Com_Name", "Bạn không thể sử dụng tên công ty này! Vui lòng liên hệ ejob.hachikoteam@gmail.com để được hỗ trợ!");
+                    //ModelState.AddModelError("Com_Name", "Bạn không thể sử dụng tên công ty này! Vui lòng liên hệ ejob.hachikoteam@gmail.com để được hỗ trợ!");
+                    ModelState.AddModelError("Com_Name", "Tên công ty đã được đăng ký! Vui lòng kiểm tra lại!");
                     return View(comModel);
                 }
                 else if (checkEmailAlreadyExist(comModel.Email) == "false") {
