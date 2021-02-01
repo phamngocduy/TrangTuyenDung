@@ -112,6 +112,31 @@
                     }
                     else {
                         errorEmailMsg.html('');
+                        const classList = "small font-weight-medium ";
+                        $.ajax({
+                            url: '@Url.Action("checkEmailAlreadyExist", "Account", new { area = "Company"})',
+                            type: 'post',
+                            data: { email },
+                            success: function (data) {
+                                if (data == "true") {
+                                    errorEmailMsg.attr('class', `${classList} text-success`);
+                                    errorEmailMsg.text("Bạn có thể sử dụng email này!");
+
+                                } else if (data == "false") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Email đã được sử dụng, vui lòng chọn Email khác!");
+                                } else if (data == "empty") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Vui lòng nhập Email!");
+                                } else if (data == "invalid") {
+                                    errorEmailMsg.attr('class', `${classList} text-danger`);
+                                    errorEmailMsg.text("Email không đúng định dạng!");
+                                }
+                            },
+                            error: function () {
+                                alert("Đã có lỗi xảy ra! Vui lòng làm mới lại trang và thử lại!");
+                            }
+                        });
                     }
                 })
             }

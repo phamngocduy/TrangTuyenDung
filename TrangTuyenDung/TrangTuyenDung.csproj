@@ -759,6 +759,7 @@
     <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Company\Views\Candidate\Fail.cshtml" />
+    <Content Include="Areas\Company\Views\Account\AccountRegister.cshtml" />
     <None Include="Properties\PublishProfiles\cntttest.pubxml" />
     <None Include="Properties\PublishProfiles\Development.pubxml" />
     <None Include="Properties\PublishProfiles\ejob.pubxml" />
