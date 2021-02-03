@@ -1,0 +1,19 @@
+2021-02-01 14:14:42,833 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-02-01 14:15:52,642 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:21:21,256 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:26:35,153 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-02-01 14:26:49,707 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:29:20,370 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:35:21,895 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:35:21,934 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 RegisterG
+2021-02-01 14:35:27,505 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:36:43,749 INFO TrangTuyenDung.Controllers.HomeController - ::1
+2021-02-01 14:36:52,019 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:37:31,789 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:37:57,069 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:38:17,215 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:39:53,374 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:40:58,324 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:41:04,428 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterP
+2021-02-01 14:41:06,838 INFO TrangTuyenDung.Areas.Company.Controllers.AccountController - ::1 AccountRegisterG
+2021-02-01 14:41:08,938 INFO TrangTuyenDung.Controllers.HomeController - ::1

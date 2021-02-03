@@ -100,7 +100,13 @@ else if (@ViewBag.Message == "SendError") {
                         @foreach (var item in Model) {
                             <tr class="@(item.Status == 2 ? "text-danger" : null)">
                                 <td>@Html.DisplayFor(modelItem => item.Name_Company) <br /> @item.Contact_Phone</td>
-                                <td><a href="/@item.website_Company">@Html.DisplayFor(modelItem => item.website_Company)</a></td>
+                                <td>
+                                    <a href="/@item.website_Company">@Html.DisplayFor(modelItem => item.website_Company)</a><br />
+                                    @if (item.User_In_Company.Count > 0)
+                                    {
+                                        <span>TK: @String.Join(", ", item.User_In_Company.Select(u => u.AspNetUser.Email))</span>
+                                    }
+                                </td>
                                 <td>@item.Province.Type @item.Province.Name</td>
                                 <td>@item.Created_at.ToString("dd/MM/yyyy")</td>
                                 <td>
