@@ -406,6 +406,7 @@ namespace TrangTuyenDung.Areas.Staff.Controllers {
                 else {
                     ViewBag.Job_Position_Id = 0;
                 }
+                ViewBag.Job_Position_Id = new SelectList(db.Job_Positions, "Id", "Name", data.Job_Position_Id); // Fix bug reload model error
                 ViewBag.Job_Position = db.Job_Positions.Where(x => x.Id == data.Job_Position_Id).ToList();
                 ViewBag.Company = db.Company_Info.ToList();
                 //ViewBag.Tag = new MultiSelectList(db.Tags, "ID", "Name_Tag", db.Tags_Recruitments.Where(x => x.Id_Recruitment == data.Id).Select(x => x.Id_Tags).ToList());
